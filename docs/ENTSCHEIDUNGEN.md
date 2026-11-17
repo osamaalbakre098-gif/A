@@ -17,3 +17,9 @@
 **Einstellungen vorerst in `localStorage`.** Die Datenbank kommt erst in Schritt 3. Die Werte werden dann in die Tabelle `settings` übernommen; bis dahin gehen bei gelöschten Browserdaten nur Sprache, Theme und Textgröße verloren, keine Lerndaten.
 
 **Hoher Kontrast als eigenes Theme** (`data-theme='contrast'`), unabhängig von Hell/Dunkel; Auswahl „System" folgt dem Betriebssystem (Hell/Dunkel).
+
+**Abstände nur über `gap`.** Layouts nutzen `Stack`/`Cluster` und die semantischen Abstands-Tokens statt einzelner Außenabstände. Das verhindert doppelte oder fehlende Lücken (zum Beispiel zwischen gestapelten Feldern und Schaltern) und lässt sich testen.
+
+**Navigation bei großer Schrift:** Die vier Punkte brechen bei großem Text in zwei Zeilen um, statt abgeschnitten zu werden.
+
+**Schnittecke der Karten:** Die Rundung der Ecke oben außen entfällt, damit der 12-px-Schnitt (Hauptkarte 24 px) sichtbar ist. Der Rahmen fehlt an der Schnittkante.

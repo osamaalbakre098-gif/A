@@ -36,8 +36,15 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 
 ## Vorschau-Seiten für das echte Gerät
 
+- Heute-Entwurf: https://claude.ai/artifact/Pcp5aaf2RmDMAz6reFqCpB (privat; Beispieldaten, 3 Zustände: Plan / Alles erledigt / Kein Material).
 - Galerie: https://claude.ai/artifact/AjLaRmMsBq1hgyJQmoa9y7 (privat; mit Textgrößen-Regler 90–200 %, Themes, Schreibrichtung).
 - App-Vorschau: https://claude.ai/artifact/CFj8uKBhtk3JjEbPDsJQqy (privat; Sprache, Erscheinungsbild, Textgröße).
-- Bauen: `pnpm build:static`, dann `scripts/to-artifact.ts` (macht aus der Einzeldatei ein Seiten-Fragment).
+- Bauen: `pnpm build:static` (Galerie, App, Heute), dann `scripts/to-artifact.ts` (macht aus der Einzeldatei ein Seiten-Fragment).
 - Grenzen: Das ist nur eine Ansicht. Installation auf den Home-Bildschirm, Offline-Betrieb, Service Worker und das Speichern in IndexedDB lassen sich so NICHT auf dem iPhone prüfen. Dafür braucht es eine eigene HTTPS-Adresse (Schritt 15 / Preview-Umgebung).
 - Befund des Nutzers zur Vergrößerung (echte Sehhilfe): steht noch aus, wird hier eingetragen.
+
+## Abstände und Entwurf Heute
+- Gebaut: semantische Spacing-Tokens (`--space-tight/stack/group/section/card/inline`), Bausteine `Stack` und `Cluster` (Abstand nur über `gap`), Karten/Felder/Schalter/Dialog/Leerzustand darauf umgestellt; Eingabefelder und Grids werden nicht mehr breiter als ihr Container.
+- Gebaut: Entwurf `Heute` (Hauptkarte mit einer großen Aktion, Warum?, Weiterlernen, Heute wiederholen, Für morgen bereit, Könnensbaum-Vorschau, Leerzustände), `AppShell` mit 4 Punkten (Handy unten, ab 1024 px links), SVG-Motive (Sitzungsbogen, geschlossener Kreis, Karte mit Schnittecke, Baum) mit Textalternative, keine Animation. Texte in DE/EN/AR.
+- Getestet: axe (3 Zustände x Hell/Dunkel/Kontrast/Arabisch), Abstandstest, 320/400 px mit 200 % Text ohne waagerechtes Scrollen (fand einen echten Fehler in der Navigation, behoben).
+- Offen: Datenanbindung (nur Beispieldaten, Studienleiter folgt in Schritt 9); Navigation führt noch nirgends hin; im Prompt heißt die Startseite Lichtung, im Entwurf Heute (auf Wunsch des Nutzers); Befund des Nutzers zum Layout steht aus.
