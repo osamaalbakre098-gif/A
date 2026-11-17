@@ -90,8 +90,27 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
   - Platzhalter: Startgröße des Haupt-Bundles seit Dexie/Zod geprüft erst in Schritt 12 (Budget 170 KB gzip).
 
 ## Hosting vorgezogen (Cloudflare Pages)
+
 - Repo ist bereit: PWA mit Icons (192/512/maskable/Apple), Manifest, Service Worker (Schriften inklusive), Update-Hinweis ohne automatischen Neustart, Offline-Hinweis, `public/_headers` (Cache und Sicherheits-Header), `.node-version`, Build-Kennung in den Einstellungen, `docs/BETRIEB.md` mit Klickfolge, Rollback und iPhone-Checkliste.
 - Die echte App hat jetzt Seiten über Hash-Routing: Heute (mit Beispieldaten, als solche gekennzeichnet), Einstellungen, Deine Daten, Platzhalter für Fächer/Fortschritt/Suche.
 - Getestet (Chromium, gebaute App): Manifest und Icons erreichbar, **Offline-Betrieb nach dem ersten Laden im Flugmodus inkl. Speicher-Selbsttest**, Einstellungen bleiben nach Neuladen und liegen in der Datenbank. Start-Bundle 112 KB gzip (Budget 170 KB).
 - **Noch nicht ausgeliefert:** Von der Cloud-Umgebung aus ist `api.cloudflare.com` gesperrt; die Einrichtung macht der Nutzer in der Cloudflare-Oberfläche (Git-Anbindung, siehe BETRIEB.md). Es gibt noch keine Adresse.
 - Nicht geprüft: Safari/iPhone (Installation, Offline, `persist()`), Verhalten der Header auf Cloudflare, Content-Security-Policy (fehlt noch, kommt mit PDF-Leser in Schritt 4/13).
+
+## Schritt 4 – Material importieren, lesen, durchsuchen (ohne OCR)
+- Gebaut: Fächer anlegen; Material hinzufügen per Datei (PDF, Text, Markdown, Foto), Kamera-Aufnahme, Text einfügen, Drag & Drop; Fortschritt in Klartext (Wird gelesen / Seite n von m / Abschnitte werden gebildet / Wird gespeichert); Prüfsumme verhindert Doppelimport im selben Fach (andere Fächer erlaubt, Datei nur einmal gespeichert); Original unverändert (Hash-Vergleich im Browser-Test); alles in einer Transaktion samt Ereignis `FileImported`.
+- Zerlegung: Zeilen aus pdf.js-Textstücken, Kopf-/Fußzeilen und Seitenzahlen entfernt, Silbentrennung verbunden, Überschriften über Schriftgröße und Nummerierung (Ebenen), Abschnitte höchstens 400 Wörter an Absatz- und Überschriftsgrenzen (jeder Abschnitt mit Seite, Position 0–1, Gliederungspfad), Gliederung am Dokument, Seiten ohne Text vermerkt. Eigenschaftstest (200 Läufe): kein Wort geht verloren, kein Abschnitt zu lang oder leer.
+- Leser: pdf.js im Web Worker, Canvas + Textlayer, `devicePixelRatio`-genau (Pixelgrenze 16 Mio.), nur sichtbare Seiten (300 Seiten: höchstens 14 gleichzeitig gezeichnet, nicht sichtbare werden freigegeben), Zoom 50–400 % (zusätzlich natives Pinch-Zoom), Umfließen-Modus (nur `textContent`), Suche im Dokument mit Markierung im Textlayer und vorherigem/nächstem Treffer (Umlaut-tolerant), Markieren und Notiz (getrennt in `annotations`, Positionen relativ 0–1), Sprung zu Seite, Hinweis bei Seiten ohne Text.
+- Suche: ein Suchfeld für Fächer, Dateien, Abschnitte und Notizen (MiniSearch, ä=ae, ß=ss, Groß-/Kleinschreibung egal, Wortanfänge, kleine Tippfehler), Quelle in Klartext „Physik › skript.pdf › Seite 3", Tipp springt auf die Seite mit Markierung.
+- Fehler: defekte Datei, unbekanntes Format, zu wenig Platz → verständliche Meldung, nichts gespeichert. Eine Fehlergrenze hält bei einem Seitenfehler Rahmen und Navigation bedienbar.
+- Gemessen (Chromium, Desktop, gebaute App, **nicht** iPhone): 300-Seiten-PDF Import ca. 1 s, erste Seite sichtbar nach ca. 0,9 s.
+- Bekannte Grenzen / noch offen:
+  - **Keine OCR** (4.3, Meilenstein 2): Fotos und Scans werden gespeichert und angezeigt, Status „Texterkennung folgt".
+  - **Keine Formeln** (4.6: KaTeX/MathLive/mathjs): kommt mit Schritt 7.
+  - „Karte daraus machen" und „Erklär mir das" fehlen (brauchen Fähigkeiten, Karten, KI: Schritte 6 bis 8). Es gibt Markieren und Notiz.
+  - Überschriften nur über Schriftgröße und Nummerierung; Fettdruck wird nicht ausgewertet (pdf.js liefert ihn ohne Rendern nicht verlässlich). Mehrspaltige Layouts und Tabellen werden nicht gesondert behandelt.
+  - Suche im Dokument markiert Treffer nur innerhalb eines Textstücks (Treffer über Zeilengrenzen werden nicht markiert).
+  - Das iPhone ist ungeprüft: Auswahlleiste bei Touch-Auswahl (Safari lässt die Auswahl beim Tippen evtl. los), Pinch-Zoom, Speicher bei großen Dateien, Dateiauswahl/Kamera.
+  - WebKit-Test fehlt (in der Cloud nicht verfügbar); Prompt-Abnahme „WebKit-Test plus echtes iPhone" damit offen.
+  - Leser-Kopf ist auf dem Handy hoch (Titel, Modus, Zoom): Feinarbeit pro Bildschirm später.
+  - Fächer lassen sich noch nicht umbenennen oder löschen; Dokumente nicht entfernen (Regel „kein Datenverlust": bewusst nichts Löschendes ohne Bestätigungs- und Rückgängig-Konzept).

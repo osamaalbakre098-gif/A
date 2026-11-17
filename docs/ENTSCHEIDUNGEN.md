@@ -61,3 +61,17 @@
 **Datenbank und ZIP-Code werden erst bei Bedarf geladen** (Start-Bundle von 181 auf 112 KB gzip).
 
 **Beispieldaten in der echten App** sind ausdrücklich gekennzeichnet („Beispieldaten … Noch keine echten Lerndaten"), bis der Studienleiter echte Pläne liefert.
+
+**Suche und Zerlegung ohne KI.** Beides ist reiner Code (Regeln für Zeilen, Überschriften, Abschnitte; MiniSearch). So funktioniert Madar auch offline und ohne KI-Konto (Regel 7).
+
+**Abschnitts-IDs mit laufender Nummer** (`<Dokument>:00042`): die Reihenfolge bleibt in der Datenbank erhalten, ohne neues Feld oder neuen Index. Ein Browser-Test hat gezeigt, dass zufällige IDs die Reihenfolge zerstören.
+
+**Neue optionale Felder, keine Migration:** `chunks.headingPath`, `documents.outline`, `documents.textlessPages`. Optionale Felder in IndexedDB brauchen keine Schemaänderung; alte Daten und Exporte bleiben gültig.
+
+**Nichts Löschendes in Schritt 4.** Fächer und Dokumente lassen sich noch nicht entfernen; das braucht ein „Rückgängig" (Regel 1/5) und kommt mit der Bearbeitungsfunktion.
+
+**pdf.js und der Leser werden erst bei Bedarf geladen** (eigene Pakete), damit das Start-Bundle klein bleibt (112 KB gzip). Der Worker (1,2 MB) liegt im Offline-Cache.
+
+**Chunks nur im Reflow-Modus als Quelle für Text**, im Seitenmodus kommt der Text direkt aus pdf.js (Textlayer). So stimmen Markierung und Auswahl immer mit der sichtbaren Seite überein.
+
+**Tests gegen die gebaute App.** Die Material-Tests laufen gegen `vite preview` (gebauter Worker-Pfad, Service Worker), nicht gegen den Dev-Server; veraltete Vorschau-Server auf Port 4173 können sonst alte Builds ausliefern (`pkill -f vite`).

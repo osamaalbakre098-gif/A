@@ -50,7 +50,7 @@ export default defineConfig({
       },
       workbox: {
         // Schriften und Bilder gehören dazu, sonst fehlt offline die Schrift. Nicht benötigte Schriftschnitte (kyrillisch, griechisch, vietnamesisch) bleiben draußen.
-        globPatterns: ['**/*.{js,css,html,woff2,svg,png,ico,webmanifest}'],
+        globPatterns: ['**/*.{js,mjs,css,html,woff2,svg,png,ico,webmanifest}'],
         globIgnores: ['**/*-{cyrillic,cyrillic-ext,greek,greek-ext,vietnamese,hebrew}-*.woff2'],
         navigateFallback: 'index.html',
         cleanupOutdatedCaches: true,

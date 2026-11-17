@@ -259,3 +259,258 @@ a.btn {
 .demo-note {
   padding-block-start: var(--s-1);
 }
+
+/* Fächer, Material, Suche */
+a.cardlink {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  border-radius: var(--r-lg);
+}
+.backlink {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
+}
+.dropzone {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border: 2px dashed var(--field-border);
+  border-radius: var(--r-md);
+}
+.dropzone--over {
+  background: var(--tint);
+  border-color: var(--primary);
+}
+.dropzone__hint {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .dropzone__hint {
+    display: inline;
+  }
+}
+.importlog {
+  display: grid;
+  gap: var(--s-2);
+}
+.doclist {
+  gap: var(--s-2);
+}
+.docrow {
+  display: grid;
+  gap: var(--s-1);
+  padding: var(--s-4);
+  background: var(--surface);
+  border: var(--card-bw) solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-1);
+  color: inherit;
+  text-decoration: none;
+  min-block-size: var(--tap);
+}
+.docrow__name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.chip {
+  justify-self: start;
+  font-size: var(--fs-1);
+  font-weight: 600;
+  background: var(--tint);
+  color: var(--primary);
+  padding: 2px var(--s-3);
+  border-radius: var(--r-pill);
+}
+[data-theme='contrast'] .chip {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--text);
+}
+.hitlist {
+  gap: var(--s-2);
+}
+.hit {
+  display: grid;
+  gap: var(--s-1);
+  padding: var(--s-4);
+  background: var(--surface);
+  border: var(--card-bw) solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-1);
+  color: inherit;
+  text-decoration: none;
+}
+.hit__snippet {
+  overflow-wrap: anywhere;
+}
+
+/* Leser */
+.shell__main--bleed {
+  padding: 0;
+  max-inline-size: none;
+}
+.shell__main--bleed .shell__top {
+  display: none;
+}
+.shell__main--bleed .pwa-banner {
+  margin: var(--s-2) var(--s-4);
+}
+.reader {
+  display: flex;
+  flex-direction: column;
+  block-size: calc(100dvh - 4.8rem - env(safe-area-inset-bottom, 0px));
+  min-block-size: 0;
+}
+@media (min-width: 1024px) {
+  .reader {
+    block-size: 100dvh;
+  }
+}
+.reader__head {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  background: var(--surface);
+  border-block-end: 1px solid var(--line);
+}
+.reader__title {
+  font-size: var(--fs-4);
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+.pdfreader {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-block-size: 0;
+  position: relative;
+}
+.reader__bar {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-4);
+  background: var(--surface);
+  border-block-end: 1px solid var(--line);
+}
+.reader__zoom {
+  min-inline-size: 3.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+.reader__search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: center;
+}
+.reader__search .input {
+  flex: 1 1 10rem;
+}
+.reader__count {
+  flex-basis: 100%;
+}
+.reader__scroll {
+  flex: 1;
+  min-block-size: 0;
+  overflow: auto;
+  background: var(--surface-2);
+  padding: var(--s-3);
+  display: grid;
+  gap: var(--s-3);
+  align-content: start;
+  justify-items: start;
+}
+.reader__scroll--reflow {
+  background: var(--bg);
+  justify-items: stretch;
+  padding: var(--s-5) var(--s-4);
+}
+.reader__loading {
+  padding: var(--s-5);
+}
+.reader__image {
+  max-inline-size: 100%;
+  block-size: auto;
+  border-radius: var(--r-md);
+}
+.pdfpage {
+  position: relative;
+  background: #fff;
+  box-shadow: var(--shadow-1);
+  margin-inline: auto;
+  flex: none;
+  overflow: hidden;
+}
+.pdfpage canvas {
+  display: block;
+}
+.pdfpage .textLayer {
+  position: absolute;
+  inset: 0;
+}
+.pdfpage .textLayer mark {
+  background: rgb(255 214 0 / 0.55);
+  color: transparent;
+  border-radius: 2px;
+}
+.pdfpage .textLayer mark.is-current {
+  background: rgb(255 120 0 / 0.65);
+  outline: 2px solid #b34700;
+}
+.pdfpage__note {
+  position: absolute;
+  inset-inline: var(--s-3);
+  inset-block-end: var(--s-2);
+  background: rgb(255 255 255 / 0.92);
+  color: #1c1f24;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-sm);
+}
+.annot {
+  position: absolute;
+  background: rgb(255 214 0 / 0.4);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.annot--note {
+  border-block-end: 2px solid #b34700;
+  pointer-events: auto;
+}
+.reader__select {
+  position: absolute;
+  inset-inline: var(--s-3);
+  inset-block-end: var(--s-3);
+  display: grid;
+  justify-items: center;
+  padding: var(--s-3);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
+  z-index: 3;
+}
+[data-theme='contrast'] .reader__select {
+  border: 2px solid var(--border);
+}
+.reflow {
+  display: grid;
+  gap: var(--s-6);
+  max-inline-size: var(--measure);
+  margin-inline: auto;
+  font-size: 1.2rem;
+  line-height: 1.8;
+}
+.reflow__chunk {
+  display: grid;
+  gap: var(--s-3);
+}
+.reflow mark {
+  background: rgb(255 214 0 / 0.6);
+  color: inherit;
+}

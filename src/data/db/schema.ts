@@ -31,6 +31,18 @@ export const DocumentRow = z.object({
   /** Verweis auf `blobs.sha256` */
   blobRef: z.string().length(64),
   pageCount: z.number().int().nonnegative().optional(),
+  /** Gliederung (Überschriften) als Strukturhinweis für den Könnensbaum */
+  outline: z
+    .array(
+      z.object({
+        level: z.number().int().min(1).max(6),
+        title: z.string(),
+        page: z.number().int().nonnegative(),
+      }),
+    )
+    .optional(),
+  /** Seiten ohne Text (Abbildungen oder Scans): dort erstellt Madar noch keine Aufgaben */
+  textlessPages: z.array(z.number().int().nonnegative()).optional(),
   ocrStatus: z.enum(['none', 'pending', 'running', 'done', 'failed']),
   importedAt: ts,
 });
@@ -45,6 +57,8 @@ export const Chunk = z.object({
   bbox: z.tuple([z.number(), z.number(), z.number(), z.number()]).optional(),
   text: z.string(),
   origin: z.enum(['text', 'ocr']),
+  /** Überschriften über diesem Abschnitt, z. B. ["Vektoren", "Addition"] */
+  headingPath: z.array(z.string()).optional(),
   ocrConfidence: z.number().min(0).max(100).optional(),
 });
 

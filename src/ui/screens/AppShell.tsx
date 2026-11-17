@@ -17,10 +17,13 @@ export function AppShell({
   active,
   children,
   banner,
+  bleed,
 }: {
   active: NavId | null;
   children: ReactNode;
   banner?: ReactNode;
+  /** Ohne Innenabstand und Kopfzeile (Leser) */
+  bleed?: boolean;
 }) {
   const { t } = useTranslation();
   return (
@@ -36,7 +39,7 @@ export function AppShell({
       >
         {t('nav.skipToContent')}
       </a>
-      <main id="main" tabIndex={-1} className="shell__main">
+      <main id="main" tabIndex={-1} className={`shell__main${bleed ? ' shell__main--bleed' : ''}`}>
         <div className="shell__top">
           <a
             className="iconbtn"

@@ -6,12 +6,18 @@ import Heute from './ui/screens/Heute';
 import PwaBanner from './ui/screens/PwaBanner';
 import SettingsPanel from './ui/screens/SettingsPanel';
 import { EmptyState, Stack } from './ui/components';
-import { useHashRoute, type Route } from './ui/useHashRoute';
+import { DbProvider } from './ui/DbProvider';
+import ErrorBoundary from './ui/ErrorBoundary';
+import { useHashRoute, type RouteName } from './ui/useHashRoute';
 
 // Datenbank und ZIP-Code erst laden, wenn „Deine Daten" geöffnet wird (kleineres Start-Bundle).
 const DataPage = lazy(() => import('./ui/screens/DataPage'));
+const SubjectsPage = lazy(() => import('./ui/screens/SubjectsPage'));
+const SubjectPage = lazy(() => import('./ui/screens/SubjectPage'));
+const ReaderPage = lazy(() => import('./ui/screens/ReaderPage'));
+const SearchPage = lazy(() => import('./ui/screens/SearchPage'));
 
-function Placeholder({ route }: { route: Route }) {
+function Placeholder({ route }: { route: RouteName }) {
   const { t } = useTranslation();
   return (
     <Stack space="section" className="view">
@@ -42,32 +48,62 @@ export default function App() {
   const route = useHashRoute();
 
   // Beim Seitenwechsel Fokus auf den Inhalt (Screenreader, Tastatur) und nach oben scrollen.
-  const previous = useRef(route);
+  const previous = useRef(route.name + (route.id ?? ''));
   useEffect(() => {
-    if (previous.current === route) return; // beim ersten Laden nichts verschieben
-    previous.current = route;
+    const key = route.name + (route.id ?? '');
+    if (previous.current === key) return; // beim ersten Laden nichts verschieben
+    previous.current = key;
     window.scrollTo(0, 0);
     document.getElementById('main')?.focus({ preventScroll: true });
   }, [route]);
 
-  const active: NavId | null = route === 'settings' || route === 'data' ? null : route;
+  const active: NavId | null =
+    route.name === 'subject' || route.name === 'doc'
+      ? 'subjects'
+      : route.name === 'settings' || route.name === 'data'
+        ? null
+        : route.name;
+  const bleed = route.name === 'doc';
   return (
-    <AppShell active={active} banner={<PwaBanner />}>
-      {route === 'today' && (
+    <AppShell active={active} banner={<PwaBanner />} bleed={bleed}>
+      {route.name === 'today' && (
         <Stack space="section">
           <p className="t-note demo-note">{t('app.demoNote')}</p>
           <Heute data={{ ...DEMO_TODAY, state: 'plan' }} />
         </Stack>
       )}
-      {route === 'settings' && <SettingsPage />}
-      {route === 'data' && (
+      {route.name === 'settings' && <SettingsPage />}
+      <ErrorBoundary resetKey={route.name + (route.id ?? '')}>
         <Suspense fallback={null}>
-          <DataPage />
+          {route.name === 'data' && <DataPage />}
+          {route.name === 'subjects' && (
+            <DbProvider>
+              <SubjectsPage />
+            </DbProvider>
+          )}
+          {route.name === 'subject' && route.id && (
+            <DbProvider>
+              <SubjectPage id={route.id} key={route.id} />
+            </DbProvider>
+          )}
+          {route.name === 'doc' && route.id && (
+            <DbProvider>
+              <ReaderPage
+                id={route.id}
+                key={route.id}
+                page={Number(route.params.get('page')) || 1}
+                query={route.params.get('q') ?? ''}
+              />
+            </DbProvider>
+          )}
+          {route.name === 'search' && (
+            <DbProvider>
+              <SearchPage />
+            </DbProvider>
+          )}
         </Suspense>
-      )}
-      {(route === 'subjects' || route === 'progress' || route === 'search') && (
-        <Placeholder route={route} />
-      )}
+      </ErrorBoundary>
+      {route.name === 'progress' && <Placeholder route={route.name} />}
     </AppShell>
   );
 }
