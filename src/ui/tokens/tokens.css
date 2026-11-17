@@ -44,7 +44,13 @@
   --t-slow: 320ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
 
+  --fs-1: 13px;
+  --fs-2: 15px;
   --fs-base: 17px;
+  --fs-4: 20px;
+  --fs-5: 24px;
+  --fs-6: 30px;
+  --fs-7: 36px;
   --lh: 1.6;
   --measure: 66ch;
   --font: 'Inter Variable', system-ui, sans-serif;

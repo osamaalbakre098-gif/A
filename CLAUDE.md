@@ -32,10 +32,16 @@ Alles läuft automatisch; Bearbeiten ist optional. Im Zweifel: einfacher statt m
 - Nur logische CSS-Eigenschaften (RTL). Kein HTML aus Dateien oder KI-Ausgaben ohne DOMPurify.
 - Schwellen und Gewichte stehen in Konfigurationsdateien, nie verstreut im Code.
 
+## Beginn jeder neuen Sitzung (Pflicht)
+
+1. `docs/STATUS.md` lesen (wo stehen wir, was ist offen).
+2. `docs/steps/schritt-NN.md` des aktuellen Schritts lesen. Dazu `docs/GRUNDLAGEN.md` (Teile A, B, D, Meilensteine).
+3. Original ist `docs/MADAR_PROMPT.md` (verbindlich; bei Widerspruch gilt der Prompt). Meilenstein-Reihenfolge aus Teil C einhalten.
+
 ## Arbeitsweise
 
 Pro Schritt: Plan (`docs/plans/schritt-N.md`) → Typen/Schemas → Tests → Umsetzung → Prüfen → Doku.
-Pro Arbeitsschritt nur diese Datei, `docs/GRUNDLAGEN.md` und `docs/steps/schritt-NN.md` lesen.
+Andere Schritt-Dateien nur lesen, wenn eine Schnittstelle sie betrifft.
 Entscheidungen in `docs/ENTSCHEIDUNGEN.md`, offene Punkte in `docs/OFFENE_FRAGEN.md`.
 
 ## Definition of Done
