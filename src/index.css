@@ -208,3 +208,31 @@ input[type='range'] {
 .heute__cta {
   inline-size: 100%;
 }
+
+/* Deine Daten */
+.steps {
+  margin: 0;
+  padding-inline-start: var(--s-5);
+  display: grid;
+  gap: var(--s-2);
+}
+.plain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-1);
+}
+.msg {
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--tint);
+}
+.msg--error {
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  color: var(--text);
+}
+[data-theme='contrast'] .msg {
+  background: var(--surface);
+  border: 2px solid var(--border);
+}

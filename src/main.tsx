@@ -15,11 +15,17 @@ initSettings();
 const Gallery = import.meta.env.DEV ? lazy(() => import('./ui/screens/Gallery')) : null;
 const HeutePreview = import.meta.env.DEV ? lazy(() => import('./ui/screens/HeutePreview')) : null;
 const showHeute = import.meta.env.DEV && location.pathname === '/dev/heute';
+const DatenPreview = import.meta.env.DEV ? lazy(() => import('./ui/screens/DatenPreview')) : null;
+const showDaten = import.meta.env.DEV && location.pathname === '/dev/daten';
 const showGallery = import.meta.env.DEV && location.pathname === '/dev/components';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {showHeute && HeutePreview ? (
+    {showDaten && DatenPreview ? (
+      <Suspense fallback={null}>
+        <DatenPreview />
+      </Suspense>
+    ) : showHeute && HeutePreview ? (
       <Suspense fallback={null}>
         <HeutePreview />
       </Suspense>

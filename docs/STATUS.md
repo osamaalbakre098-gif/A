@@ -64,10 +64,26 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 - Nicht geprüft: echtes iPhone (Unschärfe, Safe-Area, Systemschrift), VoiceOver, Befund des Nutzers zur neuen Optik.
 
 ## Korrekturen nach Nutzer-Feedback (Runde 2)
+
 1. Schnittecke entfernt: alle Karten haben eine einfache, gleichmäßige Rundung (Radius 24, Hauptkarte 32), in allen Themes.
 2. Hoher Kontrast: Rahmen oben rechts war unterbrochen, weil `clip-path` (Schnittecke) den Rahmen abschnitt. Mit der Schnittecke ist die Ursache weg. Neuer Test `tests/e2e/corners.spec.ts` liest Pixel an allen vier Ecken jeder Karte (Kante nahe der Ecke zweimal und Mitte des Bogens, deutsch und arabisch). Gegenprobe gemacht: Mit absichtlich fehlendem oberen Rahmen schlägt er an. Zusätzlich prüft er in Hell/Dunkel: keine `clip-path`, vier gleiche Rundungen. Hinweis: Meine frühere Aussage „behoben" stimmte nicht; ich hatte sie nicht per Test geprüft.
 3. Hauptkarte: sinnloser Bogen entfernt. Stattdessen Segmentleiste mit Text „3 von 8 erledigt" (kein Prozentwert). „Warum?" ist ein getönter Button (48 px hoch) mit `aria-expanded`.
 4. Umrisse (Felder, Auswahlzeilen, ausgeschalteter Schalter) in Hell `#84848a`, Dunkel `#72757a`: mindestens 3:1 gegen Hintergrund, Fläche und Tönungsfläche. Der Kontrasttest (`pnpm a11y:contrast`) prüft sie jetzt in allen drei Themes (im Hohen Kontrast hat der Schalter einen schwarzen Rahmen).
+
 - Geprüft: Kontrasttest, Lint, Typecheck, 17 Unit-Tests, 32 Browser-Tests (inkl. axe 3 Themes x LTR/RTL, 320/400 px mit 200 % Text, Ecken-Test).
 - Nicht geprüft: echtes iPhone; Screenshot-Vergleich nur als Pixel-Stichproben, kein visueller Gesamtvergleich; Befund des Nutzers zur Optik nach dieser Runde.
 - Weitere Optik-Arbeit laut Nutzer pro Bildschirm, sobald echte Bildschirme existieren.
+
+## Schritt 3 – Datenbank, Ereignisprotokoll, Datensicherheit
+- Gebaut: alle 18 Tabellen aus Prompt 3.2 plus `blobs` (Dexie, Zod-Schemas), Migrationsregister mit Version 1, automatische JSON-Sicherung vor jeder Migration (eigene Datenbank `madar-backups`, letzte 3 bleiben), Wiederherstellung aus Sicherung, Export als ZIP und Import (eine Transaktion, vorher Prüfung und Sicherung des Bestands), Speicherprüfung (`navigator.storage.estimate`, Hinweis unter 15 % frei), Fehlerabbildung für „Speicher voll", unveränderliches Ereignisprotokoll mit Zwischenständen (Snapshots), Anfrage nach dauerhaftem Speicher (`storage.persist()`), iPhone-Erkennung, Oberfläche „Deine Daten" (Speicherstatus, bebilderte Anleitung „Zum Home-Bildschirm", Export/Import, Sicherungen, Speicher-Selbsttest), Einstellungen werden zusätzlich in `settings` geschrieben.
+- Migrationstests (Fixture `tests/fixtures/db-v1.json`, alle Tabellen, echte Datei): v1 → simuliertes v2 verliert keinen Datensatz (Anzahl und Inhalts-Hash je Tabelle gleich, Datei-Prüfsumme gleich); Sicherung vorher; höchstens 3 Sicherungen; fehlgeschlagene Migration lässt Version 1 unverändert; Daten einer neueren App werden nie angefasst; Wiederherstellung funktioniert.
+- Export/Import: Rundlauf Export → Import → Export ist byteidentisch (bis auf den Zeitstempel im Manifest); defekte/abgeschnittene Datei, falsche Prüfsumme, Schema-Fehler, fehlende Originaldatei, neuere Version, zu wenig Platz: Import lehnt ab und ändert nichts; Fehler mitten im Schreiben (Index-Verletzung) wird zurückgerollt.
+- Ereignisse: ändern, ersetzen, löschen, `clear()` schlagen fehl (7 Wege getestet).
+- Benchmark (echtes Chromium, echte IndexedDB, 100 000 Ereignisse): vollständige Neuberechnung ca. 1,7 s, **App-Start mit Zwischenstand ca. 20 ms** (Ziel unter 1 s erreicht). Das ist NICHT Safari/iPhone.
+- Noch offen / nicht geprüft:
+  - **Echtes iPhone/Safari**: Speichern, `persist()`, 7-Tage-Löschung, Installation auf den Home-Bildschirm, ArrayBuffer-Dateien in IndexedDB. Seite zum Testen: https://claude.ai/artifact/Dj22TkRUtRXZrjMeqnb66W (der Selbsttest läuft dort in echtem Safari; Download ist im Artifact-Rahmen gesperrt, Export/Import-Datei lässt sich dort nicht testen).
+  - Das iOS-Onboarding (Schritt 11) ist nicht gebaut; die Anleitung steht in „Deine Daten" und erscheint dort nur auf iPhone im Safari-Tab. Der „dauerhafte Hinweis" im Rest der App fehlt noch (kommt mit den Bildschirmen).
+  - Import älterer Exporte (Schema < aktuell) wird erst nötig, wenn Schema Version 2 existiert; dann Export-Migration und Test ergänzen.
+  - Sicherungen enthalten keine Dateiinhalte (nur Prüfsummen); Migrationen fassen die Tabelle `blobs` nie an.
+  - Ein Import ersetzt den gesamten Bestand (nicht zusammenführen); der alte Stand liegt als Sicherung vor.
+  - Platzhalter: Startgröße des Haupt-Bundles seit Dexie/Zod geprüft erst in Schritt 12 (Budget 170 KB gzip).

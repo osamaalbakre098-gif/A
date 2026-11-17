@@ -1,0 +1,324 @@
+{
+  "description": "Fixture-Datenbank Version 1 (alle Tabellen) für Migrationstests. NIE ändern, nur neue Fixtures für neue Versionen anlegen.",
+  "schemaVersion": 1,
+  "tables": {
+    "subjects": [
+      {
+        "id": "s1",
+        "name": "Physik",
+        "colorKey": "ocean",
+        "createdAt": 1700000000000,
+        "archived": false
+      },
+      {
+        "id": "s2",
+        "name": "Geschichte",
+        "colorKey": "brick",
+        "createdAt": 1700000001000,
+        "archived": false
+      }
+    ],
+    "documents": [
+      {
+        "id": "d1",
+        "sha256": "fe5672a65cdab13af2483281b2047d15a7d5779870847d3296a872e3ebb7b62d",
+        "subjectId": "s1",
+        "name": "Skript.pdf",
+        "type": "application/pdf",
+        "blobRef": "fe5672a65cdab13af2483281b2047d15a7d5779870847d3296a872e3ebb7b62d",
+        "pageCount": 3,
+        "ocrStatus": "none",
+        "importedAt": 1700000002000
+      }
+    ],
+    "chunks": [
+      {
+        "id": "c1",
+        "documentId": "d1",
+        "page": 0,
+        "text": "Ein Vektor hat Betrag und Richtung.",
+        "origin": "text"
+      },
+      {
+        "id": "c2",
+        "documentId": "d1",
+        "page": 1,
+        "bbox": [0, 0, 100, 20],
+        "text": "Vektoren addiert man komponentenweise.",
+        "origin": "ocr",
+        "ocrConfidence": 82.5
+      }
+    ],
+    "topics": [
+      {
+        "id": "t1",
+        "subjectId": "s1",
+        "title": "Vektoren",
+        "order": 1,
+        "origin": "auto",
+        "hidden": false
+      }
+    ],
+    "skills": [
+      {
+        "id": "k1",
+        "topicId": "t1",
+        "title": "Vektoren erkennen",
+        "description": "Betrag und Richtung benennen.",
+        "kind": "fakt",
+        "bloom": "erinnern",
+        "order": 1,
+        "origin": "auto",
+        "hidden": false,
+        "examRelevant": true,
+        "sourceChunkIds": ["c1"]
+      },
+      {
+        "id": "k2",
+        "topicId": "t1",
+        "title": "Vektoren komponentenweise addieren",
+        "description": "Zwei Vektoren addieren.",
+        "kind": "verfahren",
+        "bloom": "anwenden",
+        "afb": 2,
+        "order": 2,
+        "origin": "auto",
+        "hidden": false,
+        "examRelevant": true,
+        "sourceChunkIds": ["c2"]
+      }
+    ],
+    "requires": [
+      {
+        "skillId": "k2",
+        "requiresSkillId": "k1"
+      }
+    ],
+    "items": [
+      {
+        "id": "i1",
+        "skillId": "k1",
+        "kind": "card",
+        "subtype": "qa",
+        "prompt": "Was hat ein Vektor?",
+        "answer": "Betrag und Richtung",
+        "hints": ["Denk an Pfeile."],
+        "sourceRefs": ["c1"],
+        "bloom": "erinnern",
+        "difficulty": 0.2,
+        "status": "active",
+        "createdBy": "ai",
+        "generatorVersion": "v1"
+      },
+      {
+        "id": "i2",
+        "skillId": "k2",
+        "kind": "task",
+        "subtype": "number",
+        "prompt": "(1,2)+(3,4)=?",
+        "answer": {
+          "x": 4,
+          "y": 6
+        },
+        "sourceRefs": ["c2"],
+        "bloom": "anwenden",
+        "difficulty": 0.5,
+        "status": "active",
+        "createdBy": "user"
+      }
+    ],
+    "lessons": [
+      {
+        "skillId": "k1",
+        "explanation": "Ein Vektor ist ein Pfeil.",
+        "alternativeExplanation": "Ein Vektor sagt: wie weit und wohin.",
+        "sourceRefs": ["c1"],
+        "generatorVersion": "v1"
+      }
+    ],
+    "misconceptions": [
+      {
+        "id": "m1",
+        "skillId": "k2",
+        "pattern": "x mit y addiert",
+        "diagnosticQuestion": "Welche Komponenten addierst du?",
+        "explanation": "Nur gleiche Komponenten."
+      }
+    ],
+    "cards": [
+      {
+        "itemId": "i1",
+        "due": 1700086400000,
+        "fsrs": {
+          "due": 1700086400000,
+          "stability": 2.5,
+          "difficulty": 5.1,
+          "elapsed_days": 0,
+          "scheduled_days": 1,
+          "learning_steps": 0,
+          "reps": 1,
+          "lapses": 0,
+          "state": 2,
+          "last_review": 1700000000000
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "id": "a1",
+        "itemId": "i1",
+        "ts": 1700000000010,
+        "correct": true,
+        "partial": false,
+        "hintLevel": 0,
+        "latencyMs": 4200,
+        "confidence": 2,
+        "gradedBy": "rule"
+      },
+      {
+        "id": "a2",
+        "itemId": "i2",
+        "ts": 1700000000020,
+        "correct": false,
+        "partial": false,
+        "hintLevel": 2,
+        "latencyMs": 9100,
+        "errorType": "procedural",
+        "gradedBy": "rule"
+      }
+    ],
+    "exams": [
+      {
+        "id": "e1",
+        "subjectId": "s1",
+        "date": "2026-12-01",
+        "skillIds": ["k1", "k2"]
+      }
+    ],
+    "sessions": [
+      {
+        "id": "ss1",
+        "startedAt": 1700000000005,
+        "endedAt": 1700000900000,
+        "plan": {
+          "blocks": 4
+        },
+        "endReason": "goal"
+      }
+    ],
+    "events": [
+      {
+        "id": 1,
+        "ts": 1700000000010,
+        "type": "SessionStarted",
+        "payload": {
+          "sessionId": "ss1"
+        },
+        "schemaVersion": 1
+      },
+      {
+        "id": 2,
+        "ts": 1700000000020,
+        "type": "AnswerSubmitted",
+        "payload": {
+          "attemptId": "a1",
+          "itemId": "i1",
+          "skillId": "k1",
+          "correct": true,
+          "partial": false,
+          "hintLevel": 0,
+          "latencyMs": 4200
+        },
+        "schemaVersion": 1
+      },
+      {
+        "id": 3,
+        "ts": 1700000000030,
+        "type": "HintUsed",
+        "payload": {
+          "itemId": "i2",
+          "level": 2
+        },
+        "schemaVersion": 1
+      },
+      {
+        "id": 4,
+        "ts": 1700000000040,
+        "type": "AnswerSubmitted",
+        "payload": {
+          "attemptId": "a2",
+          "itemId": "i2",
+          "skillId": "k2",
+          "correct": false,
+          "partial": false,
+          "hintLevel": 2,
+          "latencyMs": 9100
+        },
+        "schemaVersion": 1
+      },
+      {
+        "id": 5,
+        "ts": 1700000000050,
+        "type": "SessionEnded",
+        "payload": {
+          "sessionId": "ss1",
+          "reason": "goal"
+        },
+        "schemaVersion": 1
+      }
+    ],
+    "annotations": [
+      {
+        "id": "n1",
+        "documentId": "d1",
+        "page": 0,
+        "rects": [[1, 2, 30, 4]],
+        "color": "yellow",
+        "note": "wichtig"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "j1",
+        "type": "tree",
+        "payload": {
+          "subjectId": "s1"
+        },
+        "status": "done",
+        "attempts": 1,
+        "createdAt": 1700000003000
+      }
+    ],
+    "snapshots": [
+      {
+        "projection": "activity",
+        "version": 1,
+        "lastEventId": 5,
+        "data": {
+          "total": 5,
+          "byType": {
+            "SessionStarted": 1
+          },
+          "lastTs": 1700000000050
+        },
+        "createdAt": 1700000000060
+      }
+    ],
+    "settings": [
+      {
+        "key": "language",
+        "value": "de"
+      },
+      {
+        "key": "ageGroup",
+        "value": "16+"
+      }
+    ]
+  },
+  "blobs": [
+    {
+      "sha256": "fe5672a65cdab13af2483281b2047d15a7d5779870847d3296a872e3ebb7b62d",
+      "base64": "JVBERi0xLjQgQmVpc3BpZWwtU2tyaXB0IFBoeXNpazogVmVrdG9yZW4gYWRkaWVyZW4uCg=="
+    }
+  ]
+}

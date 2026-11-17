@@ -31,3 +31,23 @@
 **Keine Schnittecke mehr.** Der Nutzer empfand sie als Darstellungsfehler; sie hatte außerdem im Hohen Kontrast den Rahmen unterbrochen. Karten sind einfach gerundet. (Die „Karte mit abgeschnittener Ecke" aus dem Prompt entfällt damit auf Wunsch des Nutzers; die Motive Kreis und Bogen bleiben.)
 
 **Bewegung reduzieren = 0 ms.** Auf Wunsch des Nutzers werden Übergänge dabei ganz abgeschaltet (der Prompt erlaubt Überblendungen bis 120 ms; 0 ms ist strenger und damit zulässig).
+
+**Zeitstempel als Zahl, FSRS-Karte mit Zahlen.** Alle Zeiten sind Millisekunden (Zahl); die FSRS-Karte speichert Fälligkeit und letzte Wiederholung ebenfalls als Zahl statt `Date`. So ist der JSON-Export verlustfrei; die Umwandlung in ts-fsrs `Card` folgt in Schritt 8. Prüfungsdatum = Text `YYYY-MM-DD` (Lerntag).
+
+**Dateien als ArrayBuffer.** Originaldateien liegen als `ArrayBuffer` in `blobs` (nicht als `Blob`), weil Safari mit Blobs in IndexedDB historisch Probleme hatte.
+
+**Zusätzliche Felder gegenüber dem Prompt:** `snapshots.version` (Projektionslogik-Version, damit alte Zwischenstände bei Änderungen verworfen werden) und `documents.ocrStatus` mit festen Werten.
+
+**Ereignis-ID ist eine fortlaufende Zahl** (`++id`), nicht UUID: sie bestimmt die Reihenfolge und ist die Grenze für Zwischenstände.
+
+**Sicherungen in eigener Datenbank** (`madar-backups`), ohne Dateiinhalte. Grund: Sie müssen eine Migration der Hauptdatenbank überstehen, und Dateien können groß sein. Migrationen dürfen `blobs` nie verändern.
+
+**Import ersetzt, statt zusammenzuführen.** Zusammenführen von Lernverlauf aus zwei Geräten ist ein eigenes, riskantes Thema (Version 2, Synchronisierung). Vor jedem Ersetzen wird der Bestand gesichert, und alles läuft in einer Transaktion.
+
+**Die Sperre für Ereignisse hat eine Hintertür nur für den Import** (`eventsUnlocked`, nur während der Import-Transaktion). Dexie-Hooks erfassen `clear()` nicht, deshalb wird `clear()` zusätzlich abgefangen.
+
+**`Date.now()` nur in `src/data/clock.ts`.** Alles andere bekommt die Zeit als Parameter; die Lint-Regel erlaubt nur diese Datei und Tests.
+
+**Einstellungen:** `localStorage` bleibt die schnelle Quelle (synchron beim Start), die Datenbank-Tabelle `settings` wird mitgeschrieben (landet im Export) und dient als Rückfall, wenn `localStorage` fehlt.
+
+**Testwerkzeug:** Die Test-IndexedDB (`fake-indexeddb`) muss vor Dexie geladen werden (Setup-Datei). Browser-Tests mit Dateien: Playwright setzt Dateien mit Nicht-ASCII-Zeichen im Pfad still nicht, deshalb ASCII-Temp-Pfade.

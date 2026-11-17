@@ -27,7 +27,7 @@ export default tseslint.config(
   },
   {
     // Nur Dateien außerhalb von Tests und Zeit-Modul: Date.now bleibt verboten; Zeit-Modul darf `new Date`.
-    files: ['tests/**', 'scripts/**', 'src/main.tsx'],
+    files: ['tests/**', 'scripts/**', 'src/main.tsx', 'src/data/clock.ts'],
     rules: { 'no-restricted-syntax': 'off' },
   },
 );

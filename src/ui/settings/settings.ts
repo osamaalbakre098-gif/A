@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { loadSettingsFromDb, saveSettingsToDb } from '../../data/settingsDb';
 import i18n, { isRtl, LANGUAGES, type Language } from '../../i18n';
 
 export type ThemeChoice = 'system' | 'light' | 'dark' | 'contrast';
@@ -88,6 +89,7 @@ export const useSettings = create<Store>((set, get) => ({
     } catch {
       /* Speicher nicht verfügbar: Einstellung gilt nur für diese Sitzung */
     }
+    void saveSettingsToDb({ ...next });
     void i18n.changeLanguage(next.language);
     applySettings(
       next,
@@ -99,6 +101,18 @@ export const useSettings = create<Store>((set, get) => ({
 
 export function initSettings() {
   const s = useSettings.getState();
+  // Fehlt der lokale Eintrag (z. B. vom Browser gelöscht), holen wir die Werte aus der Datenbank.
+  let hadLocal = false;
+  try {
+    hadLocal = localStorage.getItem(KEY) !== null;
+  } catch {
+    /* ignorieren */
+  }
+  if (!hadLocal) {
+    void loadSettingsFromDb().then((v) => {
+      if (v) useSettings.getState().set(parseSettings(JSON.stringify(v)));
+    });
+  }
   void i18n.changeLanguage(s.language);
   applySettings(s, document.documentElement, matchMedia('(prefers-color-scheme: dark)').matches);
 }

@@ -12,7 +12,13 @@ const CARD_CUT = 'M8 8 H 62 L 80 26 V 72 H 8 Z';
 /** Geschlossener Kreis: der Tag ist rund. */
 export function DoneMotif({ label, size = 96 }: MotifProps) {
   return (
-    <svg viewBox="0 0 96 96" width={size} role="img" aria-label={label} focusable="false">
+    <svg
+      viewBox="0 0 96 96"
+      style={{ inlineSize: '100%', maxInlineSize: size, blockSize: 'auto' }}
+      role="img"
+      aria-label={label}
+      focusable="false"
+    >
       <circle cx="48" cy="48" r="38" fill="none" stroke="var(--primary)" strokeWidth="8" />
       <path
         d="M32 50 L44 62 L66 36"
@@ -29,7 +35,13 @@ export function DoneMotif({ label, size = 96 }: MotifProps) {
 /** Karte mit abgeschnittener Ecke, ein Kreis führt hinein. */
 export function EmptyMotif({ label, size = 120 }: MotifProps) {
   return (
-    <svg viewBox="0 0 120 90" width={size} role="img" aria-label={label} focusable="false">
+    <svg
+      viewBox="0 0 120 90"
+      style={{ inlineSize: '100%', maxInlineSize: size, blockSize: 'auto' }}
+      role="img"
+      aria-label={label}
+      focusable="false"
+    >
       <g transform="translate(30 6)">
         <path
           d={CARD_CUT}
@@ -59,7 +71,13 @@ export function TreeMotif({ label, nodes, size = 200 }: MotifProps & { nodes: Sk
     [160, 78],
   ];
   return (
-    <svg viewBox="0 0 200 130" width={size} role="img" aria-label={label} focusable="false">
+    <svg
+      viewBox="0 0 200 130"
+      style={{ inlineSize: '100%', maxInlineSize: size, blockSize: 'auto' }}
+      role="img"
+      aria-label={label}
+      focusable="false"
+    >
       <path
         d="M100 124 V 100 M100 100 Q 100 84 40 78 M100 100 Q 100 84 160 78 M100 100 V 66 M40 78 V 40 M160 78 V 40 M100 66 V 28"
         fill="none"
@@ -88,6 +106,48 @@ export function TreeMotif({ label, nodes, size = 200 }: MotifProps & { nodes: Sk
           </g>
         );
       })}
+    </svg>
+  );
+}
+
+/** Drei Schritte „Zum Home-Bildschirm hinzufügen": Teilen, Zum Home-Bildschirm, Hinzufügen. */
+export function InstallMotif({ label, size = 300 }: MotifProps) {
+  const circle = (cx: number) => (
+    <circle cx={cx} cy="40" r="30" fill="var(--tint)" stroke="var(--primary)" strokeWidth="3" />
+  );
+  return (
+    <svg
+      viewBox="0 0 300 80"
+      style={{ inlineSize: '100%', maxInlineSize: size, blockSize: 'auto' }}
+      role="img"
+      aria-label={label}
+      focusable="false"
+    >
+      <path
+        d="M80 40 H 110 M190 40 H 220"
+        stroke="var(--border)"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      {circle(50)}
+      {circle(150)}
+      {circle(250)}
+      {/* 1: Teilen (Quadrat mit Pfeil nach oben) */}
+      <g
+        fill="none"
+        stroke="var(--primary)"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M42 42 V 56 H 58 V 42" />
+        <path d="M50 50 V 26 M43 33 L 50 26 L 57 33" />
+        {/* 2: Quadrat mit Plus */}
+        <rect x="136" y="26" width="28" height="28" rx="6" />
+        <path d="M150 33 V 47 M143 40 H 157" />
+        {/* 3: Haken */}
+        <path d="M238 41 L 247 50 L 263 31" />
+      </g>
     </svg>
   );
 }

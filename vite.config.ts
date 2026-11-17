@@ -3,6 +3,8 @@ import { defineConfig } from 'vitest/config';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  // Datenbank-Pakete vorab bündeln: sonst lädt der Dev-Server beim ersten Import neu (stört Browser-Tests).
+  optimizeDeps: { include: ['dexie', 'fflate', 'zod'] },
   plugins: [
     react(),
     VitePWA({
