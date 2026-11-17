@@ -1,0 +1,11 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f7f6f2;
+  color: #1c1f24;
+  font-size: 17px;
+  line-height: 1.6;
+}
+main {
+  padding: 24px;
+}
