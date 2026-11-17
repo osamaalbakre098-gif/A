@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
+import { Cluster, Stack } from './Layout';
 
 export function ContentCard({
   title,
@@ -17,8 +18,10 @@ export function ContentCard({
       className={`card${hero ? ' card--hero' : ''}`}
       style={accent ? ({ '--card-accent': `var(--subj-${accent})` } as CSSProperties) : undefined}
     >
-      {title && <h2 className="card__title">{title}</h2>}
-      {children}
+      <Stack space="group">
+        {title && <h2 className="card__title">{title}</h2>}
+        {children}
+      </Stack>
     </section>
   );
 }
@@ -37,12 +40,12 @@ export function Flashcard({
   const [revealed, setRevealed] = useState(false);
   const id = useId();
   return (
-    <div className="flashcard">
+    <Stack space="stack" className="flashcard">
       <div className="flashcard__face" key={revealed ? 'b' : 'f'} aria-live="polite">
         {revealed ? back : front}
       </div>
       {!revealed && (
-        <div className="field" style={{ marginBlockStart: 'var(--s-3)' }}>
+        <div className="field">
           <label className="field__label" htmlFor={id}>
             {labels.answer}
           </label>
@@ -52,7 +55,7 @@ export function Flashcard({
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
           />
-          <div style={{ display: 'flex', gap: 'var(--s-2)', flexWrap: 'wrap' }}>
+          <Cluster>
             <button
               type="button"
               className="btn btn--primary"
@@ -64,10 +67,10 @@ export function Flashcard({
             <button type="button" className="btn btn--quiet" onClick={() => setRevealed(true)}>
               {labels.dontKnow}
             </button>
-          </div>
+          </Cluster>
         </div>
       )}
-    </div>
+    </Stack>
   );
 }
 
@@ -130,7 +133,7 @@ export function HintLadder({
 }) {
   const [shown, setShown] = useState(0);
   return (
-    <div className="hints">
+    <Stack space="tight" className="hints">
       {shown > 0 && (
         <div role="region" aria-label={labels.title} aria-live="polite">
           <ol>
@@ -145,6 +148,6 @@ export function HintLadder({
           {labels.next}
         </button>
       )}
-    </div>
+    </Stack>
   );
 }

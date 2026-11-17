@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
+import { Stack } from './Layout';
 
 /** Kreis für Zeit/Fokus. Zeigt Minuten als Text, nie Prozent. */
 export function FocusCircle({
@@ -91,11 +92,11 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="empty">
+    <Stack space="stack" className="empty">
       <h2>{title}</h2>
       <p>{text}</p>
       {action}
-    </div>
+    </Stack>
   );
 }
 
@@ -119,10 +120,10 @@ export function Dialog({
   }, [open]);
   return (
     <dialog ref={ref} className="dialog" aria-labelledby="dlg-title" onClose={onClose}>
-      <h2 id="dlg-title" style={{ marginBlockStart: 0 }}>
-        {title}
-      </h2>
-      {children}
+      <Stack space="stack">
+        <h2 id="dlg-title">{title}</h2>
+        {children}
+      </Stack>
     </dialog>
   );
 }

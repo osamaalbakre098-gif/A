@@ -1,6 +1,17 @@
 {
-  "app": { "name": "Madar", "tagline": "The place where all you have to do is learn." },
-  "nav": { "skipToContent": "Skip to content", "settings": "Settings" },
+  "app": {
+    "name": "Madar",
+    "tagline": "The place where all you have to do is learn."
+  },
+  "nav": {
+    "skipToContent": "Skip to content",
+    "settings": "Settings",
+    "main": "Main navigation",
+    "today": "Today",
+    "subjects": "Subjects",
+    "progress": "Progress",
+    "search": "Search"
+  },
   "settings": {
     "title": "Settings",
     "language": "Language",
@@ -16,5 +27,37 @@
   "lichtung": {
     "greeting": "Good to see you.",
     "dueToday": "{count, plural, =0 {Nothing is due today.} one {# review is due today.} other {# reviews are due today.}}"
+  },
+  "heute": {
+    "greetingMorning": "Good morning",
+    "greetingDay": "Hello",
+    "greetingEvening": "Good evening",
+    "start": "Start learning",
+    "planLine": "{reviews, plural, one {# review} other {# reviews}} · {topic} · {kind} · about {minutes} min",
+    "kindPractice": "short practice",
+    "why": "Why?",
+    "whyText": "These cards are due today. Reviewing them now helps you remember them longer.",
+    "sessionAlt": "Today's session in four blocks: warm-up, core, practice, wrap-up.",
+    "resumeTitle": "Continue",
+    "resumeText": "{topic}, block {done} of {total}",
+    "resumeCta": "Continue",
+    "reviewTitle": "Review today",
+    "reviewText": "{count, plural, one {# card} other {# cards}} · about {minutes} min",
+    "reviewCta": "Start review",
+    "tomorrowTitle": "Ready for tomorrow",
+    "tomorrowCards": "Tomorrow: {count, plural, one {# card} other {# cards}} (about {minutes} min)",
+    "examLine": "{subject} exam, {date}",
+    "examStatus": "{sits} is solid, {building} is in progress.",
+    "treeTitle": "Your skill tree",
+    "treeAlt": "Skill tree {subject}: {sits, plural, one {# skill is solid} other {# skills are solid}}, {building} in progress, {fresh} new, {due} to refresh.",
+    "treeCta": "View progress",
+    "doneTitle": "All done for today",
+    "doneText": "Tomorrow: {count, plural, one {# card} other {# cards}} (about {minutes} min).",
+    "doneAlt": "A closed circle: the day is complete.",
+    "emptyTitle": "Upload your first material",
+    "emptyText": "Madar plans the rest.",
+    "emptyCta": "Add material",
+    "emptyAlt": "A card with a cut corner. A circle leads into it.",
+    "go": "Start"
   }
 }

@@ -3,7 +3,9 @@ import { defineConfig } from 'vite';
 import { viteSingleFile } from 'vite-plugin-singlefile';
 
 // Baut Galerie oder App-Vorschau als EINE selbstständige HTML-Datei: TARGET=gallery|app
-const target = process.env.TARGET === 'app' ? 'app' : 'gallery';
+const target = ['app', 'heute'].includes(process.env.TARGET ?? '')
+  ? (process.env.TARGET as string)
+  : 'gallery';
 
 export default defineConfig({
   root: 'static',

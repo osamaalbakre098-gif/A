@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGE_NAMES, LANGUAGES, type Language } from '../../i18n';
-import { Switch } from '../components';
+import { Stack, Switch } from '../components';
 import {
   TEXT_SCALE_MAX,
   TEXT_SCALE_MIN,
@@ -24,7 +24,7 @@ export default function SettingsPanel() {
   const themeId = useId();
   const sizeId = useId();
   return (
-    <section aria-labelledby="settings-title" className="settings">
+    <Stack as="section" space="group" aria-labelledby="settings-title" className="settings">
       <h2 id="settings-title">{t('settings.title')}</h2>
       <div className="field">
         <label className="field__label" htmlFor={langId}>
@@ -80,6 +80,6 @@ export default function SettingsPanel() {
         checked={s.reducedMotion}
         onChange={(v) => s.set({ reducedMotion: v })}
       />
-    </section>
+    </Stack>
   );
 }

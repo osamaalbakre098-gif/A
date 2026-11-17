@@ -1,6 +1,17 @@
 {
-  "app": { "name": "Madar", "tagline": "Der Lernort, an dem du nur noch lernen musst." },
-  "nav": { "skipToContent": "Zum Inhalt springen", "settings": "Einstellungen" },
+  "app": {
+    "name": "Madar",
+    "tagline": "Der Lernort, an dem du nur noch lernen musst."
+  },
+  "nav": {
+    "skipToContent": "Zum Inhalt springen",
+    "settings": "Einstellungen",
+    "main": "Hauptnavigation",
+    "today": "Heute",
+    "subjects": "Fächer",
+    "progress": "Fortschritt",
+    "search": "Suche"
+  },
   "settings": {
     "title": "Einstellungen",
     "language": "Sprache",
@@ -16,5 +27,37 @@
   "lichtung": {
     "greeting": "Schön, dass du da bist.",
     "dueToday": "{count, plural, =0 {Heute ist nichts fällig.} one {# Wiederholung ist heute fällig.} other {# Wiederholungen sind heute fällig.}}"
+  },
+  "heute": {
+    "greetingMorning": "Guten Morgen",
+    "greetingDay": "Guten Tag",
+    "greetingEvening": "Guten Abend",
+    "start": "Jetzt lernen",
+    "planLine": "{reviews, plural, one {# Wiederholung} other {# Wiederholungen}} · {topic} · {kind} · ca. {minutes} Min.",
+    "kindPractice": "kurze Übung",
+    "why": "Warum?",
+    "whyText": "Diese Karten sind heute fällig. Wenn du sie jetzt wiederholst, bleiben sie besser im Gedächtnis.",
+    "sessionAlt": "Heutige Sitzung in vier Blöcken: Aufwärmen, Kern, Üben, Abschluss.",
+    "resumeTitle": "Weiterlernen",
+    "resumeText": "{topic}, Block {done} von {total}",
+    "resumeCta": "Weitermachen",
+    "reviewTitle": "Heute wiederholen",
+    "reviewText": "{count, plural, one {# Karte} other {# Karten}} · ca. {minutes} Min.",
+    "reviewCta": "Wiederholung starten",
+    "tomorrowTitle": "Für morgen bereit",
+    "tomorrowCards": "Morgen: {count, plural, one {# Karte} other {# Karten}} (ca. {minutes} Min.)",
+    "examLine": "Prüfung {subject}, {date}",
+    "examStatus": "{sits} sitzt, {building} ist im Aufbau.",
+    "treeTitle": "Dein Könnensbaum",
+    "treeAlt": "Könnensbaum {subject}: {sits, plural, one {# Fähigkeit sitzt} other {# Fähigkeiten sitzen}}, {building} im Aufbau, {fresh} neu, {due} zum Auffrischen.",
+    "treeCta": "Fortschritt ansehen",
+    "doneTitle": "Alles für heute erledigt",
+    "doneText": "Morgen warten {count, plural, one {# Karte} other {# Karten}} (ca. {minutes} Min.).",
+    "doneAlt": "Ein geschlossener Kreis: der Tag ist abgerundet.",
+    "emptyTitle": "Lade dein erstes Material hoch",
+    "emptyText": "Den Rest plant Madar.",
+    "emptyCta": "Material hinzufügen",
+    "emptyAlt": "Eine Karte mit abgeschnittener Ecke. Ein Kreis führt hinein.",
+    "go": "Starten"
   }
 }

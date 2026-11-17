@@ -39,6 +39,14 @@
   --s-7: 48px;
   --s-8: 64px;
 
+  /* Semantische Abstände: nur diese in Layouts verwenden */
+  --space-tight: var(--s-2); /* zusammengehörige Zeilen (Label/Hilfetext) */
+  --space-stack: var(--s-4); /* Felder, Schalter, Absätze untereinander */
+  --space-group: var(--s-5); /* Gruppen innerhalb einer Karte/Sektion */
+  --space-section: var(--s-6); /* Sektionen/Karten untereinander */
+  --space-card: var(--s-5); /* Innenabstand Karte */
+  --space-inline: var(--s-3); /* nebeneinander (Knöpfe, Chips) */
+
   --t-fast: 120ms;
   --t-base: 200ms;
   --t-slow: 320ms;

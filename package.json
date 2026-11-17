@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "build:static": "TARGET=gallery vite build -c vite.static.config.ts && TARGET=app vite build -c vite.static.config.ts",
+    "build:static": "TARGET=gallery vite build -c vite.static.config.ts && TARGET=app vite build -c vite.static.config.ts && TARGET=heute vite build -c vite.static.config.ts",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "typecheck": "tsc -b --noEmit",

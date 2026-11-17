@@ -281,3 +281,77 @@
 [dir='rtl'] .flip-rtl {
   transform: scaleX(-1);
 }
+
+/* Layout: Abstand nur über gap, nie über Außenabstände der Kinder */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap, var(--space-stack));
+  min-inline-size: 0;
+}
+.stack > * {
+  margin-block: 0;
+}
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap, var(--space-inline));
+  min-inline-size: 0;
+}
+.cluster > * {
+  margin-block: 0;
+}
+.stack > .field,
+.stack > .choices,
+.stack > .hints {
+  max-inline-size: var(--measure);
+  inline-size: 100%;
+}
+.stack > .switch {
+  align-self: flex-start;
+}
+.stack h1,
+.stack h2,
+.stack h3,
+.stack p {
+  margin-block: 0;
+}
+.card {
+  padding: var(--space-card);
+}
+.card__title {
+  margin: 0;
+}
+.dialog > .stack {
+  margin-block-start: var(--space-stack);
+}
+.gallery {
+  padding: var(--s-5);
+  max-inline-size: 900px;
+  margin-inline: auto;
+}
+.range {
+  inline-size: 100%;
+  min-block-size: 44px;
+  accent-color: var(--primary);
+}
+
+/* Nichts darf breiter werden als sein Container (große Schrift, schmaler Bildschirm) */
+.field {
+  grid-template-columns: minmax(0, 1fr);
+}
+.input {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+}
+
+/* Schnittecke deutlich sichtbar: Ecke oben außen ohne Rundung (in RTL gespiegelt durch logische Eigenschaft) */
+.card {
+  border-start-end-radius: 0;
+}
+.card--hero {
+  border-start-end-radius: 0;
+  --cut: 24px;
+}

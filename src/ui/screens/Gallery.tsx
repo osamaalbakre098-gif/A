@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   Button,
   ChoiceList,
+  Cluster,
   ContentCard,
   Dialog,
   EmptyState,
@@ -11,6 +12,7 @@ import {
   HintLadder,
   IconButton,
   ProgressArc,
+  Stack,
   Switch,
   TextArea,
   TextField,
@@ -42,50 +44,43 @@ export default function Gallery() {
   ];
 
   return (
-    <main
-      style={{
-        padding: 'var(--s-5)',
-        display: 'grid',
-        gap: 'var(--s-6)',
-        maxInlineSize: 900,
-        marginInline: 'auto',
-      }}
-    >
+    <Stack as="main" space="section" className="gallery">
       <h1>Bausteine</h1>
-      <div style={{ display: 'flex', gap: 'var(--s-2)', flexWrap: 'wrap' }}>
-        {['light', 'dark', 'contrast'].map((t) => (
-          <Button
-            key={t}
-            variant={theme === t ? 'primary' : 'secondary'}
-            onClick={() => setTheme(t)}
-          >
-            {t}
+      <Stack space="stack">
+        <Cluster>
+          {['light', 'dark', 'contrast'].map((t) => (
+            <Button
+              key={t}
+              variant={theme === t ? 'primary' : 'secondary'}
+              onClick={() => setTheme(t)}
+            >
+              {t}
+            </Button>
+          ))}
+          <Button variant="secondary" onClick={() => setDir(dir === 'ltr' ? 'rtl' : 'ltr')}>
+            {dir}
           </Button>
-        ))}
-        <Button variant="secondary" onClick={() => setDir(dir === 'ltr' ? 'rtl' : 'ltr')}>
-          {dir}
-        </Button>
-      </div>
+        </Cluster>
+        <div className="field">
+          <label className="field__label" htmlFor="g-scale">
+            Textgröße: <span className="tabular">{scale} %</span>
+          </label>
+          <input
+            id="g-scale"
+            type="range"
+            min={90}
+            max={200}
+            step={10}
+            value={scale}
+            onChange={(e) => setScale(Number(e.target.value))}
+            className="range"
+          />
+        </div>
+      </Stack>
 
-      <div className="field">
-        <label className="field__label" htmlFor="g-scale">
-          Textgröße: <span className="tabular">{scale} %</span>
-        </label>
-        <input
-          id="g-scale"
-          type="range"
-          min={90}
-          max={200}
-          step={10}
-          value={scale}
-          onChange={(e) => setScale(Number(e.target.value))}
-          style={{ inlineSize: '100%', minBlockSize: 44 }}
-        />
-      </div>
-
-      <section aria-labelledby="g-btn">
+      <Stack as="section" space="stack" aria-labelledby="g-btn">
         <h2 id="g-btn">Buttons</h2>
-        <div style={{ display: 'flex', gap: 'var(--s-2)', flexWrap: 'wrap' }}>
+        <Cluster>
           <Button>Primär</Button>
           <Button variant="secondary">Sekundär</Button>
           <Button variant="quiet">Ruhig</Button>
@@ -97,32 +92,34 @@ export default function Gallery() {
             label="Weiter"
             icon={<ChevronRight size={22} strokeWidth={1.75} className="flip-rtl" />}
           />
-        </div>
-      </section>
+        </Cluster>
+      </Stack>
 
-      <section aria-labelledby="g-fields">
+      <Stack as="section" space="stack" aria-labelledby="g-fields">
         <h2 id="g-fields">Eingabe</h2>
         <TextField label="Antwort" hint="Ein Wort genügt" />
         <TextField label="Mit Fehler" defaultValue="x" error="Bitte mindestens zwei Zeichen." />
         <TextArea label="Notiz" />
         <Switch label="Ruhiger Modus" checked={sw} onChange={setSw} />
         <Switch label="Deaktiviert" checked={false} onChange={() => {}} disabled />
-      </section>
+      </Stack>
 
-      <section aria-labelledby="g-cards">
+      <Stack as="section" space="section" aria-labelledby="g-cards">
         <h2 id="g-cards">Karten</h2>
         <ContentCard title="Jetzt lernen" hero accent="ocean">
           <p>8 Wiederholungen · Vektoraddition · ca. 35 Min.</p>
-          <Button>Los</Button>
+          <Cluster>
+            <Button>Los</Button>
+          </Cluster>
         </ContentCard>
         <Flashcard
           front="Was ist ein Vektor?"
           back="Eine Größe mit Betrag und Richtung."
           labels={{ answer: 'Deine Antwort', reveal: 'Aufdecken', dontKnow: 'Weiß ich nicht' }}
         />
-      </section>
+      </Stack>
 
-      <section aria-labelledby="g-practice">
+      <Stack as="section" space="stack" aria-labelledby="g-practice">
         <h2 id="g-practice">Üben</h2>
         <ChoiceList
           legend="Welche Rechenart gehört zu 3 + 4?"
@@ -141,18 +138,18 @@ export default function Gallery() {
           hints={['Was ist gegeben, was gesucht?', 'Welche Regel passt?', 'Der nächste Schritt…']}
           labels={{ next: 'Hinweis', title: 'Hinweise' }}
         />
-      </section>
+      </Stack>
 
-      <section aria-labelledby="g-prog">
+      <Stack as="section" space="stack" aria-labelledby="g-prog">
         <h2 id="g-prog">Zeit und Fortschritt</h2>
-        <div style={{ display: 'flex', gap: 'var(--s-5)', alignItems: 'center', flexWrap: 'wrap' }}>
+        <Cluster space="group">
           <Timer size={24} strokeWidth={1.75} aria-hidden="true" />
           <FocusCircle remainingSec={754} totalSec={1500} label="Verbleibende Zeit" />
           <ProgressArc done={2} total={4} label="Blöcke" />
-        </div>
-      </section>
+        </Cluster>
+      </Stack>
 
-      <section aria-labelledby="g-misc">
+      <Stack as="section" space="stack" aria-labelledby="g-misc">
         <h2 id="g-misc">Leerzustand und Dialog</h2>
         <EmptyState
           title="Alles für heute erledigt"
@@ -165,9 +162,11 @@ export default function Gallery() {
         />
         <Dialog open={dlg} onClose={() => setDlg(false)} title="Neue Version bereit">
           <p>Jetzt neu laden?</p>
-          <Button onClick={() => setDlg(false)}>Schließen</Button>
+          <Cluster>
+            <Button onClick={() => setDlg(false)}>Schließen</Button>
+          </Cluster>
         </Dialog>
-      </section>
-    </main>
+      </Stack>
+    </Stack>
   );
 }

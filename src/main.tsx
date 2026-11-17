@@ -13,11 +13,17 @@ initSettings();
 
 // Galerie nur in der Entwicklung erreichbar.
 const Gallery = import.meta.env.DEV ? lazy(() => import('./ui/screens/Gallery')) : null;
+const HeutePreview = import.meta.env.DEV ? lazy(() => import('./ui/screens/HeutePreview')) : null;
+const showHeute = import.meta.env.DEV && location.pathname === '/dev/heute';
 const showGallery = import.meta.env.DEV && location.pathname === '/dev/components';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {showGallery && Gallery ? (
+    {showHeute && HeutePreview ? (
+      <Suspense fallback={null}>
+        <HeutePreview />
+      </Suspense>
+    ) : showGallery && Gallery ? (
       <Suspense fallback={null}>
         <Gallery />
       </Suspense>

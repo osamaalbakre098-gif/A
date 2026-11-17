@@ -1,6 +1,17 @@
 {
-  "app": { "name": "مدار", "tagline": "المكان الذي لا يبقى لك فيه سوى أن تتعلّم." },
-  "nav": { "skipToContent": "انتقل إلى المحتوى", "settings": "الإعدادات" },
+  "app": {
+    "name": "مدار",
+    "tagline": "المكان الذي لا يبقى لك فيه سوى أن تتعلّم."
+  },
+  "nav": {
+    "skipToContent": "انتقل إلى المحتوى",
+    "settings": "الإعدادات",
+    "main": "التنقل الرئيسي",
+    "today": "اليوم",
+    "subjects": "المواد",
+    "progress": "التقدّم",
+    "search": "بحث"
+  },
   "settings": {
     "title": "الإعدادات",
     "language": "اللغة",
@@ -16,5 +27,37 @@
   "lichtung": {
     "greeting": "سعيد برؤيتك.",
     "dueToday": "{count, plural, =0 {لا شيء مستحق اليوم.} one {مراجعة واحدة مستحقة اليوم.} two {مراجعتان مستحقتان اليوم.} few {# مراجعات مستحقة اليوم.} many {# مراجعة مستحقة اليوم.} other {# مراجعة مستحقة اليوم.}}"
+  },
+  "heute": {
+    "greetingMorning": "صباح الخير",
+    "greetingDay": "مرحباً",
+    "greetingEvening": "مساء الخير",
+    "start": "ابدأ التعلّم الآن",
+    "planLine": "{reviews, plural, one {مراجعة واحدة} two {مراجعتان} other {# مراجعات}} · {topic} · {kind} · حوالي {minutes} دقيقة",
+    "kindPractice": "تمرين قصير",
+    "why": "لماذا؟",
+    "whyText": "هذه البطاقات مستحقة اليوم. مراجعتها الآن تساعدك على تذكّرها لفترة أطول.",
+    "sessionAlt": "جلسة اليوم في أربع مراحل: إحماء، أساس، تمرين، ختام.",
+    "resumeTitle": "تابع التعلّم",
+    "resumeText": "{topic}، المرحلة {done} من {total}",
+    "resumeCta": "تابع",
+    "reviewTitle": "راجع اليوم",
+    "reviewText": "{count, plural, one {بطاقة واحدة} two {بطاقتان} other {# بطاقات}} · حوالي {minutes} دقيقة",
+    "reviewCta": "ابدأ المراجعة",
+    "tomorrowTitle": "جاهز للغد",
+    "tomorrowCards": "غداً: {count, plural, one {بطاقة واحدة} two {بطاقتان} other {# بطاقات}} (حوالي {minutes} دقيقة)",
+    "examLine": "امتحان {subject}، {date}",
+    "examStatus": "{sits} راسخ، و{building} قيد التقدّم.",
+    "treeTitle": "شجرة مهاراتك",
+    "treeAlt": "شجرة مهارات {subject}: {sits} راسخة، {building} قيد التقدّم، {fresh} جديدة، {due} للتجديد.",
+    "treeCta": "عرض التقدّم",
+    "doneTitle": "أنجزت كل شيء لهذا اليوم",
+    "doneText": "غداً: {count, plural, one {بطاقة واحدة} two {بطاقتان} other {# بطاقات}} (حوالي {minutes} دقيقة).",
+    "doneAlt": "دائرة مغلقة: اكتمل اليوم.",
+    "emptyTitle": "ارفع مادتك الأولى",
+    "emptyText": "والباقي تخطّط له مدار.",
+    "emptyCta": "إضافة مادة",
+    "emptyAlt": "بطاقة ذات زاوية مقصوصة، ودائرة تدخل إليها.",
+    "go": "ابدأ"
   }
 }
