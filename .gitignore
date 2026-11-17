@@ -27,3 +27,4 @@ test-results
 playwright-report
 coverage
 dev-dist
+dist-static

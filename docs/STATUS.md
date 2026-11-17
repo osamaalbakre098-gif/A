@@ -33,3 +33,10 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 - Gebaut: i18next mit ICU-Pluralen, `de/en/ar.json` (nur wenige Schlüssel, aber alle drei Sprachen vollständig), Test auf fehlende Schlüssel, `dir`/`lang` am `<html>`, Lint-Prüfung gegen physische CSS-Eigenschaften (`pnpm lint`), Einstellungen (Sprache, Theme inkl. Hoher Kontrast, Textgröße 90–200 %, Bewegung reduzieren), Skip-Link, Landmarken, IBM Plex Sans Arabic lokal.
 - Noch offen (Meilenstein 2 laut Prompt): „Lernhilfen" (Ruhiger Modus, Lesehilfe/Vorlesen, Prüfung ohne Druck); echte Übersetzung aller künftigen Texte; Screenshot-Test ist nur ein Bild, kein automatischer Bildvergleich; Einstellungen liegen bis Schritt 3 in `localStorage`, danach in der Datenbank-Tabelle `settings`.
 - Nicht geprüft: Screenreader (VoiceOver), echtes iPhone.
+
+## Vorschau-Seiten für das echte Gerät
+- Galerie: https://claude.ai/artifact/AjLaRmMsBq1hgyJQmoa9y7 (privat; mit Textgrößen-Regler 90–200 %, Themes, Schreibrichtung).
+- App-Vorschau: https://claude.ai/artifact/CFj8uKBhtk3JjEbPDsJQqy (privat; Sprache, Erscheinungsbild, Textgröße).
+- Bauen: `pnpm build:static`, dann `scripts/to-artifact.ts` (macht aus der Einzeldatei ein Seiten-Fragment).
+- Grenzen: Das ist nur eine Ansicht. Installation auf den Home-Bildschirm, Offline-Betrieb, Service Worker und das Speichern in IndexedDB lassen sich so NICHT auf dem iPhone prüfen. Dafür braucht es eine eigene HTTPS-Adresse (Schritt 15 / Preview-Umgebung).
+- Befund des Nutzers zur Vergrößerung (echte Sehhilfe): steht noch aus, wird hier eingetragen.

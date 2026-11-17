@@ -23,12 +23,17 @@ export default function Gallery() {
   const [sw, setSw] = useState(true);
   const [choice, setChoice] = useState<string | null>(null);
   const [dlg, setDlg] = useState(false);
+  const [scale, setScale] = useState(100);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     document.documentElement.dir = dir;
     document.documentElement.lang = dir === 'rtl' ? 'ar' : 'de';
   }, [theme, dir]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--fs-base', `${(17 * scale) / 100}px`);
+  }, [scale]);
 
   const choices = [
     { id: 'a', text: 'Addition' },
@@ -60,6 +65,22 @@ export default function Gallery() {
         <Button variant="secondary" onClick={() => setDir(dir === 'ltr' ? 'rtl' : 'ltr')}>
           {dir}
         </Button>
+      </div>
+
+      <div className="field">
+        <label className="field__label" htmlFor="g-scale">
+          Textgröße: <span className="tabular">{scale} %</span>
+        </label>
+        <input
+          id="g-scale"
+          type="range"
+          min={90}
+          max={200}
+          step={10}
+          value={scale}
+          onChange={(e) => setScale(Number(e.target.value))}
+          style={{ inlineSize: '100%', minBlockSize: 44 }}
+        />
       </div>
 
       <section aria-labelledby="g-btn">
