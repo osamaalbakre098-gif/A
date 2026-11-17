@@ -35,6 +35,7 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 - Nicht geprüft: Screenreader (VoiceOver), echtes iPhone.
 
 ## Vorschau-Seiten für das echte Gerät
+
 - Galerie: https://claude.ai/artifact/AjLaRmMsBq1hgyJQmoa9y7 (privat; mit Textgrößen-Regler 90–200 %, Themes, Schreibrichtung).
 - App-Vorschau: https://claude.ai/artifact/CFj8uKBhtk3JjEbPDsJQqy (privat; Sprache, Erscheinungsbild, Textgröße).
 - Bauen: `pnpm build:static`, dann `scripts/to-artifact.ts` (macht aus der Einzeldatei ein Seiten-Fragment).

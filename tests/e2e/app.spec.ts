@@ -24,6 +24,7 @@ test('Textgröße 200 % bricht bei 320 px nicht (kein horizontales Scrollen)', a
 
 test('Tastatur: Skip-Link und Einstellungen erreichbar, Fokus sichtbar', async ({ page }) => {
   await page.goto('/');
+  await page.getByRole('heading', { name: 'Madar', level: 1 }).waitFor();
   await page.keyboard.press('Tab');
   await expect(page.getByText('Zum Inhalt springen')).toBeFocused();
   await page.keyboard.press('Enter');
