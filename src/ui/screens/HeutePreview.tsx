@@ -8,6 +8,7 @@ import SettingsPanel from './SettingsPanel';
 const BASE: Omit<TodayData, 'state'> = {
   hour: 9,
   reviews: 8,
+  progress: { done: 3, total: 8 },
   topic: 'Vektoraddition',
   minutes: 35,
   resume: { topic: 'Vektoraddition', done: 2, total: 4 },

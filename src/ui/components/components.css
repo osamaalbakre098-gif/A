@@ -220,31 +220,17 @@ select.input {
 }
 
 /* ---------- Karten ---------- */
-/* Der Schatten liegt auf dem Wrapper, weil clip-path den eigenen Schatten abschneiden würde. */
-.card-shadow {
-  filter: drop-shadow(0 1px 1px rgb(16 24 40 / 0.04)) drop-shadow(0 6px 16px rgb(16 24 40 / 0.07));
-}
-[data-theme='dark'] .card-shadow,
-[data-theme='contrast'] .card-shadow {
-  filter: none;
-}
 .card {
   position: relative;
   background: var(--surface);
   border: var(--card-bw) solid var(--border);
   padding: var(--space-card);
   border-radius: var(--r-lg);
-  border-start-end-radius: 0;
-  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
-}
-[dir='rtl'] .card {
-  clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%, 0 var(--cut));
+  box-shadow: var(--shadow-1);
 }
 .card--hero {
-  --cut: 28px;
   padding: var(--s-6);
   border-radius: var(--r-xl);
-  border-start-end-radius: 0;
 }
 .card__title {
   margin: 0;
@@ -473,11 +459,17 @@ select.input {
   animation: none;
 }
 
-/* Hoher Kontrast: keine Schnittecke, damit der kräftige Rahmen rundum geschlossen bleibt */
-[data-theme='contrast'] .card {
-  clip-path: none;
-  border-start-end-radius: var(--r-lg);
+.segbar {
+  display: flex;
+  gap: var(--s-1);
+  inline-size: 100%;
 }
-[data-theme='contrast'] .card--hero {
-  border-start-end-radius: var(--r-xl);
+.segbar__seg {
+  flex: 1;
+  block-size: 8px;
+  border-radius: var(--r-pill);
+  background: var(--arc-off);
+}
+.segbar__seg--on {
+  background: var(--primary);
 }

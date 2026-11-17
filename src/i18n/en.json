@@ -37,7 +37,6 @@
     "kindPractice": "short practice",
     "why": "Why?",
     "whyText": "These cards are due today. Reviewing them now helps you remember them longer.",
-    "sessionAlt": "Today's session in four blocks: warm-up, core, practice, wrap-up.",
     "resumeTitle": "Continue",
     "resumeText": "{topic}, block {done} of {total}",
     "resumeCta": "Continue",
@@ -58,6 +57,7 @@
     "emptyText": "Madar plans the rest.",
     "emptyCta": "Add material",
     "emptyAlt": "A card with a cut corner. A circle leads into it.",
-    "go": "Start"
+    "go": "Start",
+    "progress": "{done} of {total} done"
   }
 }

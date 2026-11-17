@@ -9,34 +9,6 @@ interface MotifProps {
 
 const CARD_CUT = 'M8 8 H 62 L 80 26 V 72 H 8 Z';
 
-/** Sitzung als Bogen aus vier Blöcken, der erste ist gefüllt. */
-export function SessionMotif({ label, size = 120 }: MotifProps) {
-  const seg = 38;
-  const gap = 8;
-  const pt = (deg: number) => {
-    const a = (Math.PI * (180 + deg)) / 180;
-    return `${60 + 46 * Math.cos(a)} ${64 + 46 * Math.sin(a)}`;
-  };
-  return (
-    <svg viewBox="0 0 120 72" width={size} role="img" aria-label={label} focusable="false">
-      {[0, 1, 2, 3].map((i) => {
-        const s = i * (seg + gap) + 3;
-        return (
-          <path
-            key={i}
-            d={`M ${pt(s)} A 46 46 0 0 1 ${pt(s + seg)}`}
-            fill="none"
-            strokeWidth="8"
-            strokeLinecap="round"
-            stroke={i === 0 ? 'var(--primary)' : 'var(--arc-off)'}
-          />
-        );
-      })}
-      <circle cx="60" cy="58" r="6" fill="var(--primary)" />
-    </svg>
-  );
-}
-
 /** Geschlossener Kreis: der Tag ist rund. */
 export function DoneMotif({ label, size = 96 }: MotifProps) {
   return (

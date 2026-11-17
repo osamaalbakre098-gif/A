@@ -22,14 +22,14 @@
   --border: #7a7a85;
   --border-soft: #d8d8de;
   --line: #d8d8de;
-  --field-border: #c0c0c8;
+  --field-border: #84848a;
   --field-bw: 1px;
   --card-bw: 0px;
   --btn2-border: transparent;
   --btn2-bw: 0px;
   --tint: color-mix(in srgb, var(--primary) 12%, var(--surface));
   --tint-strong: color-mix(in srgb, var(--primary) 18%, var(--surface));
-  --track-off: #bcbcc4;
+  --track-off: #84848a;
   --thumb-off: #ffffff;
   --glass: color-mix(in srgb, var(--surface) 86%, transparent);
   --arc-off: #d8d8de;
@@ -55,7 +55,6 @@
   --r-lg: 24px;
   --r-xl: 32px;
   --r-pill: 999px;
-  --cut: 16px;
 
   /* Abstände (4er-Raster) */
   --s-1: 4px;
@@ -116,8 +115,8 @@
   --border: #6f7680;
   --border-soft: #2e333a;
   --line: #2e333a;
-  --field-border: #3d434b;
-  --track-off: #3a3f47;
+  --field-border: #72757a;
+  --track-off: #72757a;
   --arc-off: #3a3f47;
   --thumb-off: #e8e6e1;
   --tint: color-mix(in srgb, var(--primary) 16%, var(--surface));

@@ -127,3 +127,14 @@ export function Dialog({
     </dialog>
   );
 }
+
+/** Fortschritt in Schritten („3 von 8"), nie als Prozentzahl. Der Text steht daneben, die Leiste ist nur Anschauung. */
+export function SegmentBar({ done, total, label }: { done: number; total: number; label: string }) {
+  return (
+    <div className="segbar" role="img" aria-label={label}>
+      {Array.from({ length: total }, (_, i) => (
+        <span key={i} className={i < done ? 'segbar__seg segbar__seg--on' : 'segbar__seg'} />
+      ))}
+    </div>
+  );
+}

@@ -51,13 +51,23 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 - Offen: Datenanbindung (nur Beispieldaten, Studienleiter folgt in Schritt 9); Navigation führt noch nirgends hin; im Prompt heißt die Startseite Lichtung, im Entwurf Heute (auf Wunsch des Nutzers); Befund des Nutzers zum Layout steht aus.
 
 ## Optik-Überarbeitung (nach Nutzer-Feedback „weit weg von Apple-Niveau")
+
 - Geändert wurden nur Tokens und Komponenten-Stil (plus Icon-Wrapper, Karten-Wrapper für den Schatten und Nav-Markup), keine Logik, keine Tests.
 - Standard (Hell/Dunkel): gefüllte Flächen, feine Linien, weiche Schatten statt kräftiger Rahmen; Hoher Kontrast behält kräftige 2-px-Rahmen, keine Schatten, keine Transparenz (und keine Schnittecke, damit der Rahmen geschlossen bleibt).
 - Textstufen: Großer Titel 36 px, Titel 24, Überschrift 20, Fließtext 17, Hinweis 13 (alle in rem, skalieren mit der App-Textgröße), Zeilenabstand 1,65, größere Abstände (Sektionen 48 px). Schrift: Systemschrift auf Apple-Geräten, sonst Inter.
 - Icon-Knöpfe: rund, 48 px (mindestens 44), eine Icon-Familie (Lucide, Strich 1,75), Icon-Baustein `Icon`.
 - Untere Navigation: aktiver Punkt mit getöntem Icon in Pille plus fetter Beschriftung, leicht transparent mit Unschärfe (im Hohen Kontrast deckend), Safe-Area unten und seitlich (`viewport-fit=cover` in `index.html`).
 - Übergänge: 120/200/320 ms über Tokens, Bildschirm- und Zustandswechsel blenden weich ein; bei „Bewegung reduzieren" (App-Schalter oder Systemeinstellung) sind alle Übergänge 0 ms.
-- Karten: Radius 24 (Hauptkarte 32), weicher Schatten, Fachfarbe als kleiner Punkt statt Seitenstreifen, eine Hauptaktion pro Karte (Hauptkarte gefüllt, übrige getönt).
+- Karten: Radius 24 (Hauptkarte 32), weicher Schatten, Fachfarbe als kleiner Punkt statt Seitenstreifen (Schnittecke inzwischen entfernt), eine Hauptaktion pro Karte (Hauptkarte gefüllt, übrige getönt).
 - Geprüft: Kontrasttest (neue Tönungs-Paare ergänzt), axe in 3 Themes x LTR/RTL, 320/400 px mit 200 % Text, 28 Browser-Tests, 17 Unit-Tests: alle grün.
-- Bekannte Einschränkung (bitte beachten): In Hell/Dunkel sind Feldumrisse, Auswahlzeilen und der ausgeschaltete Schalter bewusst dezent (unter 3:1 zur Umgebung, WCAG 1.4.11 „Nicht-Text-Kontrast" ist dort nur über Füllung, Fokusring und Zustandsanzeige abgedeckt). Wer klare Umrisse braucht, nutzt „Hoher Kontrast". Der Kontrasttest prüft diese dezenten Linien nicht.
+- (Überholt, siehe Abschnitt Korrekturen nach Nutzer-Feedback, Runde 2): Die zunächst dezenten Umrisse wurden auf mindestens 3:1 angehoben.
 - Nicht geprüft: echtes iPhone (Unschärfe, Safe-Area, Systemschrift), VoiceOver, Befund des Nutzers zur neuen Optik.
+
+## Korrekturen nach Nutzer-Feedback (Runde 2)
+1. Schnittecke entfernt: alle Karten haben eine einfache, gleichmäßige Rundung (Radius 24, Hauptkarte 32), in allen Themes.
+2. Hoher Kontrast: Rahmen oben rechts war unterbrochen, weil `clip-path` (Schnittecke) den Rahmen abschnitt. Mit der Schnittecke ist die Ursache weg. Neuer Test `tests/e2e/corners.spec.ts` liest Pixel an allen vier Ecken jeder Karte (Kante nahe der Ecke zweimal und Mitte des Bogens, deutsch und arabisch). Gegenprobe gemacht: Mit absichtlich fehlendem oberen Rahmen schlägt er an. Zusätzlich prüft er in Hell/Dunkel: keine `clip-path`, vier gleiche Rundungen. Hinweis: Meine frühere Aussage „behoben" stimmte nicht; ich hatte sie nicht per Test geprüft.
+3. Hauptkarte: sinnloser Bogen entfernt. Stattdessen Segmentleiste mit Text „3 von 8 erledigt" (kein Prozentwert). „Warum?" ist ein getönter Button (48 px hoch) mit `aria-expanded`.
+4. Umrisse (Felder, Auswahlzeilen, ausgeschalteter Schalter) in Hell `#84848a`, Dunkel `#72757a`: mindestens 3:1 gegen Hintergrund, Fläche und Tönungsfläche. Der Kontrasttest (`pnpm a11y:contrast`) prüft sie jetzt in allen drei Themes (im Hohen Kontrast hat der Schalter einen schwarzen Rahmen).
+- Geprüft: Kontrasttest, Lint, Typecheck, 17 Unit-Tests, 32 Browser-Tests (inkl. axe 3 Themes x LTR/RTL, 320/400 px mit 200 % Text, Ecken-Test).
+- Nicht geprüft: echtes iPhone; Screenshot-Vergleich nur als Pixel-Stichproben, kein visueller Gesamtvergleich; Befund des Nutzers zur Optik nach dieser Runde.
+- Weitere Optik-Arbeit laut Nutzer pro Bildschirm, sobald echte Bildschirme existieren.

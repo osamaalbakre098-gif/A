@@ -31,6 +31,17 @@ for (const [name, t] of Object.entries(themes)) {
     [t.text, mixHex(t.primary, t.surface, name === 'dark' ? 0.24 : 0.18), TEXT],
     [t.border, t.bg, UI],
     [t.border, t.surface, UI],
+    // Umrisse von Feldern, Auswahlzeilen, Schalter (alle Flächen, auf denen sie vorkommen)
+    [t.fieldBorder, t.bg, UI],
+    [t.fieldBorder, t.surface, UI],
+    [t.fieldBorder, t.surface2, UI],
+    ...(name === 'contrast'
+      ? []
+      : ([
+          [t.trackOff, t.bg, UI],
+          [t.trackOff, t.surface, UI],
+          [t.trackOff, t.surface2, UI],
+        ] as [string, string, number][])),
     [t.focus, t.bg, UI],
     [t.focus, t.surface, UI],
   ];

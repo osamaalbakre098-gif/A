@@ -37,7 +37,6 @@
     "kindPractice": "kurze Übung",
     "why": "Warum?",
     "whyText": "Diese Karten sind heute fällig. Wenn du sie jetzt wiederholst, bleiben sie besser im Gedächtnis.",
-    "sessionAlt": "Heutige Sitzung in vier Blöcken: Aufwärmen, Kern, Üben, Abschluss.",
     "resumeTitle": "Weiterlernen",
     "resumeText": "{topic}, Block {done} von {total}",
     "resumeCta": "Weitermachen",
@@ -58,6 +57,7 @@
     "emptyText": "Den Rest plant Madar.",
     "emptyCta": "Material hinzufügen",
     "emptyAlt": "Eine Karte mit abgeschnittener Ecke. Ein Kreis führt hinein.",
-    "go": "Starten"
+    "go": "Starten",
+    "progress": "{done} von {total} erledigt"
   }
 }

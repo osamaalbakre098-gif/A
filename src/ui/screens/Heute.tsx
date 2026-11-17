@@ -1,3 +1,5 @@
+import { CircleHelp } from 'lucide-react';
+import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -6,7 +8,8 @@ import {
   DoneMotif,
   EmptyMotif,
   ProgressArc,
-  SessionMotif,
+  SegmentBar,
+  Icon,
   Stack,
   TreeMotif,
   type SkillState,
@@ -17,6 +20,8 @@ export interface TodayData {
   /** Stunde 0–23, kommt von außen (kein Date.now im Bildschirm). */
   hour: number;
   reviews: number;
+  /** Heutiger Fortschritt in Schritten, z. B. 3 von 8 */
+  progress: { done: number; total: number };
   topic: string;
   minutes: number;
   resume: { topic: string; done: number; total: number };
@@ -38,6 +43,8 @@ function greetingKey(hour: number) {
 /** Startseite „Heute": eine große Hauptaktion, darunter ruhig drei kleine Bereiche. */
 export default function Heute({ data }: { data: TodayData }) {
   const { t } = useTranslation();
+  const [whyOpen, setWhyOpen] = useState(false);
+  const whyId = useId();
   const count = (s: SkillState) => data.tree.nodes.filter((n) => n === s).length;
 
   if (data.state === 'empty') {
@@ -62,25 +69,42 @@ export default function Heute({ data }: { data: TodayData }) {
 
       {data.state === 'plan' ? (
         <ContentCard hero accent="ocean">
-          <Cluster space="group" className="heute__hero">
-            <SessionMotif label={t('heute.sessionAlt')} />
-            <Stack space="stack" className="heute__hero-text">
-              <h2 className="card__title">{t('heute.start')}</h2>
-              <p>
-                {t('heute.planLine', {
-                  reviews: data.reviews,
-                  topic: data.topic,
-                  kind: t('heute.kindPractice'),
-                  minutes: data.minutes,
-                })}
-              </p>
-            </Stack>
-          </Cluster>
+          <Stack space="tight">
+            <h2 className="card__title">{t('heute.start')}</h2>
+            <p>
+              {t('heute.planLine', {
+                reviews: data.reviews,
+                topic: data.topic,
+                kind: t('heute.kindPractice'),
+                minutes: data.minutes,
+              })}
+            </p>
+          </Stack>
+          <Stack space="tight">
+            <SegmentBar
+              done={data.progress.done}
+              total={data.progress.total}
+              label={t('heute.progress', data.progress)}
+            />
+            <p className="t-note">{t('heute.progress', data.progress)}</p>
+          </Stack>
           <Button className="heute__cta">{t('heute.go')}</Button>
-          <details className="why">
-            <summary>{t('heute.why')}</summary>
-            <p>{t('heute.whyText')}</p>
-          </details>
+          <Cluster>
+            <Button
+              variant="secondary"
+              aria-expanded={whyOpen}
+              aria-controls={whyId}
+              onClick={() => setWhyOpen(!whyOpen)}
+            >
+              <Icon as={CircleHelp} size={20} />
+              {t('heute.why')}
+            </Button>
+          </Cluster>
+          {whyOpen && (
+            <p id={whyId} className="why-text">
+              {t('heute.whyText')}
+            </p>
+          )}
         </ContentCard>
       ) : (
         <Stack space="stack" className="heute__empty">

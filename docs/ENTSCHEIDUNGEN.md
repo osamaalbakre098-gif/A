@@ -26,8 +26,8 @@
 
 **Optik per Tokens.** Farben, Schatten, Radien, Textstufen und Bewegung stehen zentral in `tokens.css`; Bausteine lesen nur diese Variablen. Hoher Kontrast überschreibt sie mit kräftigen Rahmen, ohne Schatten und ohne Transparenz.
 
-**Dezente Umrisse in Hell/Dunkel sind eine bewusste Abwägung.** Der Nutzer wünscht gefüllte Flächen statt Rahmen. Das senkt den Nicht-Text-Kontrast der Feldumrisse unter 3:1. Ausgleich: sichtbarer Fokusring, Füllung, Hoher Kontrast als vollwertiges Theme.
+**Umrisse mindestens 3:1.** Wegen der Sehbehinderung des Nutzers haben Felder, Auswahlzeilen und der ausgeschaltete Schalter in Hell und Dunkel ein feines, aber ausreichend dunkles Grau (`--field-border`, `--track-off`); der Kontrasttest prüft sie.
 
-**Schatten auf Wrapper.** `clip-path` (Schnittecke) würde Schatten abschneiden; der Schatten liegt deshalb auf einem Wrapper (`drop-shadow`). Im Hohen Kontrast entfällt die Schnittecke.
+**Keine Schnittecke mehr.** Der Nutzer empfand sie als Darstellungsfehler; sie hatte außerdem im Hohen Kontrast den Rahmen unterbrochen. Karten sind einfach gerundet. (Die „Karte mit abgeschnittener Ecke" aus dem Prompt entfällt damit auf Wunsch des Nutzers; die Motive Kreis und Bogen bleiben.)
 
 **Bewegung reduzieren = 0 ms.** Auf Wunsch des Nutzers werden Übergänge dabei ganz abgeschaltet (der Prompt erlaubt Überblendungen bis 120 ms; 0 ms ist strenger und damit zulässig).

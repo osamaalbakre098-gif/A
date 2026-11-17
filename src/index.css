@@ -199,3 +199,12 @@ input[type='range'] {
   font-weight: 600;
   font-size: var(--fs-2);
 }
+
+.why-text {
+  background: var(--tint);
+  border-radius: var(--r-md);
+  padding: var(--s-4);
+}
+.heute__cta {
+  inline-size: 100%;
+}

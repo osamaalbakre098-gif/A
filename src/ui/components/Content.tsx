@@ -14,17 +14,15 @@ export function ContentCard({
   children: ReactNode;
 }) {
   return (
-    <div
-      className="card-shadow"
+    <section
+      className={`card${hero ? ' card--hero' : ''}`}
       style={accent ? ({ '--card-accent': `var(--subj-${accent})` } as CSSProperties) : undefined}
     >
-      <section className={`card${hero ? ' card--hero' : ''}`}>
-        <Stack space="group">
-          {title && <h2 className="card__title">{title}</h2>}
-          {children}
-        </Stack>
-      </section>
-    </div>
+      <Stack space="group">
+        {title && <h2 className="card__title">{title}</h2>}
+        {children}
+      </Stack>
+    </section>
   );
 }
 
