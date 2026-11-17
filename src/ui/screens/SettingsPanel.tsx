@@ -17,15 +17,21 @@ const THEME_KEY: Record<ThemeChoice, string> = {
   contrast: 'settings.themeContrast',
 };
 
-export default function SettingsPanel() {
+export default function SettingsPanel({ hideTitle = false }: { hideTitle?: boolean }) {
   const { t } = useTranslation();
   const s = useSettings();
   const langId = useId();
   const themeId = useId();
   const sizeId = useId();
   return (
-    <Stack as="section" space="group" aria-labelledby="settings-title" className="settings">
-      <h2 id="settings-title">{t('settings.title')}</h2>
+    <Stack
+      as="section"
+      space="group"
+      aria-labelledby={hideTitle ? undefined : 'settings-title'}
+      aria-label={hideTitle ? t('settings.title') : undefined}
+      className="settings"
+    >
+      {!hideTitle && <h2 id="settings-title">{t('settings.title')}</h2>}
       <div className="field">
         <label className="field__label" htmlFor={langId}>
           {t('settings.language')}

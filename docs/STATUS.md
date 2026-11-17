@@ -75,6 +75,7 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 - Weitere Optik-Arbeit laut Nutzer pro Bildschirm, sobald echte Bildschirme existieren.
 
 ## Schritt 3 – Datenbank, Ereignisprotokoll, Datensicherheit
+
 - Gebaut: alle 18 Tabellen aus Prompt 3.2 plus `blobs` (Dexie, Zod-Schemas), Migrationsregister mit Version 1, automatische JSON-Sicherung vor jeder Migration (eigene Datenbank `madar-backups`, letzte 3 bleiben), Wiederherstellung aus Sicherung, Export als ZIP und Import (eine Transaktion, vorher Prüfung und Sicherung des Bestands), Speicherprüfung (`navigator.storage.estimate`, Hinweis unter 15 % frei), Fehlerabbildung für „Speicher voll", unveränderliches Ereignisprotokoll mit Zwischenständen (Snapshots), Anfrage nach dauerhaftem Speicher (`storage.persist()`), iPhone-Erkennung, Oberfläche „Deine Daten" (Speicherstatus, bebilderte Anleitung „Zum Home-Bildschirm", Export/Import, Sicherungen, Speicher-Selbsttest), Einstellungen werden zusätzlich in `settings` geschrieben.
 - Migrationstests (Fixture `tests/fixtures/db-v1.json`, alle Tabellen, echte Datei): v1 → simuliertes v2 verliert keinen Datensatz (Anzahl und Inhalts-Hash je Tabelle gleich, Datei-Prüfsumme gleich); Sicherung vorher; höchstens 3 Sicherungen; fehlgeschlagene Migration lässt Version 1 unverändert; Daten einer neueren App werden nie angefasst; Wiederherstellung funktioniert.
 - Export/Import: Rundlauf Export → Import → Export ist byteidentisch (bis auf den Zeitstempel im Manifest); defekte/abgeschnittene Datei, falsche Prüfsumme, Schema-Fehler, fehlende Originaldatei, neuere Version, zu wenig Platz: Import lehnt ab und ändert nichts; Fehler mitten im Schreiben (Index-Verletzung) wird zurückgerollt.
@@ -87,3 +88,10 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
   - Sicherungen enthalten keine Dateiinhalte (nur Prüfsummen); Migrationen fassen die Tabelle `blobs` nie an.
   - Ein Import ersetzt den gesamten Bestand (nicht zusammenführen); der alte Stand liegt als Sicherung vor.
   - Platzhalter: Startgröße des Haupt-Bundles seit Dexie/Zod geprüft erst in Schritt 12 (Budget 170 KB gzip).
+
+## Hosting vorgezogen (Cloudflare Pages)
+- Repo ist bereit: PWA mit Icons (192/512/maskable/Apple), Manifest, Service Worker (Schriften inklusive), Update-Hinweis ohne automatischen Neustart, Offline-Hinweis, `public/_headers` (Cache und Sicherheits-Header), `.node-version`, Build-Kennung in den Einstellungen, `docs/BETRIEB.md` mit Klickfolge, Rollback und iPhone-Checkliste.
+- Die echte App hat jetzt Seiten über Hash-Routing: Heute (mit Beispieldaten, als solche gekennzeichnet), Einstellungen, Deine Daten, Platzhalter für Fächer/Fortschritt/Suche.
+- Getestet (Chromium, gebaute App): Manifest und Icons erreichbar, **Offline-Betrieb nach dem ersten Laden im Flugmodus inkl. Speicher-Selbsttest**, Einstellungen bleiben nach Neuladen und liegen in der Datenbank. Start-Bundle 112 KB gzip (Budget 170 KB).
+- **Noch nicht ausgeliefert:** Von der Cloud-Umgebung aus ist `api.cloudflare.com` gesperrt; die Einrichtung macht der Nutzer in der Cloudflare-Oberfläche (Git-Anbindung, siehe BETRIEB.md). Es gibt noch keine Adresse.
+- Nicht geprüft: Safari/iPhone (Installation, Offline, `persist()`), Verhalten der Header auf Cloudflare, Content-Security-Policy (fehlt noch, kommt mit PDF-Leser in Schritt 4/13).

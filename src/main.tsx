@@ -4,12 +4,14 @@ import '@fontsource-variable/inter';
 import '@fontsource/ibm-plex-sans-arabic/400.css';
 import '@fontsource/ibm-plex-sans-arabic/600.css';
 import './i18n';
+import { setupPwa } from './pwa/pwa';
 import { initSettings } from './ui/settings/settings';
 import './ui/tokens/tokens.css';
 import './index.css';
 import App from './App.tsx';
 
 initSettings();
+void setupPwa();
 
 // Galerie nur in der Entwicklung erreichbar.
 const Gallery = import.meta.env.DEV ? lazy(() => import('./ui/screens/Gallery')) : null;

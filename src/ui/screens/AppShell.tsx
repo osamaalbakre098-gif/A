@@ -1,4 +1,4 @@
-import { House, Library, Search, Sprout } from 'lucide-react';
+import { CircleUser, House, Library, Search, Sprout } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon as NavIcon } from '../components';
@@ -13,14 +13,41 @@ const ITEMS: { id: NavId; icon: typeof House }[] = [
 ];
 
 /** Rahmen: Handy = Navigation unten, ab 1024 px links. Vier Punkte, immer mit Beschriftung. */
-export function AppShell({ active, children }: { active: NavId; children: ReactNode }) {
+export function AppShell({
+  active,
+  children,
+  banner,
+}: {
+  active: NavId | null;
+  children: ReactNode;
+  banner?: ReactNode;
+}) {
   const { t } = useTranslation();
   return (
     <div className="shell">
-      <a className="skip-link" href="#main">
+      <a
+        className="skip-link"
+        href="#main"
+        onClick={(e) => {
+          // Kein Adresswechsel (die Adresse steuert die Seite), nur Fokus auf den Inhalt.
+          e.preventDefault();
+          document.getElementById('main')?.focus();
+        }}
+      >
         {t('nav.skipToContent')}
       </a>
       <main id="main" tabIndex={-1} className="shell__main">
+        <div className="shell__top">
+          <a
+            className="iconbtn"
+            href="#settings"
+            aria-label={t('nav.settings')}
+            title={t('nav.settings')}
+          >
+            <NavIcon as={CircleUser} />
+          </a>
+        </div>
+        {banner}
         {children}
       </main>
       <nav aria-label={t('nav.main')} className="shell__nav">

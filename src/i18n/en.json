@@ -1,7 +1,10 @@
 {
   "app": {
     "name": "Madar",
-    "tagline": "The place where all you have to do is learn."
+    "tagline": "The place where all you have to do is learn.",
+    "comingSoonTitle": "Coming later",
+    "comingSoonText": "This area is built in a later step.",
+    "demoNote": "Sample data: this is how the home page will look. No real learning data yet."
   },
   "nav": {
     "skipToContent": "Skip to content",
@@ -22,7 +25,9 @@
     "themeContrast": "High contrast",
     "textSize": "Text size",
     "textSizeValue": "{percent, number}%",
-    "reducedMotion": "Reduce motion"
+    "reducedMotion": "Reduce motion",
+    "dataLink": "Your data: backup, storage, installation",
+    "version": "Version {id}"
   },
   "lichtung": {
     "greeting": "Good to see you.",
@@ -110,5 +115,11 @@
     "errorDB_TOO_NEW": "The stored data comes from a newer version. Please update the app.",
     "errorEVENTS_IMMUTABLE": "Events cannot be changed.",
     "errorUnknown": "Something went wrong. Nothing was changed."
+  },
+  "pwa": {
+    "updateReady": "New version ready.",
+    "reload": "Reload now",
+    "offlineReady": "Madar now also works without internet.",
+    "ok": "OK"
   }
 }

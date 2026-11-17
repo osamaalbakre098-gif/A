@@ -1,25 +1,11 @@
 import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppShell } from './AppShell';
+import { DEMO_TODAY } from './demoData';
 import Heute, { type TodayData } from './Heute';
 import SettingsPanel from './SettingsPanel';
 
-/** Beispieldaten – nur zur Ansicht, kommen nicht aus der Datenbank. */
-const BASE: Omit<TodayData, 'state'> = {
-  hour: 9,
-  reviews: 8,
-  progress: { done: 3, total: 8 },
-  topic: 'Vektoraddition',
-  minutes: 35,
-  resume: { topic: 'Vektoraddition', done: 2, total: 4 },
-  review: { count: 12, minutes: 9 },
-  tomorrow: {
-    count: 8,
-    minutes: 6,
-    exam: { subject: 'Physik', date: 'Fr., 22.11.', sits: 'Vektoren', building: 'Kräfte' },
-  },
-  tree: { subject: 'Physik', nodes: ['sits', 'sits', 'building', 'building', 'refresh', 'new'] },
-};
+const BASE = DEMO_TODAY;
 
 const STATES: { id: TodayData['state']; label: string }[] = [
   { id: 'plan', label: 'Es gibt einen Plan' },

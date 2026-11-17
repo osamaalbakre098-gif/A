@@ -8,11 +8,12 @@ const launchOptions = existsSync(localChromium) ? { executablePath: localChromiu
 export default defineConfig({
   testDir: 'tests/e2e',
   use: { baseURL: 'http://localhost:4173', trace: 'off' },
-  webServer: {
-    command: 'pnpm build && pnpm preview --port 4173',
-    port: 4173,
-    reuseExistingServer: true,
-  },
+  // Zwei Server: die gebaute App (Port 4173: echter Service Worker, Offline-Tests) und der Dev-Server
+  // (Port 5173: Galerie und Entwurfsseiten unter /dev/...).
+  webServer: [
+    { command: 'pnpm build && pnpm preview --port 4173', port: 4173, reuseExistingServer: true },
+    { command: 'pnpm dev --port 5173 --strictPort', port: 5173, reuseExistingServer: true },
+  ],
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'], launchOptions } },
     { name: 'webkit-iphone', use: { ...devices['iPhone 14'] } },

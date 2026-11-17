@@ -51,3 +51,13 @@
 **Einstellungen:** `localStorage` bleibt die schnelle Quelle (synchron beim Start), die Datenbank-Tabelle `settings` wird mitgeschrieben (landet im Export) und dient als Rückfall, wenn `localStorage` fehlt.
 
 **Testwerkzeug:** Die Test-IndexedDB (`fake-indexeddb`) muss vor Dexie geladen werden (Setup-Datei). Browser-Tests mit Dateien: Playwright setzt Dateien mit Nicht-ASCII-Zeichen im Pfad still nicht, deshalb ASCII-Temp-Pfade.
+
+**Hosting über Cloudflare-Git-Anbindung statt Upload.** Die Cloud-Umgebung erreicht `api.cloudflare.com` nicht (Proxy), ich kann nicht selbst ausliefern. Cloudflare baut deshalb direkt aus GitHub bei jedem Push. Vorteil: keine Schlüssel bei mir, keine Handarbeit pro Version. Production-Branch ist vorerst mein Arbeitszweig, weil es keinen `main` gibt. Später: `main` anlegen (nur mit Freigabe) und die Test-Umgebung (Preview) davon trennen (Schritt 15).
+
+**Hash-Routing (`#today`, `#data`, …).** Funktioniert ohne Server-Regeln, offline und mit dem Service Worker; reicht für Version 1. Beim Seitenwechsel wandert der Fokus auf den Inhalt (nicht beim ersten Laden).
+
+**Service Worker: Aktualisierung nur auf Klick** (`registerType: 'prompt'`), Schriften und Bilder werden mit vorab gespeichert, nicht benötigte Schriftschnitte (kyrillisch, griechisch, vietnamesisch) nicht.
+
+**Datenbank und ZIP-Code werden erst bei Bedarf geladen** (Start-Bundle von 181 auf 112 KB gzip).
+
+**Beispieldaten in der echten App** sind ausdrücklich gekennzeichnet („Beispieldaten … Noch keine echten Lerndaten"), bis der Studienleiter echte Pläne liefert.

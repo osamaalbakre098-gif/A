@@ -1,8 +1,3 @@
-main {
-  padding: var(--s-5);
-  max-inline-size: var(--measure);
-  margin-inline: auto;
-}
 .app-header {
   padding: var(--s-4) var(--s-5) 0;
   max-inline-size: var(--measure);
@@ -235,4 +230,32 @@ input[type='range'] {
 [data-theme='contrast'] .msg {
   background: var(--surface);
   border: 2px solid var(--border);
+}
+
+.shell__top {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-end: var(--s-2);
+}
+a.iconbtn {
+  color: var(--text);
+  text-decoration: none;
+}
+a.btn {
+  text-decoration: none;
+}
+.pwa-banner {
+  display: grid;
+  gap: var(--s-3);
+  background: var(--tint);
+  border-radius: var(--r-lg);
+  padding: var(--s-4) var(--s-5);
+  margin-block-end: var(--s-5);
+}
+[data-theme='contrast'] .pwa-banner {
+  background: var(--surface);
+  border: 2px solid var(--border);
+}
+.demo-note {
+  padding-block-start: var(--s-1);
 }
