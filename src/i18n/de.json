@@ -1,0 +1,20 @@
+{
+  "app": { "name": "Madar", "tagline": "Der Lernort, an dem du nur noch lernen musst." },
+  "nav": { "skipToContent": "Zum Inhalt springen", "settings": "Einstellungen" },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "theme": "Erscheinungsbild",
+    "themeSystem": "System",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel",
+    "themeContrast": "Hoher Kontrast",
+    "textSize": "Textgröße",
+    "textSizeValue": "{percent, number} %",
+    "reducedMotion": "Bewegung reduzieren"
+  },
+  "lichtung": {
+    "greeting": "Schön, dass du da bist.",
+    "dueToday": "{count, plural, =0 {Heute ist nichts fällig.} one {# Wiederholung ist heute fällig.} other {# Wiederholungen sind heute fällig.}}"
+  }
+}

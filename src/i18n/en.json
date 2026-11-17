@@ -1,0 +1,20 @@
+{
+  "app": { "name": "Madar", "tagline": "The place where all you have to do is learn." },
+  "nav": { "skipToContent": "Skip to content", "settings": "Settings" },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Appearance",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeContrast": "High contrast",
+    "textSize": "Text size",
+    "textSizeValue": "{percent, number}%",
+    "reducedMotion": "Reduce motion"
+  },
+  "lichtung": {
+    "greeting": "Good to see you.",
+    "dueToday": "{count, plural, =0 {Nothing is due today.} one {# review is due today.} other {# reviews are due today.}}"
+  }
+}

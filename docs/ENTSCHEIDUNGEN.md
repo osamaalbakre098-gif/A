@@ -13,3 +13,7 @@
 **Rahmenfarbe dunkler als im Plan.** Die Plan-Rahmenfarbe (#DEDAD1) hat gegenüber dem Hintergrund zu wenig Kontrast für Eingabefelder (WCAG: mind. 3:1). Interaktive Rahmen nutzen `--border` (dunkler), dekorative `--border-soft` (Plan-Wert). Die Akzentfarbe wurde minimal abgedunkelt (#38756D), damit sie 4,5:1 erreicht.
 
 **Meilenstein 1 zuerst:** Von Schritt 1 sind nur die 10–12 wichtigsten Bausteine gebaut, der Rest kommt in Meilenstein 2.
+
+**Einstellungen vorerst in `localStorage`.** Die Datenbank kommt erst in Schritt 3. Die Werte werden dann in die Tabelle `settings` übernommen; bis dahin gehen bei gelöschten Browserdaten nur Sprache, Theme und Textgröße verloren, keine Lerndaten.
+
+**Hoher Kontrast als eigenes Theme** (`data-theme='contrast'`), unabhängig von Hell/Dunkel; Auswahl „System" folgt dem Betriebssystem (Hell/Dunkel).

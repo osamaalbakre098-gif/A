@@ -1,0 +1,20 @@
+{
+  "app": { "name": "مدار", "tagline": "المكان الذي لا يبقى لك فيه سوى أن تتعلّم." },
+  "nav": { "skipToContent": "انتقل إلى المحتوى", "settings": "الإعدادات" },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "themeSystem": "النظام",
+    "themeLight": "فاتح",
+    "themeDark": "داكن",
+    "themeContrast": "تباين عالٍ",
+    "textSize": "حجم النص",
+    "textSizeValue": "{percent, number}٪",
+    "reducedMotion": "تقليل الحركة"
+  },
+  "lichtung": {
+    "greeting": "سعيد برؤيتك.",
+    "dueToday": "{count, plural, =0 {لا شيء مستحق اليوم.} one {مراجعة واحدة مستحقة اليوم.} two {مراجعتان مستحقتان اليوم.} few {# مراجعات مستحقة اليوم.} many {# مراجعة مستحقة اليوم.} other {# مراجعة مستحقة اليوم.}}"
+  }
+}

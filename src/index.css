@@ -1,3 +1,52 @@
 main {
-  padding: 24px;
+  padding: var(--s-5);
+  max-inline-size: var(--measure);
+  margin-inline: auto;
+}
+.app-header {
+  padding: var(--s-4) var(--s-5) 0;
+  max-inline-size: var(--measure);
+  margin-inline: auto;
+}
+.app-header h1 {
+  margin: 0;
+}
+.app-nav {
+  padding-inline: var(--s-5);
+  max-inline-size: var(--measure);
+  margin-inline: auto;
+}
+.app-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  color: var(--primary);
+}
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--s-2);
+  inset-block-start: -100px;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: var(--s-2) var(--s-4);
+  border-radius: var(--r-sm);
+  z-index: 10;
+}
+.skip-link:focus {
+  inset-block-start: var(--s-2);
+}
+.settings {
+  display: grid;
+  gap: var(--s-4);
+}
+input[type='range'] {
+  inline-size: 100%;
+  min-block-size: 44px;
+  accent-color: var(--primary);
+}
+[data-motion='reduce'] *,
+[data-motion='reduce'] *::before,
+[data-motion='reduce'] *::after {
+  animation-duration: 1ms !important;
+  transition-duration: 120ms !important;
 }

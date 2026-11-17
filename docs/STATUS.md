@@ -27,3 +27,9 @@ Ehrlicher Stand. „Echtes Gerät" ist ein Test auf einem echten iPhone, kein Em
 Schritt 0: stimmt überein. Abweichungen: ESLint statt Vorlagen-Linter (wie verlangt), TypeScript 6 statt 7 (Werkzeug-Kompatibilität), a11y-Skripte erst ab Schritt 1 echt. `docs/steps` und `GRUNDLAGEN.md` sind jetzt vorhanden.
 Schritt 1: behoben: Schriftgrößen-Skala 13/15/17/20/24/30/36 als Tokens, Lizenzdatei `public/fonts/LICENSES/Inter-OFL.txt`.
 Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast, siehe ENTSCHEIDUNGEN); Inter kommt über `@fontsource-variable` (lokal gebündelt, kein externer Server) statt eigenem WOFF2-Subset; arabische Schrift folgt in Schritt 2; fehlende Bausteine stehen unter „Schritt 1 – Details" (Meilenstein 2, vom Prompt so vorgesehen).
+
+## Schritt 2 – Details
+
+- Gebaut: i18next mit ICU-Pluralen, `de/en/ar.json` (nur wenige Schlüssel, aber alle drei Sprachen vollständig), Test auf fehlende Schlüssel, `dir`/`lang` am `<html>`, Lint-Prüfung gegen physische CSS-Eigenschaften (`pnpm lint`), Einstellungen (Sprache, Theme inkl. Hoher Kontrast, Textgröße 90–200 %, Bewegung reduzieren), Skip-Link, Landmarken, IBM Plex Sans Arabic lokal.
+- Noch offen (Meilenstein 2 laut Prompt): „Lernhilfen" (Ruhiger Modus, Lesehilfe/Vorlesen, Prüfung ohne Druck); echte Übersetzung aller künftigen Texte; Screenshot-Test ist nur ein Bild, kein automatischer Bildvergleich; Einstellungen liegen bis Schritt 3 in `localStorage`, danach in der Datenbank-Tabelle `settings`.
+- Nicht geprüft: Screenreader (VoiceOver), echtes iPhone.
