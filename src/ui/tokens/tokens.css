@@ -1,0 +1,141 @@
+:root {
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --surface-2: #efede7;
+  --border: #8a867c;
+  --border-soft: #dedad1;
+  --text: #1c1f24;
+  --text-muted: #565b65;
+  --primary: #1f3a5f;
+  --on-primary: #ffffff;
+  --accent: #38756d;
+  --success: #2f6b3f;
+  --warning: #8a5a12;
+  --danger: #9b2c2c;
+  --focus: #2f6fdb;
+
+  /* Fachfarben: nur Akzent */
+  --subj-sage: #4f7a5a;
+  --subj-ocean: #2f6a8f;
+  --subj-brick: #a0462f;
+  --subj-sand: #8a6a2f;
+  --subj-plum: #7a4a7a;
+  --subj-moss: #5f6f2f;
+  --subj-slate: #4a5a6f;
+  --subj-amber: #946000;
+
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --cut: 12px;
+
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+
+  --t-fast: 120ms;
+  --t-base: 200ms;
+  --t-slow: 320ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  --fs-base: 17px;
+  --lh: 1.6;
+  --measure: 66ch;
+  --font: 'Inter Variable', system-ui, sans-serif;
+  --font-ar: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', system-ui, sans-serif;
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --bg: #121417;
+  --surface: #1a1d21;
+  --surface-2: #22262b;
+  --border: #6f7680;
+  --border-soft: #2e333a;
+  --text: #e8e6e1;
+  --text-muted: #a3a7ae;
+  --primary: #8fb3e8;
+  --on-primary: #0e1726;
+  --accent: #7dbfb4;
+  --success: #7fc28f;
+  --warning: #e0b060;
+  --danger: #ef8f8f;
+  --focus: #8fb3e8;
+  --subj-sage: #8fbf9a;
+  --subj-ocean: #7fb4d6;
+  --subj-brick: #e09a85;
+  --subj-sand: #d4b27a;
+  --subj-plum: #c79ac7;
+  --subj-moss: #b0c27a;
+  --subj-slate: #9fb0c7;
+  --subj-amber: #e0b060;
+  color-scheme: dark;
+}
+
+[data-theme='contrast'] {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f0f0f0;
+  --border: #000000;
+  --border-soft: #000000;
+  --text: #000000;
+  --text-muted: #1a1a1a;
+  --primary: #00206b;
+  --on-primary: #ffffff;
+  --accent: #00574f;
+  --success: #0b4a1c;
+  --warning: #5c3a00;
+  --danger: #7a0000;
+  --focus: #0040d0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--fs-base);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: var(--lh);
+  hyphens: auto;
+}
+
+:lang(ar) body,
+[lang='ar'] body {
+  font-family: var(--font-ar);
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
+  }
+}
