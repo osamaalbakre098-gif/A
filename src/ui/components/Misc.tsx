@@ -25,7 +25,7 @@ export function FocusCircle({
       role="img"
       aria-label={`${label}: ${mm}:${ss}`}
     >
-      <circle cx="50" cy="50" r={r} fill="none" stroke="var(--border-soft)" strokeWidth="6" />
+      <circle cx="50" cy="50" r={r} fill="none" stroke="var(--arc-off)" strokeWidth="6" />
       <circle
         cx="50"
         cy="50"
@@ -74,7 +74,7 @@ export function ProgressArc({
             fill="none"
             strokeWidth="6"
             strokeLinecap="round"
-            stroke={i < done ? 'var(--primary)' : 'var(--border-soft)'}
+            stroke={i < done ? 'var(--primary)' : 'var(--arc-off)'}
           />
         );
       })}

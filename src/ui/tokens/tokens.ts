@@ -1,9 +1,9 @@
 /** Spiegel der Farb-Tokens aus tokens.css, für Kontrasttest und Tests. */
 export const lightTokens = {
-  bg: '#f7f6f2',
+  bg: '#f2f2f7',
   surface: '#ffffff',
-  surface2: '#efede7',
-  border: '#8a867c',
+  surface2: '#e9e9ef',
+  border: '#7a7a85',
   text: '#1c1f24',
   textMuted: '#565b65',
   primary: '#1f3a5f',
@@ -16,9 +16,9 @@ export const lightTokens = {
 } as const;
 
 export const darkTokens = {
-  bg: '#121417',
+  bg: '#0e1013',
   surface: '#1a1d21',
-  surface2: '#22262b',
+  surface2: '#272b31',
   border: '#6f7680',
   text: '#e8e6e1',
   textMuted: '#a3a7ae',

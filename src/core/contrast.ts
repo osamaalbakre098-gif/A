@@ -12,3 +12,15 @@ export function contrastRatio(a: string, b: string): number {
   const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
   return ((hi ?? 0) + 0.05) / ((lo ?? 0) + 0.05);
 }
+
+/** Mischt zwei Farben (t = Anteil von `a`), wie CSS color-mix in sRGB. */
+export function mixHex(a: string, b: string, t: number): string {
+  const p = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const [ar, ag, ab] = p(a);
+  const [br, bg, bb] = p(b);
+  const m = (x: number | undefined, y: number | undefined) =>
+    Math.round((x ?? 0) * t + (y ?? 0) * (1 - t))
+      .toString(16)
+      .padStart(2, '0');
+  return `#${m(ar, br)}${m(ag, bg)}${m(ab, bb)}`;
+}

@@ -60,7 +60,7 @@ export default function HeutePreview() {
         </details>
       </div>
       <AppShell active="today">
-        <Heute data={{ ...BASE, state }} key={i18n.language} />
+        <Heute data={{ ...BASE, state }} key={`${i18n.language}-${state}`} />
       </AppShell>
     </>
   );

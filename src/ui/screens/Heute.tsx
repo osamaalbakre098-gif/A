@@ -42,7 +42,7 @@ export default function Heute({ data }: { data: TodayData }) {
 
   if (data.state === 'empty') {
     return (
-      <Stack space="section" className="heute">
+      <Stack space="section" className="heute view">
         <h1 className="heute__greet">{t(greetingKey(data.hour))}</h1>
         <Stack space="stack" className="heute__empty">
           <EmptyMotif label={t('heute.emptyAlt')} />
@@ -57,7 +57,7 @@ export default function Heute({ data }: { data: TodayData }) {
   }
 
   return (
-    <Stack space="section" className="heute">
+    <Stack space="section" className="heute view">
       <h1 className="heute__greet">{t(greetingKey(data.hour))}</h1>
 
       {data.state === 'plan' ? (

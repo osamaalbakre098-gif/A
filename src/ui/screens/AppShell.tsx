@@ -1,6 +1,7 @@
 import { House, Library, Search, Sprout } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Icon as NavIcon } from '../components';
 
 export type NavId = 'today' | 'subjects' | 'progress' | 'search';
 
@@ -31,7 +32,9 @@ export function AppShell({ active, children }: { active: NavId; children: ReactN
                 aria-current={id === active ? 'page' : undefined}
                 className="navlink"
               >
-                <Icon size={24} strokeWidth={1.75} aria-hidden="true" />
+                <span className="navlink__icon">
+                  <NavIcon as={Icon} filled={id === active} />
+                </span>
                 <span>{t(`nav.${id}`)}</span>
               </a>
             </li>

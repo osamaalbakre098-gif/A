@@ -23,3 +23,11 @@
 **Navigation bei großer Schrift:** Die vier Punkte brechen bei großem Text in zwei Zeilen um, statt abgeschnitten zu werden.
 
 **Schnittecke der Karten:** Die Rundung der Ecke oben außen entfällt, damit der 12-px-Schnitt (Hauptkarte 24 px) sichtbar ist. Der Rahmen fehlt an der Schnittkante.
+
+**Optik per Tokens.** Farben, Schatten, Radien, Textstufen und Bewegung stehen zentral in `tokens.css`; Bausteine lesen nur diese Variablen. Hoher Kontrast überschreibt sie mit kräftigen Rahmen, ohne Schatten und ohne Transparenz.
+
+**Dezente Umrisse in Hell/Dunkel sind eine bewusste Abwägung.** Der Nutzer wünscht gefüllte Flächen statt Rahmen. Das senkt den Nicht-Text-Kontrast der Feldumrisse unter 3:1. Ausgleich: sichtbarer Fokusring, Füllung, Hoher Kontrast als vollwertiges Theme.
+
+**Schatten auf Wrapper.** `clip-path` (Schnittecke) würde Schatten abschneiden; der Schatten liegt deshalb auf einem Wrapper (`drop-shadow`). Im Hohen Kontrast entfällt die Schnittecke.
+
+**Bewegung reduzieren = 0 ms.** Auf Wunsch des Nutzers werden Übergänge dabei ganz abgeschaltet (der Prompt erlaubt Überblendungen bis 120 ms; 0 ms ist strenger und damit zulässig).

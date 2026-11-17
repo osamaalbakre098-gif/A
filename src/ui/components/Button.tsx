@@ -1,4 +1,6 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { LucideIcon } from 'lucide-react';
+import type { ButtonHTMLAttributes } from 'react';
+import { Icon } from './Icon';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'quiet' | 'danger';
@@ -27,16 +29,28 @@ export function Button({
   );
 }
 
-/** Icon-Knopf: Beschriftung ist Pflicht (Screenreader). */
+/** Icon-Knopf: rund, mindestens 44 px, immer mit Beschriftung für Screenreader. */
 export function IconButton({
   label,
   icon,
-  variant = 'quiet',
+  mirror,
+  variant = 'tonal',
   ...rest
-}: Omit<ButtonProps, 'children' | 'aria-label'> & { label: string; icon: ReactNode }) {
+}: Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'aria-label'> & {
+  label: string;
+  icon: LucideIcon;
+  mirror?: boolean;
+  variant?: 'tonal' | 'primary' | 'quiet';
+}) {
   return (
-    <Button {...rest} variant={variant} aria-label={label} title={label} className="btn--icon">
-      {icon}
-    </Button>
+    <button
+      type="button"
+      {...rest}
+      aria-label={label}
+      title={label}
+      className={`iconbtn${variant === 'tonal' ? '' : ` iconbtn--${variant}`}`}
+    >
+      <Icon as={icon} mirror={mirror} />
+    </button>
   );
 }

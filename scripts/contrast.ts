@@ -1,4 +1,4 @@
-import { contrastRatio } from '../src/core/contrast';
+import { contrastRatio, mixHex } from '../src/core/contrast';
 import { subjectColors, themes } from '../src/ui/tokens/tokens';
 
 // [Vordergrund, Hintergrund, Mindestwert]
@@ -25,6 +25,10 @@ for (const [name, t] of Object.entries(themes)) {
     [t.success, t.bg, TEXT],
     [t.warning, t.bg, TEXT],
     [t.danger, t.bg, TEXT],
+    // Getönte Knöpfe und gewählte Zeilen (Standard-Themes): Primärfarbe auf Tönung
+    [t.primary, mixHex(t.primary, t.surface, name === 'dark' ? 0.16 : 0.12), TEXT],
+    [t.primary, mixHex(t.primary, t.surface, name === 'dark' ? 0.24 : 0.18), TEXT],
+    [t.text, mixHex(t.primary, t.surface, name === 'dark' ? 0.24 : 0.18), TEXT],
     [t.border, t.bg, UI],
     [t.border, t.surface, UI],
     [t.focus, t.bg, UI],

@@ -1,4 +1,4 @@
-import { Bell, ChevronRight, Timer } from 'lucide-react';
+import { Bell, ChevronRight, Timer, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   Flashcard,
   FocusCircle,
   HintLadder,
+  Icon,
   IconButton,
   ProgressArc,
   Stack,
@@ -87,11 +88,9 @@ export default function Gallery() {
           <Button variant="danger">Gefahr</Button>
           <Button disabled>Deaktiviert</Button>
           <Button loading>Laden</Button>
-          <IconButton label="Erinnerung" icon={<Bell size={22} strokeWidth={1.75} />} />
-          <IconButton
-            label="Weiter"
-            icon={<ChevronRight size={22} strokeWidth={1.75} className="flip-rtl" />}
-          />
+          <IconButton label="Erinnerung" icon={Bell} />
+          <IconButton label="Weiter" icon={ChevronRight} mirror variant="primary" />
+          <IconButton label="Schließen" icon={X} variant="quiet" />
         </Cluster>
       </Stack>
 
@@ -143,7 +142,7 @@ export default function Gallery() {
       <Stack as="section" space="stack" aria-labelledby="g-prog">
         <h2 id="g-prog">Zeit und Fortschritt</h2>
         <Cluster space="group">
-          <Timer size={24} strokeWidth={1.75} aria-hidden="true" />
+          <Icon as={Timer} />
           <FocusCircle remainingSec={754} totalSec={1500} label="Verbleibende Zeit" />
           <ProgressArc done={2} total={4} label="Blöcke" />
         </Cluster>

@@ -28,7 +28,7 @@ export function SessionMotif({ label, size = 120 }: MotifProps) {
             fill="none"
             strokeWidth="8"
             strokeLinecap="round"
-            stroke={i === 0 ? 'var(--primary)' : 'var(--border-soft)'}
+            stroke={i === 0 ? 'var(--primary)' : 'var(--arc-off)'}
           />
         );
       })}

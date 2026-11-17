@@ -1,53 +1,95 @@
+/* ---------- Buttons ---------- */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--s-2);
-  min-block-size: 44px;
-  min-inline-size: 44px;
-  padding-inline: var(--s-4);
+  min-block-size: var(--tap);
+  min-inline-size: var(--tap);
+  padding-inline: var(--s-5);
   border-radius: var(--r-md);
-  border: 2px solid transparent;
+  border: var(--btn2-bw) solid transparent;
   font: inherit;
   font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
   transition:
-    background var(--t-fast) var(--ease),
-    border-color var(--t-fast) var(--ease);
+    background-color var(--t-base) var(--ease),
+    transform var(--t-fast) var(--ease),
+    filter var(--t-base) var(--ease);
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
 }
 .btn:disabled,
 .btn[aria-disabled='true'] {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 .btn--primary {
   background: var(--primary);
   color: var(--on-primary);
+  box-shadow: var(--shadow-btn);
 }
 .btn--primary:hover:not(:disabled) {
   filter: brightness(1.12);
 }
 .btn--secondary {
-  background: var(--surface);
+  background: var(--tint);
   color: var(--primary);
-  border-color: var(--border);
+  border-color: var(--btn2-border);
 }
 .btn--secondary:hover:not(:disabled) {
-  background: var(--surface-2);
+  background: var(--tint-strong);
 }
 .btn--quiet {
   background: transparent;
   color: var(--primary);
 }
 .btn--quiet:hover:not(:disabled) {
-  background: var(--surface-2);
+  background: var(--tint);
 }
 .btn--danger {
   background: var(--danger);
   color: var(--bg);
 }
-.btn--icon {
-  padding-inline: 0;
+
+/* Icon-Knopf: einheitliche Form, mindestens 48 px, rund */
+.iconbtn {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  min-inline-size: 44px;
+  min-block-size: 44px;
+  padding: 0;
+  border-radius: 50%;
+  border: var(--btn2-bw) solid var(--btn2-border);
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    background-color var(--t-base) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+.iconbtn:hover:not(:disabled) {
+  background: var(--tint-strong);
+}
+.iconbtn:active:not(:disabled) {
+  transform: scale(0.94);
+}
+.iconbtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.iconbtn--primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+.iconbtn--quiet {
+  background: transparent;
+  border-color: transparent;
 }
 .spinner {
   inline-size: 1em;
@@ -62,109 +104,169 @@
     transform: rotate(360deg);
   }
 }
+[data-motion='reduce'] .spinner {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
 
+/* ---------- Felder ---------- */
 .field {
   display: grid;
-  gap: var(--s-1);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-2);
   max-inline-size: var(--measure);
 }
 .field__label {
   font-weight: 600;
+  font-size: var(--fs-2);
 }
 .field__hint {
   color: var(--text-muted);
-  font-size: 0.88rem;
+  font-size: var(--fs-1);
+  line-height: 1.5;
 }
 .field__error {
   color: var(--danger);
-  font-size: 0.88rem;
+  font-size: var(--fs-2);
 }
 .input {
-  min-block-size: 44px;
-  padding: var(--s-2) var(--s-3);
-  border: 2px solid var(--border);
-  border-radius: var(--r-sm);
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--tap);
+  padding: var(--s-3) var(--s-4);
+  border: var(--field-bw) solid var(--field-border);
+  border-radius: var(--r-md);
   background: var(--surface);
   color: var(--text);
   font: inherit;
+  transition:
+    border-color var(--t-base) var(--ease),
+    box-shadow var(--t-base) var(--ease);
+}
+.input:focus-visible {
+  border-color: var(--focus);
+  outline-offset: 0;
 }
 .input[aria-invalid='true'] {
   border-color: var(--danger);
 }
 .input:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
+}
+select.input {
+  appearance: auto;
 }
 
+/* ---------- Schalter ---------- */
 .switch {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--s-3);
-  min-block-size: 44px;
+  min-block-size: var(--tap);
   cursor: pointer;
 }
 .switch__input {
   position: absolute;
   opacity: 0;
-  inline-size: 44px;
-  block-size: 44px;
+  inline-size: 52px;
+  block-size: var(--tap);
   margin: 0;
   cursor: pointer;
 }
 .switch__track {
   position: relative;
-  inline-size: 48px;
-  block-size: 28px;
-  border-radius: 14px;
-  background: var(--surface-2);
-  border: 2px solid var(--border);
-  transition: background var(--t-base) var(--ease);
+  inline-size: 52px;
+  block-size: 32px;
+  border-radius: var(--r-pill);
+  background: var(--track-off);
+  border: var(--field-bw) solid transparent;
+  transition: background-color var(--t-base) var(--ease);
   flex: none;
+}
+[data-theme='contrast'] .switch__track {
+  border-color: var(--border);
 }
 .switch__thumb {
   position: absolute;
-  inset-block-start: 2px;
-  inset-inline-start: 2px;
-  inline-size: 20px;
-  block-size: 20px;
+  inset-block-start: 50%;
+  inset-inline-start: 3px;
+  inline-size: 26px;
+  block-size: 26px;
+  margin-block-start: -13px;
   border-radius: 50%;
-  background: var(--text);
+  background: var(--thumb-off);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
   transition: inset-inline-start var(--t-base) var(--ease);
 }
 .switch__input:checked + .switch__track {
   background: var(--primary);
 }
 .switch__input:checked + .switch__track .switch__thumb {
-  inset-inline-start: 22px;
+  inset-inline-start: 23px;
   background: var(--on-primary);
 }
 .switch__input:focus-visible + .switch__track {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
-.switch {
-  position: relative;
+.switch__input:disabled + .switch__track {
+  opacity: 0.5;
 }
 
+/* ---------- Karten ---------- */
+/* Der Schatten liegt auf dem Wrapper, weil clip-path den eigenen Schatten abschneiden würde. */
+.card-shadow {
+  filter: drop-shadow(0 1px 1px rgb(16 24 40 / 0.04)) drop-shadow(0 6px 16px rgb(16 24 40 / 0.07));
+}
+[data-theme='dark'] .card-shadow,
+[data-theme='contrast'] .card-shadow {
+  filter: none;
+}
 .card {
-  --cut: 12px;
   position: relative;
   background: var(--surface);
-  border: 1px solid var(--border-soft);
-  padding: var(--s-5);
-  border-radius: var(--r-md);
+  border: var(--card-bw) solid var(--border);
+  padding: var(--space-card);
+  border-radius: var(--r-lg);
+  border-start-end-radius: 0;
   clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
-  border-inline-start: 6px solid var(--card-accent, var(--accent));
 }
 [dir='rtl'] .card {
   clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%, 0 var(--cut));
 }
 .card--hero {
-  border-radius: var(--r-xl);
+  --cut: 28px;
   padding: var(--s-6);
+  border-radius: var(--r-xl);
+  border-start-end-radius: 0;
 }
 .card__title {
-  margin: 0 0 var(--s-2);
-  font-size: 1.2rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-size: var(--fs-4);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.card__title::before {
+  content: '';
+  flex: none;
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: 50%;
+  background: var(--card-accent, var(--accent));
+}
+.card--hero .card__title {
+  font-size: var(--fs-5);
+  font-weight: 700;
+  letter-spacing: -0.015em;
 }
 
 .flashcard {
@@ -172,15 +274,16 @@
   max-inline-size: var(--measure);
 }
 .flashcard__face {
-  min-block-size: 160px;
+  min-block-size: 180px;
   display: grid;
   place-items: center;
   text-align: center;
-  padding: var(--s-5);
+  padding: var(--s-6);
   background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: var(--r-lg);
-  font-size: 1.2rem;
+  border: var(--card-bw) solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-1);
+  font-size: var(--fs-4);
   animation: fade var(--t-base) var(--ease);
 }
 @keyframes fade {
@@ -192,6 +295,7 @@
   }
 }
 
+/* ---------- Auswahl ---------- */
 .choices {
   border: 0;
   padding: 0;
@@ -199,26 +303,36 @@
   display: grid;
   gap: var(--s-2);
   max-inline-size: var(--measure);
+  min-inline-size: 0;
 }
 .choices legend {
   font-weight: 600;
-  margin-block-end: var(--s-2);
+  margin-block-end: var(--s-3);
   padding: 0;
 }
 .choice {
   display: flex;
   align-items: center;
   gap: var(--s-3);
-  min-block-size: 44px;
-  padding: var(--s-2) var(--s-3);
-  border: 2px solid var(--border);
+  min-block-size: var(--tap);
+  padding: var(--s-3) var(--s-4);
+  border: var(--field-bw) solid var(--field-border);
   border-radius: var(--r-md);
   background: var(--surface);
   cursor: pointer;
+  transition:
+    background-color var(--t-base) var(--ease),
+    border-color var(--t-base) var(--ease);
+}
+.choice input {
+  inline-size: 22px;
+  block-size: 22px;
+  accent-color: var(--primary);
+  flex: none;
 }
 .choice:has(input:checked) {
+  background: var(--tint);
   border-color: var(--primary);
-  background: var(--surface-2);
 }
 .choice:has(input:focus-visible) {
   outline: 3px solid var(--focus);
@@ -226,18 +340,18 @@
 }
 .choice--right {
   border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 14%, var(--surface));
 }
 .choice--wrong {
   border-color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
 }
 .choice__mark {
   margin-inline-start: auto;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .hints {
-  display: grid;
-  gap: var(--s-2);
   max-inline-size: var(--measure);
 }
 .hints ol {
@@ -245,32 +359,35 @@
   padding-inline-start: var(--s-5);
 }
 .hints li {
-  margin-block: var(--s-1);
+  margin-block: var(--s-2);
 }
 
 .empty {
   text-align: center;
   padding: var(--s-7) var(--s-4);
-  display: grid;
-  gap: var(--s-3);
   justify-items: center;
   color: var(--text-muted);
 }
 .empty h2 {
   color: var(--text);
-  margin: 0;
 }
 
 .dialog {
-  border: 2px solid var(--border);
-  border-radius: var(--r-lg);
+  border: var(--card-bw) solid var(--border);
+  border-radius: var(--r-xl);
   background: var(--surface);
   color: var(--text);
-  padding: var(--s-5);
+  padding: var(--s-6);
   max-inline-size: min(90vw, 480px);
+  box-shadow: var(--shadow-2);
 }
 .dialog::backdrop {
-  background: rgb(0 0 0 / 0.5);
+  background: rgb(0 0 0 / 0.4);
+  backdrop-filter: blur(6px);
+}
+[data-theme='contrast'] .dialog::backdrop {
+  backdrop-filter: none;
+  background: rgb(0 0 0 / 0.7);
 }
 
 .arc-label {
@@ -282,7 +399,7 @@
   transform: scaleX(-1);
 }
 
-/* Layout: Abstand nur über gap, nie über Außenabstände der Kinder */
+/* ---------- Layout: Abstand nur über gap ---------- */
 .stack {
   display: flex;
   flex-direction: column;
@@ -317,41 +434,50 @@
 .stack p {
   margin-block: 0;
 }
-.card {
-  padding: var(--space-card);
-}
-.card__title {
-  margin: 0;
-}
 .dialog > .stack {
-  margin-block-start: var(--space-stack);
+  margin-block-start: 0;
 }
 .gallery {
-  padding: var(--s-5);
+  padding: var(--s-5) var(--s-4) var(--s-8);
   max-inline-size: 900px;
   margin-inline: auto;
 }
 .range {
   inline-size: 100%;
-  min-block-size: 44px;
+  min-block-size: var(--tap);
   accent-color: var(--primary);
 }
 
-/* Nichts darf breiter werden als sein Container (große Schrift, schmaler Bildschirm) */
-.field {
-  grid-template-columns: minmax(0, 1fr);
+/* Weiche Bildschirm-Übergänge (Dauer kommt aus --t-slow, bei „Bewegung reduzieren" 0) */
+@keyframes view-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
-.input {
-  inline-size: 100%;
-  max-inline-size: 100%;
-  min-inline-size: 0;
+.view {
+  animation: view-in var(--t-slow) var(--ease) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .view,
+  .flashcard__face {
+    animation: none;
+  }
+}
+[data-motion='reduce'] .view,
+[data-motion='reduce'] .flashcard__face {
+  animation: none;
 }
 
-/* Schnittecke deutlich sichtbar: Ecke oben außen ohne Rundung (in RTL gespiegelt durch logische Eigenschaft) */
-.card {
-  border-start-end-radius: 0;
+/* Hoher Kontrast: keine Schnittecke, damit der kräftige Rahmen rundum geschlossen bleibt */
+[data-theme='contrast'] .card {
+  clip-path: none;
+  border-start-end-radius: var(--r-lg);
 }
-.card--hero {
-  border-start-end-radius: 0;
-  --cut: 24px;
+[data-theme='contrast'] .card--hero {
+  border-start-end-radius: var(--r-xl);
 }

@@ -1,9 +1,13 @@
+/*
+ * Klarsicht-Tokens. Alle Bausteine lesen nur diese Variablen.
+ * Standard (Hell/Dunkel): gefüllte Flächen, feine Linien, weiche Schatten.
+ * Hoher Kontrast: kräftige Rahmen, keine Schatten (siehe unten).
+ */
 :root {
-  --bg: #f7f6f2;
+  /* Flächen und Text */
+  --bg: #f2f2f7;
   --surface: #ffffff;
-  --surface-2: #efede7;
-  --border: #8a867c;
-  --border-soft: #dedad1;
+  --surface-2: #e9e9ef;
   --text: #1c1f24;
   --text-muted: #565b65;
   --primary: #1f3a5f;
@@ -13,6 +17,27 @@
   --warning: #8a5a12;
   --danger: #9b2c2c;
   --focus: #2f6fdb;
+
+  /* Linien: border = kräftig (Schalter, Auswahl, Hoher Kontrast), line = fein */
+  --border: #7a7a85;
+  --border-soft: #d8d8de;
+  --line: #d8d8de;
+  --field-border: #c0c0c8;
+  --field-bw: 1px;
+  --card-bw: 0px;
+  --btn2-border: transparent;
+  --btn2-bw: 0px;
+  --tint: color-mix(in srgb, var(--primary) 12%, var(--surface));
+  --tint-strong: color-mix(in srgb, var(--primary) 18%, var(--surface));
+  --track-off: #bcbcc4;
+  --thumb-off: #ffffff;
+  --glass: color-mix(in srgb, var(--surface) 86%, transparent);
+  --arc-off: #d8d8de;
+
+  /* Schatten (weich, mehrschichtig) */
+  --shadow-1: 0 1px 2px rgb(16 24 40 / 0.05), 0 4px 18px rgb(16 24 40 / 0.07);
+  --shadow-2: 0 2px 6px rgb(16 24 40 / 0.06), 0 14px 40px rgb(16 24 40 / 0.12);
+  --shadow-btn: 0 1px 2px rgb(16 24 40 / 0.12);
 
   /* Fachfarben: nur Akzent */
   --subj-sage: #4f7a5a;
@@ -24,12 +49,15 @@
   --subj-slate: #4a5a6f;
   --subj-amber: #946000;
 
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 20px;
-  --r-xl: 28px;
-  --cut: 12px;
+  /* Radien: großzügig */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --r-pill: 999px;
+  --cut: 16px;
 
+  /* Abstände (4er-Raster) */
   --s-1: 4px;
   --s-2: 8px;
   --s-3: 12px;
@@ -40,38 +68,42 @@
   --s-8: 64px;
 
   /* Semantische Abstände: nur diese in Layouts verwenden */
-  --space-tight: var(--s-2); /* zusammengehörige Zeilen (Label/Hilfetext) */
-  --space-stack: var(--s-4); /* Felder, Schalter, Absätze untereinander */
-  --space-group: var(--s-5); /* Gruppen innerhalb einer Karte/Sektion */
-  --space-section: var(--s-6); /* Sektionen/Karten untereinander */
-  --space-card: var(--s-5); /* Innenabstand Karte */
-  --space-inline: var(--s-3); /* nebeneinander (Knöpfe, Chips) */
+  --space-tight: var(--s-2);
+  --space-stack: var(--s-4);
+  --space-group: var(--s-5);
+  --space-section: var(--s-7);
+  --space-card: var(--s-5);
+  --space-inline: var(--s-3);
+  --tap: 48px; /* Tippziel (mindestens 44) */
 
+  /* Bewegung: weich und kurz. Bei „Bewegung reduzieren" alle auf 0 (siehe unten). */
   --t-fast: 120ms;
   --t-base: 200ms;
   --t-slow: 320ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
 
-  --fs-1: 13px;
-  --fs-2: 15px;
+  /* Textstufen (in rem, damit die App-Textgröße 90–200 % alles mitnimmt; Basis 17 px) */
   --fs-base: 17px;
-  --fs-4: 20px;
-  --fs-5: 24px;
-  --fs-6: 30px;
-  --fs-7: 36px;
-  --lh: 1.6;
+  --fs-1: 0.765rem; /* 13 px: Hinweis */
+  --fs-2: 0.882rem; /* 15 px: Beschriftung */
+  --fs-3: 1rem; /* 17 px: Fließtext */
+  --fs-4: 1.176rem; /* 20 px: Überschrift klein (Headline) */
+  --fs-5: 1.412rem; /* 24 px: Titel */
+  --fs-6: 1.765rem; /* 30 px */
+  --fs-7: 2.118rem; /* 36 px: Großer Titel (Large Title) */
+  --lh: 1.65;
+  --lh-tight: 1.2;
   --measure: 66ch;
-  --font: 'Inter Variable', system-ui, sans-serif;
+  --font: -apple-system, BlinkMacSystemFont, 'Inter Variable', 'Segoe UI', system-ui, sans-serif;
   --font-ar: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', system-ui, sans-serif;
   color-scheme: light;
 }
 
+/* Dunkel: eigenes Flächensystem, hellere Flächen statt Schatten */
 [data-theme='dark'] {
-  --bg: #121417;
+  --bg: #0e1013;
   --surface: #1a1d21;
-  --surface-2: #22262b;
-  --border: #6f7680;
-  --border-soft: #2e333a;
+  --surface-2: #272b31;
   --text: #e8e6e1;
   --text-muted: #a3a7ae;
   --primary: #8fb3e8;
@@ -81,6 +113,18 @@
   --warning: #e0b060;
   --danger: #ef8f8f;
   --focus: #8fb3e8;
+  --border: #6f7680;
+  --border-soft: #2e333a;
+  --line: #2e333a;
+  --field-border: #3d434b;
+  --track-off: #3a3f47;
+  --arc-off: #3a3f47;
+  --thumb-off: #e8e6e1;
+  --tint: color-mix(in srgb, var(--primary) 16%, var(--surface));
+  --tint-strong: color-mix(in srgb, var(--primary) 24%, var(--surface));
+  --shadow-1: none;
+  --shadow-2: 0 10px 40px rgb(0 0 0 / 0.5);
+  --shadow-btn: none;
   --subj-sage: #8fbf9a;
   --subj-ocean: #7fb4d6;
   --subj-brick: #e09a85;
@@ -92,12 +136,11 @@
   color-scheme: dark;
 }
 
+/* Hoher Kontrast: kräftige Rahmen, keine Schatten, keine Transparenz. Bleibt voll erhalten. */
 [data-theme='contrast'] {
   --bg: #ffffff;
   --surface: #ffffff;
   --surface-2: #f0f0f0;
-  --border: #000000;
-  --border-soft: #000000;
   --text: #000000;
   --text-muted: #1a1a1a;
   --primary: #00206b;
@@ -107,6 +150,37 @@
   --warning: #5c3a00;
   --danger: #7a0000;
   --focus: #0040d0;
+  --border: #000000;
+  --border-soft: #000000;
+  --line: #000000;
+  --field-border: #000000;
+  --field-bw: 2px;
+  --card-bw: 2px;
+  --btn2-border: #000000;
+  --btn2-bw: 2px;
+  --tint: #ffffff;
+  --tint-strong: #f0f0f0;
+  --track-off: #ffffff;
+  --thumb-off: #000000;
+  --arc-off: #bdbdbd;
+  --glass: #ffffff;
+  --shadow-1: none;
+  --shadow-2: none;
+  --shadow-btn: none;
+}
+
+/* Bewegung reduzieren: System-Einstellung oder App-Schalter schaltet alle Übergänge aus */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --t-fast: 0ms;
+    --t-base: 0ms;
+    --t-slow: 0ms;
+  }
+}
+[data-motion='reduce'] {
+  --t-fast: 0ms;
+  --t-base: 0ms;
+  --t-slow: 0ms;
 }
 
 *,
@@ -117,6 +191,7 @@
 
 html {
   font-size: var(--fs-base);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -124,15 +199,48 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
+  font-size: var(--fs-3);
   line-height: var(--lh);
   hyphens: auto;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
 }
 
 :lang(ar) body,
 [lang='ar'] body {
   font-family: var(--font-ar);
-  line-height: 1.7;
+  line-height: 1.75;
   font-size: 1.1rem;
+}
+
+/* Textstufen: Großer Titel · Titel · Überschrift · Fließtext · Hinweis */
+h1 {
+  font-size: var(--fs-7);
+  line-height: var(--lh-tight);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+h2 {
+  font-size: var(--fs-5);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+h3 {
+  font-size: var(--fs-4);
+  line-height: 1.3;
+  font-weight: 600;
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+.t-note {
+  font-size: var(--fs-1);
+  color: var(--text-muted);
 }
 
 :focus-visible {
@@ -142,14 +250,4 @@ body {
 
 .tabular {
   font-variant-numeric: tabular-nums;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 1ms !important;
-    transition-duration: 120ms !important;
-    scroll-behavior: auto !important;
-  }
 }
