@@ -56,7 +56,7 @@ export const Chunk = z.object({
   page: z.number().int().nonnegative(),
   bbox: z.tuple([z.number(), z.number(), z.number(), z.number()]).optional(),
   text: z.string(),
-  origin: z.enum(['text', 'ocr']),
+  origin: z.enum(['text', 'ocr', 'ai']),
   /** Überschriften über diesem Abschnitt, z. B. ["Vektoren", "Addition"] */
   headingPath: z.array(z.string()).optional(),
   ocrConfidence: z.number().min(0).max(100).optional(),
@@ -160,6 +160,23 @@ export const Attempt = z.object({
     ])
     .optional(),
   gradedBy: z.enum(['rule', 'ai', 'self', 'user']),
+  /** Antwort bei offenen Aufgaben (für Selbstbewertung und KI-Bewertung) */
+  answerText: z.string().optional(),
+  /** Kernpunkte, die der Schüler bei der Selbstbewertung abgehakt hat */
+  selfChecked: z.array(z.string()).optional(),
+  /** Bewertungsstapel: vorgemerkt → an Claude gegeben → bewertet */
+  gradingState: z.enum(['queued', 'sent', 'done']).optional(),
+  aiGrade: z
+    .object({
+      punkte: z.number(),
+      maxPunkte: z.number(),
+      urteil: z.enum(['richtig', 'teilweise', 'falsch']),
+      begruendung: z.string(),
+      rueckmeldung: z.string(),
+      sicherheit: z.number().min(0).max(1),
+      kernfehler: z.string().nullable().optional(),
+    })
+    .optional(),
 });
 
 export const Exam = z.object({
@@ -198,7 +215,18 @@ export const Annotation = z.object({
 
 export const Job = z.object({
   id,
-  type: z.enum(['ocr', 'tree', 'items', 'lesson', 'grade']),
+  type: z.enum([
+    'ocr',
+    'tree',
+    'items',
+    'lesson',
+    'grade',
+    'quelle_ergaenzen',
+    'baum',
+    'vorbereiten',
+    'bewerten',
+    'auswertung',
+  ]),
   payload: z.unknown(),
   status: z.enum(['pending', 'running', 'done', 'failed']),
   attempts: z.number().int().nonnegative(),

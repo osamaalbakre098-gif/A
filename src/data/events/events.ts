@@ -56,6 +56,15 @@ export const EventInput = z.discriminatedUnion('type', [
     payload: z.object({ itemId: id, rating: z.number().int().min(1).max(4) }),
   }),
   z.object({
+    type: z.literal('AuftragImportiert'),
+    payload: z.object({
+      jobId: id,
+      typ: z.string(),
+      importiert: z.number().int(),
+      fehler: z.number().int(),
+    }),
+  }),
+  z.object({
     type: z.literal('UserOverride'),
     payload: z.object({
       decision: z.string(),
