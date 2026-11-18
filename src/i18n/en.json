@@ -361,5 +361,47 @@
     "simpleNote": "This tree comes only from the headings. A \"Build tree\" job can improve it later; your changes are kept.",
     "openTree": "View skill tree",
     "count": "{skills, plural, one {# skill} other {# skills}}"
+  },
+  "reason": {
+    "DUE_REVIEW": "These cards are due today. Reviewing them now helps you remember them longer.",
+    "EXAM_PRESSURE": "An exam that covers this is coming up, so it comes earlier.",
+    "PREREQ_GAP": "A foundation is still missing for this. Madar practises that first.",
+    "RECURRING_ERROR": "The same mistake happened a few times lately. A short exercise helps.",
+    "NEW_MATERIAL": "This is new content from your material.",
+    "INTERLEAVE_CONFUSABLE": "These task types are easy to mix up. Mixed practice helps tell them apart.",
+    "FATIGUE": "Your answers are getting slower and less sure. A break helps more than carrying on.",
+    "GOAL_REACHED": "You reached today's goal. More isn't needed.",
+    "USER_OVERRIDE": "You chose this. Due reviews stay in briefly.",
+    "RELEARN": "Review before the exam, spaced out, so it lasts until exam day.",
+    "LATE_HOUR": "It's late. Nothing new today, only a short review. Sleep helps you remember.",
+    "PRETEST": "A short pre-test shows what you already know. Mistakes are fine and don't count.",
+    "NO_AI_FALLBACK": "There are no tasks for this skill yet. Read the material first; tasks come from “Jobs”.",
+    "REVIEW_LOAD": "Many reviews are due today. New content waits until there is room.",
+    "EXAM_NEAR": "The exam is close. Review and an easy practice exam count now, nothing new.",
+    "DAILY_LIMIT": "Enough new cards for today. More would mean too many reviews tomorrow.",
+    "TIME_BUDGET": "Nothing more fits into your set time today. The rest comes tomorrow.",
+    "BLOCK_TIME": "You've been studying for a while. A short break helps you remember.",
+    "WRONG_IN_ROW": "Several mistakes in a row on things you knew. That happens when you're tired.",
+    "NOTHING_TO_DO": "Nothing to plan right now. Add material or have jobs processed.",
+    "WORKED_EXAMPLE": "For new procedures you learn from a solved example first, then similar tasks.",
+    "FADING_HELP": "Each correct task gets a bit less help.",
+    "RETRIEVAL": "These are facts. They stick best when you recall them from memory.",
+    "WHY_QUESTION": "This is about understanding. A targeted why-question helps more than many tasks.",
+    "TASKS_ONLY": "You already do this well. Only tasks now, no solved examples."
+  },
+  "method": {
+    "worked_example": "Worked example",
+    "fading": "Tasks with less help",
+    "tasks_only": "Tasks",
+    "retrieval": "Recall",
+    "why_question": "Why-question",
+    "pretest": "Pre-test",
+    "interleaved": "Mixed practice",
+    "read": "Read the material"
+  },
+  "examStatus": {
+    "reachable": "Everything is reachable before the exam.",
+    "tight": "It's tight but doable.",
+    "overload": "There isn't time to cover everything safely. Madar prioritises."
   }
 }

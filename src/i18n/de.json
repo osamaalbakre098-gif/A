@@ -361,5 +361,47 @@
     "simpleNote": "Dieser Baum stammt nur aus den Überschriften. Er kann später mit einem Auftrag „Baum bauen\" verbessert werden; deine Änderungen bleiben erhalten.",
     "openTree": "Könnensbaum ansehen",
     "count": "{skills, plural, one {# Fähigkeit} other {# Fähigkeiten}}"
+  },
+  "reason": {
+    "DUE_REVIEW": "Diese Karten sind heute fällig. Wenn du sie jetzt wiederholst, bleiben sie besser im Gedächtnis.",
+    "EXAM_PRESSURE": "Bald ist eine Prüfung, in der das vorkommt. Deshalb kommt es früher dran.",
+    "PREREQ_GAP": "Dafür fehlt noch eine Grundlage. Madar übt zuerst diese Grundlage.",
+    "RECURRING_ERROR": "Hier passierte zuletzt öfter derselbe Fehler. Eine kurze Übung dazu hilft.",
+    "NEW_MATERIAL": "Das ist neuer Stoff aus deinem Material.",
+    "INTERLEAVE_CONFUSABLE": "Diese Aufgabentypen werden leicht verwechselt. Gemischtes Üben hilft, sie auseinanderzuhalten.",
+    "FATIGUE": "Deine Antworten werden langsamer und unsicherer. Eine Pause hilft jetzt mehr als weiterüben.",
+    "GOAL_REACHED": "Dein Ziel für heute ist erreicht. Mehr ist nicht nötig.",
+    "USER_OVERRIDE": "Das hast du so gewählt. Fällige Wiederholungen bleiben kurz dabei.",
+    "RELEARN": "Wiederholung vor der Prüfung, jeweils mit Abstand: So bleibt es bis zum Prüfungstag.",
+    "LATE_HOUR": "Es ist spät. Heute gibt es nichts Neues mehr, nur kurze Wiederholung. Schlaf hilft beim Behalten.",
+    "PRETEST": "Ein kurzer Vortest zeigt, was du schon kannst. Fehler sind erlaubt und zählen nicht.",
+    "NO_AI_FALLBACK": "Für diese Fähigkeit gibt es noch keine Aufgaben. Lies zuerst im Material; Aufgaben entstehen über „Aufträge“.",
+    "REVIEW_LOAD": "Heute sind viele Wiederholungen dran. Neues kommt erst, wenn dafür wieder Platz ist.",
+    "EXAM_NEAR": "Die Prüfung ist nah. Jetzt zählen Wiederholen und eine leichte Probeprüfung, nichts Neues.",
+    "DAILY_LIMIT": "Für heute sind genug neue Karten eingeführt. Mehr würde morgen zu viele Wiederholungen bedeuten.",
+    "TIME_BUDGET": "Mit der eingestellten Zeit passt heute nicht mehr hinein. Der Rest kommt morgen dran.",
+    "BLOCK_TIME": "Du lernst schon eine Weile am Stück. Eine kurze Pause hilft beim Behalten.",
+    "WRONG_IN_ROW": "Mehrere Fehler in Folge bei Dingen, die du schon konntest. Das passiert, wenn man müde ist.",
+    "NOTHING_TO_DO": "Im Moment gibt es nichts zu planen. Lade Material hoch oder lass Aufträge abarbeiten.",
+    "WORKED_EXAMPLE": "Bei neuen Rechenwegen lernst du erst an einem gelösten Beispiel, dann an ähnlichen Aufgaben.",
+    "FADING_HELP": "Pro richtiger Aufgabe gibt es etwas weniger Hilfe.",
+    "RETRIEVAL": "Das sind Fakten. Sie bleiben am besten, wenn du sie aus dem Kopf abrufst.",
+    "WHY_QUESTION": "Hier geht es ums Verstehen. Eine gezielte Warum-Frage hilft mehr als viele Aufgaben.",
+    "TASKS_ONLY": "Das kannst du schon gut. Jetzt nur noch Aufgaben, ohne Lösungsbeispiele."
+  },
+  "method": {
+    "worked_example": "Lösungsbeispiel",
+    "fading": "Aufgaben mit weniger Hilfe",
+    "tasks_only": "Aufgaben",
+    "retrieval": "Abrufen",
+    "why_question": "Warum-Frage",
+    "pretest": "Vortest",
+    "interleaved": "Gemischtes Üben",
+    "read": "Im Material lesen"
+  },
+  "examStatus": {
+    "reachable": "Bis zur Prüfung ist alles erreichbar.",
+    "tight": "Es wird knapp, ist aber machbar.",
+    "overload": "Mit der Zeit bis zur Prüfung schaffst du nicht alles sicher. Madar priorisiert."
   }
 }
