@@ -1,0 +1,48 @@
+@layer components {
+  .datefields {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-inline-size: 0;
+  }
+  .datefields__legend {
+    padding: 0;
+    font-size: var(--type-secondary);
+    line-height: var(--lh-secondary);
+    font-weight: var(--weight-semibold);
+  }
+  .datefields__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .datefields__item {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .datefields__label {
+    font-size: var(--type-secondary);
+    line-height: var(--lh-secondary);
+    color: var(--text-secondary);
+  }
+  .datefields__input {
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    min-block-size: var(--tap-button);
+  }
+  .datefields__item--day,
+  .datefields__item--month {
+    inline-size: 5rem;
+  }
+  .datefields__item--year {
+    inline-size: 7rem;
+  }
+  .datefields__error {
+    color: var(--danger);
+    font-size: var(--type-secondary);
+    line-height: var(--lh-secondary);
+    font-weight: var(--weight-medium);
+  }
+}

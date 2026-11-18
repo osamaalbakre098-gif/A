@@ -504,7 +504,14 @@
     "add": "Prüfung eintragen",
     "note": "Madar plant rückwärts vom Prüfungstag. Verschiebst du den Termin, wird neu geplant – ohne Vorwurf. Einen Notenschlüssel gibt es nur, wenn du ihn selbst einträgst.",
     "rowSet": "Prüfung am {date} (in {days, plural, =0 {null Tagen} one {# Tag} other {# Tagen}})",
-    "saved": "Gespeichert. Madar plant rückwärts."
+    "saved": "Gespeichert. Madar plant rückwärts.",
+    "change": "Datum ändern",
+    "moveLegend": "Neues Datum",
+    "day": "Tag",
+    "month": "Monat",
+    "year": "Jahr",
+    "invalid": "Dieses Datum gibt es nicht. Bitte Tag, Monat und Jahr prüfen.",
+    "addAnother": "Stattdessen eine neue Prüfung eintragen"
   },
   "ui": {
     "close": "Schließen",

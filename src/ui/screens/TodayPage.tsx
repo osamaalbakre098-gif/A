@@ -14,6 +14,7 @@ import { Button, ListGroup, ListRow, Sheet } from '../components';
 import { useDb } from '../DbProvider';
 import { hrefTo } from '../useHashRoute';
 import Heute, { type TodayData, type TodayExtras } from './Heute';
+import { intlLocale } from '../../i18n';
 
 /** „Heute" mit echtem Plan vom Studienleiter (reiner Code in `src/core/director`). */
 export default function TodayPage() {
@@ -56,7 +57,7 @@ export default function TodayPage() {
       exam = {
         data: {
           subject: subjects.get(upcoming.subjectId)?.name ?? '',
-          date: new Intl.DateTimeFormat(i18n.language, {
+          date: new Intl.DateTimeFormat(intlLocale(i18n.language), {
             weekday: 'short',
             day: 'numeric',
             month: 'numeric',

@@ -504,7 +504,14 @@
     "add": "Add exam",
     "note": "Madar plans backwards from exam day. If you move the date, it re-plans – no blame. A grading scale exists only if you enter it yourself.",
     "rowSet": "Exam on {date} (in {days, plural, =0 {0 days} one {# day} other {# days}})",
-    "saved": "Saved. Madar plans backwards."
+    "saved": "Saved. Madar plans backwards.",
+    "change": "Change date",
+    "moveLegend": "New date",
+    "day": "Day",
+    "month": "Month",
+    "year": "Year",
+    "invalid": "This date does not exist. Please check day, month and year.",
+    "addAnother": "Add a new exam instead"
   },
   "ui": {
     "close": "Close",

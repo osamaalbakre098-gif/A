@@ -29,6 +29,7 @@ import { useDb } from '../DbProvider';
 import { hrefTo } from '../useHashRoute';
 import { ExamRow, ExamSheet } from './ExamCard';
 import './Fach.css';
+import { intlLocale } from '../../i18n';
 
 /** pdf.js erst laden, wenn wirklich ein PDF kommt. */
 const deps: ImportDeps = {
@@ -59,7 +60,7 @@ function FileRow({ d }: { d: DocumentRow }) {
       : d.type.startsWith('image/')
         ? 'kindImage'
         : 'kindText';
-  const date = new Intl.DateTimeFormat(i18n.language === 'ar' ? 'ar-u-nu-latn' : i18n.language, {
+  const date = new Intl.DateTimeFormat(intlLocale(i18n.language), {
     dateStyle: 'medium',
   }).format(d.importedAt);
   const progress = useLiveQuery(() => fileProgress(db, d.id), [db, d.id]);

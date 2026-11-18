@@ -208,4 +208,4 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 
 Unit: 238 grün. E2E (Chromium): siehe Meldung. WebKit-iPhone-Projekt: hier nicht ausführbar.
 
-Offen aus Phase B: neue Bausteine noch nicht in der Galerie; drei Felder als Datumsersatz; „Entspannt/Normal/Gründlich" (Einstellungen 6.13) nicht gebaut, weil es dafür keine Logik gibt.
+Gebaut nach Rückmeldung: Datum mit drei Feldern (`DateFields`, Unit-Test + E2E), neue Bausteine in der Galerie, Ziffern immer lateinisch (Test). Offen: „Entspannt/Normal/Gründlich" (Einstellungen 6.13) nicht gebaut, weil es dafür keine Logik gibt.

@@ -1,4 +1,14 @@
-import { Bell, ChevronRight, House, Library, Search, Sprout, Timer, X } from 'lucide-react';
+import {
+  Bell,
+  CalendarDays,
+  ChevronRight,
+  House,
+  Library,
+  Search,
+  Sprout,
+  Timer,
+  X,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { ErrorView } from '../ErrorBoundary';
 import './Gallery.css';
@@ -6,10 +16,23 @@ import {
   AppBar,
   Banner,
   Button,
+  Card,
   ChoiceList,
+  Chip,
   Cluster,
   ContentCard,
+  CopyBlock,
+  DateFields,
   Dialog,
+  Disclosure,
+  ListGroup,
+  ListRow,
+  ProgressBar,
+  SectionHeader,
+  SegmentedControl,
+  StepList,
+  Stepper,
+  StickyAction,
   Divider,
   EmptyState,
   Flashcard,
@@ -53,6 +76,9 @@ function GalleryBody() {
   const [choice, setChoice] = useState<string | null>(null);
   const [dlg, setDlg] = useState(false);
   const [scale, setScale] = useState(100);
+  const [seg, setSeg] = useState('light');
+  const [minutes, setMinutes] = useState(45);
+  const [iso, setIso] = useState('');
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -364,6 +390,88 @@ function GalleryBody() {
               Array.from({ length: 12 }, (_, i) => <p key={i}>Weitere Zeile {i + 1}</p>)}
           </Stack>
         </Sheet>
+      </Stack>
+
+      <Stack as="section" space="stack" aria-labelledby="g-lists">
+        <h2 id="g-lists">Listen und Karten (Phase B)</h2>
+        <SectionHeader>Abschnitt</SectionHeader>
+        <ListGroup label="Beispielliste" footer="Fußnote unter der Gruppe">
+          <ListRow dot="sage" title="Physik" subtitle="3 Dateien" href="#g-lists" />
+          <ListRow icon={CalendarDays} title="Prüfung eintragen" onClick={() => {}} />
+          <ListRow icon={Sprout} title="Wert rechts" value="12 Min." />
+          <ListRow title="Zeile ohne Symbol" subtitle="keine leere Spalte" />
+          <ListRow
+            icon={Library}
+            title="Mit Fortschritt"
+            href="#g-lists"
+            extra={<ProgressBar percent={60} label="60 Prozent" />}
+          />
+        </ListGroup>
+        <Card variant="hero">
+          <h3>Hero-Karte</h3>
+          <p>Größte Karte, höchstens eine pro Bildschirm.</p>
+        </Card>
+        <Card variant="tinted">Getönte Karte</Card>
+        <Cluster>
+          <Chip>neutral</Chip>
+          <Chip tone="accent">Akzent</Chip>
+          <Chip tone="warning">Warnung</Chip>
+          <Chip tone="success">erledigt</Chip>
+        </Cluster>
+        <ProgressBar percent={null} label="Noch zu wenig Daten" />
+        <SegmentedControl
+          legend="Erscheinungsbild"
+          segments={[
+            { id: 'light', label: 'Hell' },
+            { id: 'dark', label: 'Dunkel' },
+            { id: 'contrast', label: 'Hoher Kontrast' },
+            { id: 'system', label: 'System' },
+          ]}
+          value={seg}
+          onChange={setSeg}
+        />
+        <Stepper
+          label="Lernzeit pro Tag"
+          value={minutes}
+          min={10}
+          max={240}
+          step={5}
+          unit="Min."
+          minusLabel="Weniger"
+          plusLabel="Mehr"
+          onChange={setMinutes}
+        />
+        <DateFields
+          value={iso}
+          onChange={setIso}
+          labels={{
+            legend: 'Datum der Prüfung',
+            day: 'Tag',
+            month: 'Monat',
+            year: 'Jahr',
+            invalid: 'Dieses Datum gibt es nicht.',
+          }}
+        />
+        <StepList
+          doneLabel="erledigt"
+          steps={[
+            { title: 'Auftrag kopieren', done: true },
+            { title: 'In Claude einfügen' },
+            { title: 'Antwort hier einfügen' },
+          ]}
+        />
+        <CopyBlock
+          text="Auftragstext zum Kopieren"
+          label="Auftrag"
+          copyLabel="Kopieren"
+          copiedLabel="Kopiert"
+        />
+        <Disclosure summary="Gründe anzeigen">Aufklappbarer Inhalt.</Disclosure>
+        <StickyAction>
+          <Button size="l" fullWidth>
+            Angeheftete Hauptaktion
+          </Button>
+        </StickyAction>
       </Stack>
 
       <Stack as="section" space="stack" aria-labelledby="g-skel">

@@ -189,4 +189,49 @@ test.describe('Phase B bei 320 pt', () => {
       }
     });
   }
+
+  test('Prüfungsdatum mit drei Feldern: ungültig wird erklärt, gültig wird gespeichert und verschoben', async ({
+    page,
+  }) => {
+    const { subjectHash } = await prepare(page, {});
+    await visit(page, subjectHash);
+    await page.locator('.listrow').filter({ hasText: 'Prüfung eintragen' }).first().click();
+    const sheet = page.locator('dialog[open]');
+    await sheet.getByLabel('Tag').fill('31');
+    await sheet.getByLabel('Monat').fill('2');
+    await sheet.getByLabel('Jahr').fill('2030');
+    await expect(sheet.getByRole('alert')).toContainText('gibt es nicht');
+    await expect(sheet.getByRole('button', { name: 'Speichern' })).toBeDisabled();
+    await sheet.getByLabel('Tag').fill('28');
+    await expect(sheet.getByRole('alert')).toHaveCount(0);
+    await sheet.getByRole('button', { name: 'Speichern' }).click();
+    await expect(
+      page
+        .locator('.listrow')
+        .filter({ hasText: /Prüfung am 28\.2\./ })
+        .first(),
+    ).toBeVisible();
+    // verschieben
+    await page
+      .locator('.listrow')
+      .filter({ hasText: /Prüfung am/ })
+      .first()
+      .click();
+    await sheet
+      .getByRole('button', {
+        name: /2028|2030|Freitag|Donnerstag|Mittwoch|Dienstag|Montag|Samstag|Sonntag/,
+      })
+      .first()
+      .click();
+    await expect(sheet.getByLabel('Tag')).toHaveValue('28');
+    await sheet.getByLabel('Tag').fill('1');
+    await sheet.getByLabel('Monat').fill('3');
+    await sheet.getByRole('button', { name: 'Speichern' }).click();
+    await expect(
+      page
+        .locator('.listrow')
+        .filter({ hasText: /Prüfung am 1\.3\./ })
+        .first(),
+    ).toBeVisible();
+  });
 });

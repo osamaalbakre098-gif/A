@@ -107,3 +107,18 @@ Nicht erneut betrachtet nach den letzten Korrekturen: Einstellungen bei 200 % (S
 7. Aufträge: Kopieren-Knopf in unter 30 Sekunden gefunden?
 8. Deine Daten: „Alles exportieren" (ZIP) lädt herunter?
 9. Hoher Kontrast und Arabisch: je einmal durch alle Bildschirme.
+
+## Nachtrag Phase B (nach deinen Fragen)
+
+Aufträge und Deine Daten bei 320 pt, 200 %, Deutsch und Arabisch, im Bild angesehen:
+
+| Screen                  | Beobachtung im Bild                                                                                                             | Änderung                                                                                                                                                   | Status                                         |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Aufträge (de, 200 %)    | Titel eines Vorschlags brach mitten im Wort („Vorbereite/n:").                                                                  | Der Vorspann vor dem Doppelpunkt entfällt in der Anzeige (steht schon im Typ darunter); Titel bricht nur noch an Wortgrenzen. Daten und Logik unverändert. | Bild nach Korrektur (de)                       |
+| Aufträge (ar, 200 %)    | Rechts-nach-links stimmt, Pfeile gespiegelt, deutsche Titel als Fremdtext in der Zeile (`bdi`). Gleiches Wortproblem wie in de. | wie oben                                                                                                                                                   | vor der Korrektur gesehen, danach nicht erneut |
+| Aufträge, Verbindung    | Knöpfe fluchten links, „Code speichern" bricht bei 200 % auf zwei Zeilen.                                                       | – (erlaubt)                                                                                                                                                | Bild                                           |
+| Deine Daten (de, 200 %) | Keine Wortbrüche. Knöpfe in voller Breite brechen auf 2–3 Zeilen („Alles exportieren (ZIP)").                                   | –                                                                                                                                                          | Bild                                           |
+| Deine Daten (ar, 200 %) | Ziffern lateinisch. Einheit „MB" steht mit Zahlen gemischt; Reihenfolge in der Zeile lesbar.                                    | Alle Zahlen- und Datumsformate laufen jetzt über `intlLocale` (immer lateinische Ziffern); Test verhindert Rückfall.                                       | Bild + Test                                    |
+| Prüfung (Sheet, 200 %)  | Drei Felder stehen untereinander (je eine Zeile), Sheet war zu niedrig.                                                         | Sheet-Höhe „groß".                                                                                                                                         | Bild                                           |
+
+**Entscheidung Ziffern:** Immer lateinische Ziffern (1234567890), auch auf Arabisch. Keine Einstellung dafür.

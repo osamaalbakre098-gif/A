@@ -8,6 +8,7 @@ import { skillEvidence, skillInfos, type SkillInfo } from '../../data/progress';
 import { Button, Cluster, ContentCard, Dialog, EmptyState, Stack, TextField } from '../components';
 import { useDb } from '../DbProvider';
 import { hrefTo } from '../useHashRoute';
+import { intlLocale } from '../../i18n';
 
 const SYMBOL = { new: '○', building: '◐', sits: '●', refresh: '◌' } as const;
 
@@ -71,7 +72,9 @@ export default function TreePage({ subjectId }: { subjectId: string }) {
     setUndo(null);
   };
   const date = (ts: number) =>
-    new Intl.DateTimeFormat(i18n.language, { day: 'numeric', month: 'numeric' }).format(ts);
+    new Intl.DateTimeFormat(intlLocale(i18n.language), { day: 'numeric', month: 'numeric' }).format(
+      ts,
+    );
 
   return (
     <Stack space="section" className="view">

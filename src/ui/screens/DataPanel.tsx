@@ -37,6 +37,7 @@ import {
   Stack,
   StepList,
 } from '../components';
+import { intlLocale } from '../../i18n';
 
 export interface DataDeps {
   getDb: () => Promise<MadarDB>;
@@ -82,9 +83,9 @@ export default function DataPanel({ deps }: { deps: DataDeps }) {
   const fileId = useId();
 
   const bytes = (n: number) =>
-    new Intl.NumberFormat(i18n.language, { maximumFractionDigits: n < 1e7 ? 1 : 0 }).format(
-      n / 1e6,
-    ) + ' MB';
+    new Intl.NumberFormat(intlLocale(i18n.language), {
+      maximumFractionDigits: n < 1e7 ? 1 : 0,
+    }).format(n / 1e6) + ' MB';
   const errText = (e: unknown) =>
     t(e instanceof DataError ? `data.error${e.code}` : 'data.errorUnknown');
 
@@ -181,7 +182,10 @@ export default function DataPanel({ deps }: { deps: DataDeps }) {
     manual: 'data.reasonManual',
   } as const;
   const when = (ts: number) =>
-    new Intl.DateTimeFormat(i18n.language, { dateStyle: 'medium', timeStyle: 'short' }).format(ts);
+    new Intl.DateTimeFormat(intlLocale(i18n.language), {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }).format(ts);
 
   return (
     <div className="data">

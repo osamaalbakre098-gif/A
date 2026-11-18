@@ -7,8 +7,9 @@ import { learningDayKey } from '../../core/time';
 import { systemNow } from '../../data/clock';
 import { addExam } from '../../data/director-data';
 import { newId } from '../../data/ids';
-import { Button, ListGroup, ListRow, Sheet, Stack, TextField, useToast } from '../components';
+import { Button, DateFields, ListGroup, ListRow, Sheet, Stack, useToast } from '../components';
 import { useDb } from '../DbProvider';
+import { intlLocale } from '../../i18n';
 
 /** Zeile für die Fachseite: „Prüfung eintragen" oder „Prüfung am 12.12. (in 24 Tagen)". Öffnet das Sheet. */
 export function ExamRow({ subjectId, onOpen }: { subjectId: string; onOpen: () => void }) {
@@ -22,7 +23,7 @@ export function ExamRow({ subjectId, onOpen }: { subjectId: string; onOpen: () =
   }, [db, subjectId]);
   const today = learningDayKey(new Date(systemNow()));
   const date = next
-    ? new Intl.DateTimeFormat(i18n.language === 'ar' ? 'ar-u-nu-latn' : i18n.language, {
+    ? new Intl.DateTimeFormat(intlLocale(i18n.language), {
         day: 'numeric',
         month: 'numeric',
       }).format(new Date(`${next.date}T12:00:00`))
@@ -36,7 +37,7 @@ export function ExamRow({ subjectId, onOpen }: { subjectId: string; onOpen: () =
   );
 }
 
-/** Prüfung eintragen oder verschieben (Sheet). Madar plant rückwärts davon, ohne Vorwurf bei Änderungen. */
+/** Prüfung eintragen oder verschieben (Sheet). Datum mit drei Feldern. Madar plant rückwärts davon, ohne Vorwurf bei Änderungen. */
 export function ExamSheet({
   subjectId,
   open,
@@ -57,14 +58,22 @@ export function ExamSheet({
     [db, subjectId],
   );
   const [date, setDate] = useState('');
+  const [editing, setEditing] = useState<string | null>(null);
+  const [round, setRound] = useState(0);
   const fmt = (d: string) =>
-    new Intl.DateTimeFormat(i18n.language === 'ar' ? 'ar-u-nu-latn' : i18n.language, {
+    new Intl.DateTimeFormat(intlLocale(i18n.language), {
       dateStyle: 'full',
     }).format(new Date(`${d}T12:00:00`));
+  const pick = (id: string | null, value: string) => {
+    setEditing(id);
+    setDate(value);
+    setRound(round + 1); // Felder neu mit dem Datum füllen
+  };
   const save = async () => {
     if (!date) return;
-    await addExam(db, { id: newId(), subjectId, date });
-    setDate('');
+    if (editing) await db.exams.update(editing, { date });
+    else await addExam(db, { id: newId(), subjectId, date });
+    pick(null, '');
     onClose();
     toast.show({ text: t('exam.saved') });
   };
@@ -73,7 +82,7 @@ export function ExamSheet({
       open={open}
       onClose={onClose}
       title={t('exam.title')}
-      size="md"
+      size="lg"
       footer={
         <Button size="l" fullWidth disabled={!date} onClick={() => void save()}>
           {t('common.save')}
@@ -87,28 +96,32 @@ export function ExamSheet({
               <ListRow
                 key={e.id}
                 title={fmt(e.date)}
-                trailing={
-                  <TextField
-                    label={t('exam.moveLabel', { date: fmt(e.date) })}
-                    type="date"
-                    value={e.date}
-                    onChange={(ev) =>
-                      ev.target.value && void db.exams.update(e.id, { date: ev.target.value })
-                    }
-                  />
-                }
+                subtitle={t('exam.change')}
+                state={editing === e.id ? 'selected' : 'default'}
+                onClick={() => pick(e.id, e.date)}
               />
             ))}
           </ListGroup>
         ) : (
           <p className="t-note">{t('exam.none')}</p>
         )}
-        <TextField
-          label={t('exam.dateLabel')}
-          type="date"
+        <DateFields
+          key={round}
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={setDate}
+          labels={{
+            legend: editing ? t('exam.moveLegend') : t('exam.dateLabel'),
+            day: t('exam.day'),
+            month: t('exam.month'),
+            year: t('exam.year'),
+            invalid: t('exam.invalid'),
+          }}
         />
+        {editing && (
+          <Button variant="quiet" onClick={() => pick(null, '')}>
+            {t('exam.addAnother')}
+          </Button>
+        )}
         <p className="t-note">{t('exam.note')}</p>
       </Stack>
     </Sheet>

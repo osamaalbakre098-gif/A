@@ -376,7 +376,7 @@ export default function JobsPage() {
               <ListRow
                 key={`${v.typ}-${v.ref ?? i}`}
                 icon={Sparkles}
-                title={<bdi dir="auto">{v.titel}</bdi>}
+                title={<bdi dir="auto">{v.titel.replace(/^[^:]{1,24}:\s+(?=\S)/, '')}</bdi>}
                 subtitle={`${t(`jobs.typ.${v.typ as JobTyp}`)}${v.detail ? ` · ${v.detail}` : ''} · ${t('jobs.create')}`}
                 onClick={() => void erstellen(v)}
               />

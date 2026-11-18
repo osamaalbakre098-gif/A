@@ -23,3 +23,4 @@ export { StepList, type Step } from '../StepList/StepList';
 export { CopyBlock } from '../CopyBlock/CopyBlock';
 export { Disclosure } from '../Disclosure/Disclosure';
 export { StickyAction } from '../StickyAction/StickyAction';
+export { DateFields, toIso, type DateFieldsLabels } from '../DateFields/DateFields';

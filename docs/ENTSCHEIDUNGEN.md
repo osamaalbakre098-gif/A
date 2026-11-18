@@ -149,3 +149,7 @@
 **Phase B – Sheets 62/80/92 %** der Höhe (vorher 40/70/92), weil kleine Sheets bei 568 pt den Text verdeckten.
 
 **Phase B – Fach ohne Fähigkeitenliste:** Die Liste der Fähigkeiten steht im Könnensbaum; das Fach zeigt Fortschritt, Prüfung, Baum und Dateien.
+
+**Ziffern (vom Nutzer entschieden):** Immer lateinisch (1234567890), auch auf Arabisch. Keine arabisch-indischen Ziffern, auch nicht als Einstellung. Alle `Intl`-Formate nutzen `intlLocale`; `src/i18n/digits.test.ts` verhindert Rückfall.
+
+**Prüfungsdatum:** drei Zahlenfelder (Tag, Monat, Jahr) statt nativer Datumsauswahl (UI_VORGABE 6.14), mit Prüfung auf echte Daten (Schaltjahre) und verständlicher Meldung.
