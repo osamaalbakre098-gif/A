@@ -4,7 +4,7 @@ import type { ZodError } from 'zod';
 export function extractJson(
   raw: string,
 ): { ok: true; value: unknown } | { ok: false; fehler: string } {
-  const text = raw.replace(/^﻿/, '').trim();
+  const text = raw.replace(new RegExp('^' + String.fromCharCode(0xfeff)), '').trim();
   if (!text) return { ok: false, fehler: 'Die Antwort ist leer.' };
   const attempt = (s: string): unknown | undefined => {
     try {

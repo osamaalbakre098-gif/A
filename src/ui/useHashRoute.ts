@@ -9,6 +9,8 @@ export const ROUTES = [
   'search',
   'settings',
   'data',
+  'jobs',
+  'practice',
 ] as const;
 export type RouteName = (typeof ROUTES)[number];
 

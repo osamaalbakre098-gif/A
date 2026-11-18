@@ -16,6 +16,8 @@ const SubjectsPage = lazy(() => import('./ui/screens/SubjectsPage'));
 const SubjectPage = lazy(() => import('./ui/screens/SubjectPage'));
 const ReaderPage = lazy(() => import('./ui/screens/ReaderPage'));
 const SearchPage = lazy(() => import('./ui/screens/SearchPage'));
+const JobsPage = lazy(() => import('./ui/screens/JobsPage'));
+const PracticePage = lazy(() => import('./ui/screens/PracticePage'));
 
 function Placeholder({ route }: { route: RouteName }) {
   const { t } = useTranslation();
@@ -60,7 +62,10 @@ export default function App() {
   const active: NavId | null =
     route.name === 'subject' || route.name === 'doc'
       ? 'subjects'
-      : route.name === 'settings' || route.name === 'data'
+      : route.name === 'settings' ||
+          route.name === 'data' ||
+          route.name === 'jobs' ||
+          route.name === 'practice'
         ? null
         : route.name;
   const bleed = route.name === 'doc';
@@ -94,6 +99,16 @@ export default function App() {
                 page={Number(route.params.get('page')) || 1}
                 query={route.params.get('q') ?? ''}
               />
+            </DbProvider>
+          )}
+          {route.name === 'jobs' && (
+            <DbProvider>
+              <JobsPage />
+            </DbProvider>
+          )}
+          {route.name === 'practice' && route.id && (
+            <DbProvider>
+              <PracticePage skillId={route.id} key={route.id} />
             </DbProvider>
           )}
           {route.name === 'search' && (
