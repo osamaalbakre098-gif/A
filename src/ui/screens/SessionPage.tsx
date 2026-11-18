@@ -146,7 +146,7 @@ export default function SessionPage() {
           title={t('session.doneTitle')}
           text={t('session.doneText')}
           action={
-            <a className="btn" href="#today">
+            <a className="btn btn--primary" href="#today">
               {t('session.back')}
             </a>
           }

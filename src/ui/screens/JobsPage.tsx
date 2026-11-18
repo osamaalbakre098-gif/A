@@ -306,7 +306,12 @@ export default function JobsPage() {
 
   return (
     <Stack space="section" className="view">
-      <h1>{t('jobs.title')}</h1>
+      <Stack space="tight">
+        <a className="backlink" href="#settings">
+          ← {t('nav.settings')}
+        </a>
+        <h1>{t('jobs.title')}</h1>
+      </Stack>
       <p>{t('jobs.intro')}</p>
 
       <ContentCard title={t('jobs.suggestTitle')} accent="ocean">

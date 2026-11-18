@@ -4,7 +4,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react
 import { useTranslation } from 'react-i18next';
 import { newId } from '../../data/ids';
 import { findMatches } from '../../content/text';
-import { Button, Cluster, EmptyState, Stack } from '../components';
+import { Button, EmptyState, Stack } from '../components';
 import { useDb } from '../DbProvider';
 import { hrefTo } from '../useHashRoute';
 
@@ -116,8 +116,10 @@ export default function ReaderPage({
         <a className="backlink" href={hrefTo('subject', doc.subjectId)}>
           ← {t('reader.back')}
         </a>
-        <h1 className="reader__title">{doc.name}</h1>
-        <Cluster space="tight">
+        <h1 className="reader__title" title={doc.name}>
+          {doc.name}
+        </h1>
+        <div className="reader__modes">
           <Button
             variant={mode === 'page' ? 'primary' : 'secondary'}
             aria-pressed={mode === 'page'}
@@ -132,7 +134,7 @@ export default function ReaderPage({
           >
             {t('reader.modeReflow')}
           </Button>
-        </Cluster>
+        </div>
       </div>
 
       {mode === 'reflow' ? (

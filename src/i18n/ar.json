@@ -84,7 +84,8 @@
     "dailyMinutes": "وقت الدراسة يوميًا (دقائق)",
     "latestHour": "أقصى ساعة (0–23)",
     "blockMinutes": "مدة الكتلة قبل الاستراحة (دقائق)",
-    "settingsHint": "يخطط مدار وفق هذه القيم. يمكنك تغييرها في أي وقت."
+    "settingsHint": "يخطط مدار وفق هذه القيم. يمكنك تغييرها في أي وقت.",
+    "planLineNoReview": "{topic} · {kind} · نحو {minutes} د"
   },
   "data": {
     "title": "بياناتك",

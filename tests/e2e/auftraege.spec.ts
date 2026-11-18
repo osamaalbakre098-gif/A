@@ -13,8 +13,8 @@ test('Aufträge: Seite lädt, ist bedienbar und ohne Verstöße', async ({ page 
   expect(r.violations).toEqual([]);
 });
 
-test('Link zu Aufträge in der Kopfzeile', async ({ page }) => {
-  await page.goto('/#today');
+test('Aufträge sind über die Einstellungen erreichbar', async ({ page }) => {
+  await page.goto('/#settings');
   await page.getByRole('link', { name: 'Aufträge' }).first().click();
   await expect(page).toHaveURL(/#jobs/);
 });

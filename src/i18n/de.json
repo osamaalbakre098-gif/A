@@ -84,7 +84,8 @@
     "dailyMinutes": "Lernzeit pro Tag (Minuten)",
     "latestHour": "Späteste Uhrzeit (Stunde, 0–23)",
     "blockMinutes": "Blockzeit bis zur Pause (Minuten)",
-    "settingsHint": "Madar plant damit. Du kannst es jederzeit ändern."
+    "settingsHint": "Madar plant damit. Du kannst es jederzeit ändern.",
+    "planLineNoReview": "{topic} · {kind} · ca. {minutes} Min."
   },
   "data": {
     "title": "Deine Daten",

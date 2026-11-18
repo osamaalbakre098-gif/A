@@ -7,8 +7,6 @@ interface MotifProps {
   size?: number;
 }
 
-const CARD_CUT = 'M8 8 H 62 L 80 26 V 72 H 8 Z';
-
 /** Geschlossener Kreis: der Tag ist rund. */
 export function DoneMotif({ label, size = 96 }: MotifProps) {
   return (
@@ -33,27 +31,36 @@ export function DoneMotif({ label, size = 96 }: MotifProps) {
 }
 
 /** Karte mit abgeschnittener Ecke, ein Kreis führt hinein. */
-export function EmptyMotif({ label, size = 120 }: MotifProps) {
+/** Leerzustand: Dokument mit Plus („Material hinzufügen"). */
+export function EmptyMotif({ label, size = 96 }: MotifProps) {
   return (
     <svg
-      viewBox="0 0 120 90"
+      viewBox="0 0 96 96"
       style={{ inlineSize: '100%', maxInlineSize: size, blockSize: 'auto' }}
       role="img"
       aria-label={label}
       focusable="false"
     >
-      <g transform="translate(30 6)">
-        <path
-          d={CARD_CUT}
-          fill="var(--surface)"
-          stroke="var(--border)"
-          strokeWidth="3"
-          strokeLinejoin="round"
-        />
-        <path d="M62 8 V 26 H 80" fill="none" stroke="var(--border)" strokeWidth="3" />
-      </g>
-      <circle cx="26" cy="62" r="12" fill="none" stroke="var(--primary)" strokeWidth="6" />
-      <path d="M40 62 H 66" stroke="var(--primary)" strokeWidth="6" strokeLinecap="round" />
+      <path
+        d="M26 10 H 56 L 74 28 V 80 A 6 6 0 0 1 68 86 H 26 A 6 6 0 0 1 20 80 V 16 A 6 6 0 0 1 26 10 Z"
+        fill="var(--surface)"
+        stroke="var(--border)"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M56 10 V 28 H 74"
+        fill="none"
+        stroke="var(--border)"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M47 46 V 72 M34 59 H 60"
+        stroke="var(--primary)"
+        strokeWidth="6"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

@@ -74,9 +74,9 @@ export default function Heute({ data, extras = {} }: { data: TodayData; extras?:
           <EmptyMotif label={t('heute.emptyAlt')} />
           <h2>{t('heute.emptyTitle')}</h2>
           <p>{t('heute.emptyText')}</p>
-          <Cluster>
+          <Cluster className="heute__cluster-full">
             {extras.emptyHref ? (
-              <a className="btn" href={extras.emptyHref}>
+              <a className="btn btn--primary heute__cta" href={extras.emptyHref}>
                 {t('heute.emptyCta')}
               </a>
             ) : (
@@ -97,7 +97,7 @@ export default function Heute({ data, extras = {} }: { data: TodayData; extras?:
           <Stack space="tight">
             <h2 className="card__title">{t('heute.start')}</h2>
             <p>
-              {t('heute.planLine', {
+              {t(data.reviews > 0 ? 'heute.planLine' : 'heute.planLineNoReview', {
                 reviews: data.reviews,
                 topic: data.topic,
                 kind: data.kindLabel ?? t('heute.kindPractice'),
@@ -114,7 +114,7 @@ export default function Heute({ data, extras = {} }: { data: TodayData; extras?:
             <p className="t-note">{t('heute.progress', data.progress)}</p>
           </Stack>
           {extras.goHref ? (
-            <a className="btn heute__cta" href={extras.goHref}>
+            <a className="btn btn--primary heute__cta" href={extras.goHref}>
               {t('heute.go')}
             </a>
           ) : (

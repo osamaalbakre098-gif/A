@@ -181,7 +181,7 @@ export default function TreePage({ subjectId }: { subjectId: string }) {
               </form>
             )}
             <Cluster>
-              <a className="btn" href={hrefTo('practice', open.skill.id)}>
+              <a className="btn btn--primary" href={hrefTo('practice', open.skill.id)}>
                 {t('tree.practice')}
               </a>
               <Button variant="quiet" onClick={() => setOpen(null)}>

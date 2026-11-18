@@ -172,6 +172,9 @@ export default function DataPanel({ deps }: { deps: DataDeps }) {
   return (
     <Stack space="section" className="data view">
       <Stack space="tight">
+        <a className="backlink" href="#settings">
+          ← {t('nav.settings')}
+        </a>
         <h1>{t('data.title')}</h1>
         <p className="t-note">{t('data.intro')}</p>
       </Stack>

@@ -48,7 +48,10 @@ input[type='range'] {
 }
 .shell__main {
   flex: 1;
-  padding: var(--s-6) var(--s-5) var(--s-8);
+  /* Nichts unter Statusleiste / Dynamic Island / Rundungen (viewport-fit=cover) */
+  padding-block: calc(var(--s-3) + var(--sat)) var(--s-8);
+  padding-inline: max(var(--s-5), env(safe-area-inset-left, 0px))
+    max(var(--s-5), env(safe-area-inset-right, 0px));
   inline-size: 100%;
   max-inline-size: 44rem;
   margin-inline: auto;
@@ -62,7 +65,7 @@ input[type='range'] {
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
   border-block-start: 1px solid var(--line);
-  padding-block-end: env(safe-area-inset-bottom, 0px);
+  padding-block-end: var(--sab);
   padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px);
 }
 .shell__nav ul {
@@ -70,11 +73,12 @@ input[type='range'] {
   margin: 0;
   padding: var(--s-1) var(--s-2);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+  /* Immer genau vier gleich breite Spalten in EINER Zeile */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .navlink {
-  overflow-wrap: anywhere;
-  hyphens: auto;
+  white-space: nowrap;
+  hyphens: none;
   text-align: center;
   min-inline-size: 0;
   display: flex;
@@ -86,13 +90,20 @@ input[type='range'] {
   padding: var(--s-1);
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.75rem;
+  /* feste Pixelgröße: die Beschriftung darf nie umbrechen (auch bei großer App-Schrift) */
+  font-size: 12px;
+  line-height: 1.2;
   font-weight: 500;
+}
+@media (max-width: 359px) {
+  .navlink {
+    font-size: 11px;
+  }
 }
 .navlink__icon {
   display: grid;
   place-items: center;
-  inline-size: 56px;
+  inline-size: min(100%, 56px);
   block-size: 32px;
   border-radius: var(--r-pill);
   transition:
@@ -144,7 +155,7 @@ input[type='range'] {
 
 /* Heute */
 .heute__greet {
-  padding-block-start: var(--s-3);
+  padding-block-start: 0;
 }
 .heute__hero {
   align-items: center;
@@ -163,8 +174,14 @@ input[type='range'] {
   gap: var(--space-section);
 }
 .heute__empty {
-  align-items: flex-start;
-  max-inline-size: var(--measure);
+  align-items: center;
+  text-align: center;
+  max-inline-size: 28rem;
+  margin-inline: auto;
+  padding-block: var(--s-4);
+}
+.heute__empty .heute__cta {
+  max-inline-size: 22rem;
 }
 .why summary {
   cursor: pointer;
@@ -236,8 +253,15 @@ input[type='range'] {
   display: flex;
   align-items: center;
   gap: var(--s-2);
-  justify-content: flex-end;
+  justify-content: space-between;
+  min-block-size: 48px;
   margin-block-end: var(--s-2);
+}
+.shell__brand {
+  font-size: var(--fs-4);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 a.iconbtn {
   color: var(--text);
@@ -245,14 +269,23 @@ a.iconbtn {
 }
 a.btn {
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .pwa-banner {
   display: grid;
   gap: var(--s-3);
   background: var(--tint);
   border-radius: var(--r-lg);
-  padding: var(--s-4) var(--s-5);
-  margin-block-end: var(--s-5);
+  padding: var(--s-3) var(--s-4);
+  margin-block-end: var(--s-4);
+  font-size: var(--fs-2);
+  line-height: 1.4;
+}
+.pwa-banner .btn {
+  justify-self: end;
+  min-block-size: 44px;
 }
 [data-theme='contrast'] .pwa-banner {
   background: var(--surface);
@@ -360,12 +393,12 @@ a.cardlink {
   display: none;
 }
 .shell__main--bleed .pwa-banner {
-  margin: var(--s-2) var(--s-4);
+  display: none;
 }
 .reader {
   display: flex;
   flex-direction: column;
-  block-size: calc(100dvh - 4.8rem - env(safe-area-inset-bottom, 0px));
+  block-size: calc(100dvh - 4.8rem - var(--sab));
   min-block-size: 0;
 }
 @media (min-width: 1024px) {
@@ -376,14 +409,28 @@ a.cardlink {
 .reader__head {
   display: grid;
   gap: var(--s-2);
-  padding: var(--s-3) var(--s-4);
+  padding: calc(var(--s-3) + var(--sat)) var(--s-4) var(--s-3);
   background: var(--surface);
   border-block-end: 1px solid var(--line);
 }
 .reader__title {
-  font-size: var(--fs-4);
+  font-size: var(--fs-3);
   letter-spacing: 0;
-  overflow-wrap: anywhere;
+  /* eine Zeile, damit der Lesebereich Platz behält */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.reader__modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-2);
+}
+.reader__modes .btn {
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding-inline: var(--s-2);
+  font-size: var(--fs-2);
 }
 .pdfreader {
   display: flex;
@@ -543,4 +590,21 @@ a.cardlink {
 .practice__prompt {
   font-size: 1.125rem;
   margin-block-end: var(--s-3);
+}
+
+.heute__cluster-full {
+  inline-size: 100%;
+  justify-content: center;
+}
+
+/* Material hinzufügen: auf dem Handy drei gleich breite Knöpfe untereinander */
+.dropzone .btn {
+  inline-size: 100%;
+  justify-content: center;
+  text-align: center;
+}
+@media (min-width: 600px) {
+  .dropzone .btn {
+    inline-size: auto;
+  }
 }

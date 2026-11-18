@@ -84,7 +84,8 @@
     "dailyMinutes": "Study time per day (minutes)",
     "latestHour": "Latest hour (0–23)",
     "blockMinutes": "Block length until a break (minutes)",
-    "settingsHint": "Madar plans with these. You can change them any time."
+    "settingsHint": "Madar plans with these. You can change them any time.",
+    "planLineNoReview": "{topic} · {kind} · about {minutes} min"
   },
   "data": {
     "title": "Your data",

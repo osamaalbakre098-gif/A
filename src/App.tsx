@@ -43,6 +43,9 @@ function SettingsPage() {
         </DbProvider>
       </Suspense>
       <Stack space="tight">
+        <a className="btn btn--secondary" href="#jobs">
+          {t('nav.jobs')}
+        </a>
         <a className="btn btn--secondary" href="#data">
           {t('settings.dataLink')}
         </a>
