@@ -377,8 +377,7 @@ export default function JobsPage() {
                 key={`${v.typ}-${v.ref ?? i}`}
                 icon={Sparkles}
                 title={<bdi dir="auto">{v.titel}</bdi>}
-                subtitle={`${t(`jobs.typ.${v.typ as JobTyp}`)}${v.detail ? ` · ${v.detail}` : ''}`}
-                value={t('jobs.create')}
+                subtitle={`${t(`jobs.typ.${v.typ as JobTyp}`)}${v.detail ? ` · ${v.detail}` : ''} · ${t('jobs.create')}`}
                 onClick={() => void erstellen(v)}
               />
             ))}
@@ -422,11 +421,16 @@ export default function JobsPage() {
               autoComplete="off"
               spellCheck={false}
             />
-            <Button variant="quiet" aria-pressed={showCode} onClick={() => setShowCode(!showCode)}>
+            <Button
+              variant="quiet"
+              className="jobs__flush"
+              aria-pressed={showCode}
+              onClick={() => setShowCode(!showCode)}
+            >
               {showCode ? t('jobs.codeHide') : t('jobs.codeShow')}
             </Button>
           </div>
-          <Cluster>
+          <Cluster className="jobs__flush">
             <Button
               variant="secondary"
               onClick={speichern}

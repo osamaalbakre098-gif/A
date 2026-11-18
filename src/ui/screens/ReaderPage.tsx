@@ -6,6 +6,7 @@ import { newId } from '../../data/ids';
 import { findMatches } from '../../content/text';
 import { EmptyState, SegmentedControl, Stack } from '../components';
 import { useDb } from '../DbProvider';
+import { hrefTo } from '../useHashRoute';
 
 // pdf.js ist groß: erst laden, wenn ein PDF geöffnet wird.
 const PdfReader = lazy(() => import('./PdfReader'));
@@ -112,6 +113,9 @@ export default function ReaderPage({
   return (
     <div className="reader view">
       <div className="reader__head">
+        <a className="backlink" href={hrefTo('subject', doc.subjectId)}>
+          ← {t('reader.back')}
+        </a>
         <h1 className="reader__title" title={doc.name}>
           <bdi dir="auto">{doc.name}</bdi>
         </h1>

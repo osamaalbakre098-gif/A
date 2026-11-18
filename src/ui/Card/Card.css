@@ -8,6 +8,11 @@
     border: var(--card-edge);
     min-inline-size: 0;
   }
+  .card h2 {
+    font-size: var(--type-row);
+    line-height: var(--lh-row);
+    font-weight: var(--weight-semibold);
+  }
   .card--raised {
     box-shadow: var(--shadow-1);
   }

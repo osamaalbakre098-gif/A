@@ -65,3 +65,45 @@ Format: Screen · Breite · Befund · Fix · Status. „Belegt" heißt: per Test
 10. Öffne die Galerie und ein Sheet: Lässt es sich mit dem Finger nach unten wegziehen?
 11. Tippe in der Galerie „Toast mit Rückgängig": Ist der Hinweis gut lesbar und lang genug da?
 12. Drehe das iPhone quer: Bleibt links und rechts Abstand zur Kamera-Aussparung?
+
+---
+
+# Phase B – Innenbildschirme (Beobachtungen aus den Bildern)
+
+Bilder: 320/390/768 pt, Hell/Dunkel/Hoher Kontrast, 100/200 %, Deutsch/Arabisch (Chromium, Linux; Skript für die Reihe liegt nicht im Repo, die Prüfungen stehen in `tests/e2e/phase-b.spec.ts`). Jede Zeile: was ich im Bild gesehen habe → was ich geändert habe.
+
+| Screen                                                    | Beobachtung im Bild                                                                                                                                               | Änderung                                                                                                                               | Status                                                                      |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Heute (Plan)                                              | Warum?/Ändern waren eingerückt und standen untereinander. Hauptknopf bei 200 % unter dem sichtbaren Bereich (der Mangel, den du genannt hast).                    | Hauptaktion „Starten" als `StickyAction` über der Tab-Leiste; Warum?/Ändern in einer Zeile, Textkante fluchtet mit dem Text darüber.   | Bild + Test (`rahmen.spec`, `phase-b.spec`: bei 320×568 und 200 % sichtbar) |
+| Sheets (Warum, Ändern, Material, Fach, Sitzung verlassen) | Sheet „klein" war nur 40 % hoch: Text verschwand hinter dem Knopf.                                                                                                | Höhen 62/80/92 %.                                                                                                                      | Bild                                                                        |
+| Fächer                                                    | Liste statt Kartenraster; Fachfarbe als Punkt, „Fach anlegen" als letzte Zeile, Anlegen im Sheet.                                                                 | –                                                                                                                                      | Bild                                                                        |
+| Fach                                                      | „Prüfung eintragen" hatte keine Symbolspalte (Text eingerückt, ohne Grund). Datei-Zeile mit Fortschrittsbalken. Fähigkeitenliste entfällt (steht im Könnensbaum). | Kalender-Symbol; Zeilen ohne Symbol haben keine leere Spalte mehr (Trennlinie beginnt dann am Innenrand).                              | Bild + Test                                                                 |
+| Fach bei 200 %                                            | „Könnensbaum" brach mitten im Wort.                                                                                                                               | Weiche Trennstelle (`Könnens                                                                                                           | baum`).                                                                     | Bild |
+| Einstellungen                                             | Erscheinungsbild mit 4 Segmenten brach „Kontra/st", „Syste/m". Sprache überlappte bei 200 %. Stepper-Zeilen eng.                                                  | Segmente umbrechen als ganze Wörter in die nächste Zeile (Flex, Mindestbreite = Text); Schriftgrößen-Vorschau-Satz; mehr Innenabstand. | Bild (nach Fix noch nicht bei 200 % erneut betrachtet, siehe unten)         |
+| Aufträge                                                  | Titel der Vorschläge war in eine schmale Spalte gequetscht („Vorbe-reiten"). Knöpfe in der Verbindungskarte uneinheitlich eingerückt.                             | Aktion in die Untertitelzeile; Knöpfe fluchten links.                                                                                  | Bild                                                                        |
+| Karten (Überschriften)                                    | Überschrift in Karten war größer als Abschnittstitel.                                                                                                             | Eine Rolle für Kartenüberschriften.                                                                                                    | Bild                                                                        |
+| Lernsitzung                                               | Eigener Kopf (Schließen, Fortschritt) statt Zurück-Link; Hauptaktion angeheftet. Schließen-Knopf saß 12 px zu weit innen (doppelter Seitenrand).                  | Seitenrand-Korrektur; „Sitzung verlassen" fragt nach, nichts geht verloren.                                                            | Bild                                                                        |
+| Leser                                                     | Der Zurück-Link fehlte nach meinem Umbau (kein Weg zurück). Seite lief 9 px über (Rahmenabstand unten).                                                           | Zurück-Link zurück; Rahmenabstand im Leser aufgehoben.                                                                                 | Bild + Test                                                                 |
+| Hoher Kontrast                                            | Karten, Zeilen, Segmente mit geschlossenen Rändern. Keine Mängel gesehen.                                                                                         | –                                                                                                                                      | Bild                                                                        |
+| Arabisch                                                  | Spiegelung, Pfeile, Stepper (+ links, − rechts), lateinische Ziffern. Keine Mängel gesehen.                                                                       | –                                                                                                                                      | Bild                                                                        |
+| 768 pt                                                    | Inhalt in Lesespalte neben Seitenleiste. Keine Mängel gesehen.                                                                                                    | –                                                                                                                                      | Bild                                                                        |
+
+Nicht erneut betrachtet nach den letzten Korrekturen: Einstellungen bei 200 % (Segmente), Daten bei 200 %, Aufträge bei 200 %. Die automatischen Prüfungen (kein Überlauf, Tippflächen, axe) laufen für alle, das Bild habe ich dort nicht mehr angesehen.
+
+## Nicht geprüft
+
+- Echtes iPhone/Safari/WebKit (WebKit ist hier nicht installiert, das iPhone-Testprojekt kann nicht laufen), VoiceOver, Haptik, Tastatur am echten Gerät, Querformat.
+- Datumsfeld der Prüfung: in Chromium zeigt es „mm/dd/yyyy"; Safari nutzt das native Rad. Ersatz mit drei Feldern (UI_VORGABE 6.14) ist nicht gebaut.
+- Bewertung von Aufträgen (Antwort einfügen) mit einer echten Claude-Antwort.
+
+## Neue Testliste für dich (iPhone)
+
+1. Heute mit Plan, Textgröße 200 %: Ist „Starten" ohne Scrollen sichtbar, liegt es über der Navigation?
+2. Fach anlegen → Material hinzufügen → Text einfügen: Sind die Sheets hoch genug, Text lesbar?
+3. Fach: Datei antippen (Leser), Zurück zum Fach: funktioniert der Zurück-Link?
+4. Prüfung eintragen: Datumsrad, „Speichern", Hinweis „Gespeichert".
+5. Starten → eine Aufgabe → X oben links: „Pause machen?" und beide Knöpfe.
+6. Einstellungen: Erscheinungsbild bei 200 %: Wörter ganz, nichts überlappt?
+7. Aufträge: Kopieren-Knopf in unter 30 Sekunden gefunden?
+8. Deine Daten: „Alles exportieren" (ZIP) lädt herunter?
+9. Hoher Kontrast und Arabisch: je einmal durch alle Bildschirme.

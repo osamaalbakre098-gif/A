@@ -1,4 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
+import { CalendarDays } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { dayDiff } from '../../core/director/days';
@@ -28,6 +29,7 @@ export function ExamRow({ subjectId, onOpen }: { subjectId: string; onOpen: () =
     : '';
   return (
     <ListRow
+      icon={CalendarDays}
       title={next ? t('exam.rowSet', { date, days: dayDiff(today, next.date) }) : t('exam.add')}
       onClick={onOpen}
     />

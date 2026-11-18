@@ -73,10 +73,12 @@ export function ListRow({
   const interactive = !!(href || onClick) && !disabled;
   const body = (
     <>
-      <span className="listrow__lead" aria-hidden="true">
-        {icon && <Icon as={icon} size={20} />}
-        {dot && <span className="listrow__dot" style={{ background: `var(--subj-${dot})` }} />}
-      </span>
+      {(icon || dot) && (
+        <span className="listrow__lead" aria-hidden="true">
+          {icon && <Icon as={icon} size={20} />}
+          {dot && <span className="listrow__dot" style={{ background: `var(--subj-${dot})` }} />}
+        </span>
+      )}
       <span className="listrow__text">
         <span className="listrow__title">{title}</span>
         {subtitle && <span className="listrow__sub">{subtitle}</span>}
@@ -91,7 +93,7 @@ export function ListRow({
       )}
     </>
   );
-  const cls = `listrow${interactive ? ' listrow--tap' : ''}${state === 'selected' ? ' listrow--selected' : ''}`;
+  const cls = `listrow${icon || dot ? '' : ' listrow--nolead'}${interactive ? ' listrow--tap' : ''}${state === 'selected' ? ' listrow--selected' : ''}`;
   return (
     <li className="listrow-item">
       {href && interactive ? (

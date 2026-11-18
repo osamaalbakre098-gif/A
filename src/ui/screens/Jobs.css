@@ -43,4 +43,7 @@
     align-items: flex-start;
     gap: var(--space-1);
   }
+  .jobs__flush {
+    margin-inline-start: calc(var(--space-3) * -1);
+  }
 }

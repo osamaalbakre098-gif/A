@@ -177,7 +177,7 @@ export default function Heute({ data, extras = {} }: { data: TodayData; extras?:
               <p className="t-note">{t('heute.progress', data.progress)}</p>
             </Stack>
           )}
-          <Cluster>
+          <Cluster className="heute__actions">
             <Button variant="plain" onClick={() => setWhy(true)}>
               <CircleHelp size={20} aria-hidden="true" />
               {t('heute.why')}

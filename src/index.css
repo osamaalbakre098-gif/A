@@ -197,18 +197,20 @@
   .reader {
     display: flex;
     flex-direction: column;
-    block-size: calc(100dvh - var(--tabbar-h) - var(--sab) - var(--appbar-h) - var(--sat));
+    block-size: calc(100dvh - var(--tabbar-h) - var(--sab));
     min-block-size: 0;
+    /* der Rahmen lässt unten Platz für die Navigation: hier füllt der Leser ihn selbst */
+    margin-block: calc(var(--space-2) * -1) calc(var(--space-14) * -1);
   }
   @media (min-width: 768px) {
     .reader {
-      block-size: calc(100dvh - var(--appbar-h) - var(--sat));
+      block-size: 100dvh;
     }
   }
   .reader__head {
     display: grid;
     gap: var(--s-2);
-    padding: var(--s-2) var(--s-4) var(--s-3);
+    padding: calc(var(--s-3) + var(--sat)) var(--s-4) var(--s-3);
     background: var(--surface);
     border-block-end: 1px solid var(--line);
   }

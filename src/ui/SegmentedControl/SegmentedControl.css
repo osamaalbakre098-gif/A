@@ -14,17 +14,18 @@
     font-weight: var(--weight-semibold);
   }
   .seg__track {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--space-1);
     padding: var(--space-1);
     border-radius: var(--radius-field);
     background: var(--fill);
   }
+  /* Jede Möglichkeit mindestens so breit wie ihr Text: bei großer Schrift rutscht sie in die nächste Zeile, nichts überlappt */
   .seg__item {
     position: relative;
     display: grid;
+    flex: 1 1 max-content;
   }
   .seg__input {
     position: absolute;
@@ -44,7 +45,8 @@
     line-height: var(--lh-secondary);
     font-weight: var(--weight-medium);
     color: var(--text);
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
+    hyphens: manual;
   }
   .seg__input:checked + .seg__label {
     background: var(--bg-elevated);

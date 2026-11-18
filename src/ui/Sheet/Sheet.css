@@ -24,10 +24,10 @@
     animation: sheet-in var(--t-slow) var(--ease);
   }
   .sheet--sm {
-    max-block-size: 40dvh;
+    max-block-size: 62dvh;
   }
   .sheet--md {
-    max-block-size: 70dvh;
+    max-block-size: 80dvh;
   }
   .sheet--lg {
     max-block-size: 92dvh;

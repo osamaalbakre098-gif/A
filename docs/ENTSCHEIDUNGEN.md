@@ -139,3 +139,13 @@
 **Einstellungs-Knopf fehlt auf den Einstellungen selbst** (nichts doppelt).
 
 **Visuelle Regression** mit Referenzbildern unter `tests/e2e/ui-details.spec.ts-snapshots/` (Chromium/Linux). Sie gelten nur für diese Umgebung; auf anderen Rechnern müssen sie neu erzeugt werden.
+
+**Phase B – Hauptaktion angeheftet:** Auf Heute, in Lernsitzung und Aufgaben steht die Hauptaktion in `StickyAction` direkt über der Navigation (in der Sitzung ohne Navigation am unteren Rand). So ist sie bei 200 % Schrift ohne Scrollen erreichbar.
+
+**Phase B – Segmente brechen um:** `SegmentedControl` ist eine umbrechende Zeile (Mindestbreite = Text) statt festen Spalten, damit bei 200 % nichts überlappt und kein Wort getrennt wird.
+
+**Phase B – Zeilen ohne Symbol:** `ListRow` ohne Symbol/Punkt reserviert keine leere Symbolspalte.
+
+**Phase B – Sheets 62/80/92 %** der Höhe (vorher 40/70/92), weil kleine Sheets bei 568 pt den Text verdeckten.
+
+**Phase B – Fach ohne Fähigkeitenliste:** Die Liste der Fähigkeiten steht im Könnensbaum; das Fach zeigt Fortschritt, Prüfung, Baum und Dateien.

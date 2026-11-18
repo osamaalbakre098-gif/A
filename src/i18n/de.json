@@ -106,7 +106,7 @@
     "whyTitle": "Warum jetzt?",
     "whyOk": "Verstanden",
     "keepGoing": "Freiwillig weiterüben",
-    "treeRowTitle": "Könnensbaum",
+    "treeRowTitle": "Könnens|baum",
     "treeRowSub": "{sits} von {total} sitzen",
     "examChip": "{subject}-Prüfung in {days, plural, =0 {null Tagen} one {# Tag} other {# Tagen}}",
     "jobsTitle": "{count, plural, one {# Auftrag wartet} other {# Aufträge warten}} auf Claude",

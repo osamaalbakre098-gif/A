@@ -192,3 +192,20 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 - Automatisch getestet: `pnpm test:ui-details` (neu: `tests/e2e/ui-details.spec.ts`): Tippflächen ≥ 44 und Eingaben ≥ 16 px (Rahmen, Galerie), kein Überlauf in 5 Breiten × 3 Textskalen × 3 Sprachen (+ Dunkel/Kontrast bei 320), Ausrichtung (Banner ±1 px bei 100/200 %, Seitenleiste), 4-px-Raster und fluchtende Kanten bei 320/390/768/1280, Lesespalte 640, Tab-Leiste einzeilig bei 200 % mit simulierten 34 px unten, Texthygiene in de/en/ar, Übergänge ≤ 120 ms bei reduzierter Bewegung, CLS ≤ 0,001 nach Navigation, visuelle Regression (9 Referenzbilder); Glas-Kontrast im Kontrastskript; Unit-Tests für `softBreak`/`middleEllipsis`.
 - Angesehen: siehe `docs/DETAIL_REVIEW.md` (mit 3×-Ausschnitten).
 - Nicht geprüft: echtes Safari/WebKit, VoiceOver, Haptik, echte Tastatur, Querformat am Gerät; Innenseiten (Phase B).
+
+## UI-Vorgabe Phase B – Innenbildschirme (Stand)
+
+| Bildschirm                                                                               | Gebaut | Automatisch getestet                                            | Auf echtem iPhone geprüft                 |
+| ---------------------------------------------------------------------------------------- | ------ | --------------------------------------------------------------- | ----------------------------------------- |
+| Heute (Zustände Plan/Fertig/Leer, Warum-/Ändern-Sheet, angeheftete Hauptaktion)          | ja     | E2E (`heute.spec`, `rahmen.spec`, `phase-b.spec`), axe 3 Themes | nein                                      |
+| Fächer (Liste, Anlegen im Sheet)                                                         | ja     | E2E (`material`, `baum`, `studienleiter`, `phase-b`)            | nein                                      |
+| Fach (Fortschritt, Prüfung-Sheet, Dateiliste, Material-hinzufügen-Sheet, Einfügen-Sheet) | ja     | E2E (`material`, `phase-b`)                                     | nein                                      |
+| Leser (kompakter Kopf, Seite/Umfließen als Segmente, Zurück)                             | ja     | E2E (`material`)                                                | nein                                      |
+| Lernsitzung (Kopf mit Schließen/Fortschritt, angeheftete Aktion, Verlassen-Sheet)        | ja     | E2E (`studienleiter`, `phase-b`: Überlauf/axe)                  | nein                                      |
+| Aufträge (Status, Vorschläge, Schritte, Ergebnis, Verbindung)                            | ja     | E2E (`auftraege`, `phase-b`)                                    | nein, Antwort mit echtem Claude ungeprüft |
+| Deine Daten (Speicherkarte, Anleitung, Sichern, Selbsttest, Import-Sheet)                | ja     | E2E (`daten.spec`, `phase-b`)                                   | nein                                      |
+| Einstellungen (Lernen mit Stepper, Darstellung, Claude, Daten, Über)                     | ja     | E2E (`app`, `phase-b`), Snapshots                               | nein                                      |
+
+Unit: 238 grün. E2E (Chromium): siehe Meldung. WebKit-iPhone-Projekt: hier nicht ausführbar.
+
+Offen aus Phase B: neue Bausteine noch nicht in der Galerie; drei Felder als Datumsersatz; „Entspannt/Normal/Gründlich" (Einstellungen 6.13) nicht gebaut, weil es dafür keine Logik gibt.
