@@ -1,0 +1,8 @@
+@layer components {
+  .cluster--center {
+    justify-content: center;
+  }
+  .error-view {
+    padding-block: var(--space-10);
+  }
+}

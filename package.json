@@ -12,7 +12,7 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "typecheck": "tsc -b --noEmit",
-    "lint": "eslint . && tsx scripts/lint-css.ts",
+    "lint": "eslint . && tsx scripts/lint-css.ts && stylelint \"src/**/*.css\"",
     "format": "prettier --write .",
     "a11y": "playwright test gallery --project=chromium",
     "a11y:contrast": "tsx scripts/contrast.ts"
@@ -58,6 +58,7 @@
     "jsdom": "^31.0.1",
     "pngjs": "^7.0.0",
     "prettier": "^3.10.1",
+    "stylelint": "^18.0.0",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.73.0",

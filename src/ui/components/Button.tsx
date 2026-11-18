@@ -3,12 +3,17 @@ import type { ButtonHTMLAttributes } from 'react';
 import { Icon } from './Icon';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'quiet' | 'danger';
+  variant?: 'primary' | 'secondary' | 'plain' | 'destructive' | 'quiet' | 'danger';
+  /** m = 48 px, l = 52 px (Hauptaktion) */
+  size?: 'm' | 'l';
+  fullWidth?: boolean;
   loading?: boolean;
 }
 
 export function Button({
   variant = 'primary',
+  size = 'm',
+  fullWidth,
   loading,
   disabled,
   children,
@@ -21,7 +26,7 @@ export function Button({
       {...rest}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
-      className={`btn btn--${variant} ${className ?? ''}`.trim()}
+      className={`btn btn--${variant}${size === 'l' ? ' btn--l' : ''}${fullWidth ? ' btn--block' : ''} ${className ?? ''}`.trim()}
     >
       {loading && <span className="spinner" aria-hidden="true" />}
       {children}

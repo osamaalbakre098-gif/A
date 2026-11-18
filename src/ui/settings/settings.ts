@@ -5,7 +5,7 @@ import i18n, { isRtl, LANGUAGES, type Language } from '../../i18n';
 export type ThemeChoice = 'system' | 'light' | 'dark' | 'contrast';
 export const TEXT_SCALE_MIN = 90;
 export const TEXT_SCALE_MAX = 200;
-const BASE_FONT_PX = 17;
+const BASE_FONT_PX = 16;
 const KEY = 'madar.settings.v1';
 
 export interface Settings {

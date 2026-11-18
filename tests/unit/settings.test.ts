@@ -28,7 +28,7 @@ describe('Einstellungen', () => {
   it('Textgröße 200 % ergibt 34 px Grundgröße, Hoher Kontrast setzt Theme', () => {
     const root = document.createElement('html');
     applySettings({ ...DEFAULT_SETTINGS, textScale: 200, theme: 'contrast' }, root);
-    expect(root.style.getPropertyValue('--fs-base')).toBe('34px');
+    expect(root.style.getPropertyValue('--fs-base')).toBe('32px');
     expect(root.dataset.theme).toBe('contrast');
   });
 });

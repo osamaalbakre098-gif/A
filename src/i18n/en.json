@@ -18,7 +18,9 @@
     "search": "Search",
     "subject": "Subjects",
     "doc": "Subjects",
-    "jobs": "Jobs"
+    "jobs": "Jobs",
+    "back": "Back",
+    "settingsOpen": "Open settings"
   },
   "settings": {
     "title": "Settings",
@@ -462,5 +464,27 @@
     "dateLabel": "Exam date",
     "add": "Add exam",
     "note": "Madar plans backwards from exam day. If you move the date, it re-plans – no blame. A grading scale exists only if you enter it yourself."
+  },
+  "ui": {
+    "close": "Close",
+    "loading": "Loading …",
+    "dragHandle": "Drag down to close",
+    "dismiss": "Dismiss"
+  },
+  "error": {
+    "title": "That did not work",
+    "text": "This page could not be shown. Your data is unchanged. Reload the page or go to “Today”.",
+    "reload": "Reload",
+    "copy": "Copy error",
+    "copied": "Error copied",
+    "home": "Go to “Today”"
+  },
+  "banner": {
+    "offline": "You are offline. Everything you learned stays saved."
+  },
+  "toast": {
+    "updateReady": "New version ready",
+    "updateAction": "Load now",
+    "offlineReady": "Madar now also works without internet."
   }
 }

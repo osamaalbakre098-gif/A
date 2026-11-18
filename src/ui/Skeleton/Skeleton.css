@@ -1,0 +1,44 @@
+@layer components {
+  .skeleton {
+    opacity: 0;
+    animation: skeleton-in var(--t-base) var(--ease) 300ms forwards;
+  }
+  .skeleton__blocks {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .skeleton__block {
+    display: block;
+    block-size: var(--space-4);
+    border-radius: var(--radius-field);
+    background: var(--fill);
+  }
+  .skeleton__block--short {
+    inline-size: 60%;
+  }
+  .skeleton__block--row {
+    block-size: var(--tap-row);
+    border-radius: var(--radius-card);
+  }
+  .skeleton__block--card {
+    block-size: calc(var(--space-18) * 2);
+    border-radius: var(--radius-card);
+  }
+  [data-theme='contrast'] .skeleton__block {
+    background: var(--surface);
+    border: 2px solid var(--border);
+  }
+  .visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  @keyframes skeleton-in {
+    to {
+      opacity: 1;
+    }
+  }
+}

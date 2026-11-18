@@ -1,0 +1,103 @@
+@layer components {
+  .sheet {
+    --sheet-drag: 0px;
+    position: fixed;
+    inset-block: auto 0;
+    inset-inline: 0;
+    margin: 0 auto;
+    inline-size: min(100%, 40rem);
+    max-inline-size: 100%;
+    padding: 0;
+    border: 0;
+    border-start-start-radius: var(--radius-sheet);
+    border-start-end-radius: var(--radius-sheet);
+    background: var(--surface-raised);
+    color: var(--text);
+    box-shadow: var(--shadow-2);
+    z-index: var(--z-sheet);
+    overflow: hidden;
+    transform: translateY(var(--sheet-drag));
+  }
+  .sheet[open] {
+    display: flex;
+    flex-direction: column;
+    animation: sheet-in var(--t-slow) var(--ease);
+  }
+  .sheet--sm {
+    max-block-size: 40dvh;
+  }
+  .sheet--md {
+    max-block-size: 70dvh;
+  }
+  .sheet--lg {
+    max-block-size: 92dvh;
+  }
+  .sheet::backdrop {
+    background: color-mix(in srgb, var(--text) 40%, transparent);
+    animation: sheet-fade var(--t-slow) var(--ease);
+  }
+  [data-theme='contrast'] .sheet {
+    border: 2px solid var(--border);
+  }
+  [data-theme='contrast'] .sheet::backdrop {
+    background: var(--text);
+    opacity: 0.6;
+  }
+  .sheet__top {
+    display: grid;
+    place-items: center;
+    min-block-size: var(--space-6);
+    padding-block: var(--space-2);
+    touch-action: none;
+    cursor: grab;
+  }
+  .sheet__handle {
+    inline-size: var(--space-10);
+    block-size: var(--space-1);
+    border-radius: var(--radius-pill);
+    background: var(--outline);
+  }
+  .sheet__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-inline: var(--space-5);
+    padding-block-end: var(--space-2);
+  }
+  .sheet__close {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--fill);
+    color: var(--text);
+    cursor: pointer;
+  }
+  .sheet__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-2) var(--space-5) var(--space-5);
+    overscroll-behavior: contain;
+  }
+  .sheet__foot {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5) calc(var(--space-4) + var(--sab));
+    border-block-start: 1px solid var(--separator);
+    background: var(--surface-raised);
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes sheet-fade {
+    from {
+      opacity: 0;
+    }
+  }
+}

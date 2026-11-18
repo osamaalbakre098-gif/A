@@ -1,0 +1,90 @@
+@layer screens {
+  .g-card {
+    padding: var(--space-card);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    box-shadow: var(--shadow-1);
+    display: grid;
+    gap: var(--space-2);
+  }
+  [data-theme='contrast'] .g-card {
+    border: 2px solid var(--border);
+  }
+  .g-type--large {
+    font-size: var(--type-large-title);
+    line-height: var(--lh-large-title);
+    font-weight: 700;
+  }
+  .g-type--title {
+    font-size: var(--type-title);
+    line-height: var(--lh-title);
+    font-weight: 700;
+  }
+  .g-type--headline {
+    font-size: var(--type-headline);
+    line-height: var(--lh-headline);
+    font-weight: 600;
+  }
+  .g-type--row {
+    font-size: var(--type-row);
+    line-height: var(--lh-row);
+    font-weight: 600;
+  }
+  .g-type--body {
+    font-size: var(--type-body);
+    line-height: var(--lh-body);
+  }
+  .g-type--secondary {
+    font-size: var(--type-secondary);
+    line-height: var(--lh-secondary);
+  }
+  .g-type--note {
+    font-size: var(--type-note);
+    line-height: var(--lh-note);
+    font-weight: 500;
+  }
+  .g-type--tab {
+    font-size: var(--type-tab);
+    line-height: var(--lh-tab);
+    font-weight: 600;
+  }
+  .g-swatch {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .g-swatch__chip {
+    display: block;
+    block-size: var(--space-10);
+    border-radius: var(--radius-field);
+    border: 1px solid var(--outline);
+  }
+  .g-dot {
+    display: inline-block;
+    inline-size: var(--space-6);
+    block-size: var(--space-6);
+    border-radius: var(--radius-pill);
+  }
+  .g-frame {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--outline);
+    background: var(--bg);
+  }
+  .g-frame .appbar {
+    position: static;
+  }
+  .g-frame__body {
+    padding: var(--space-2) var(--page-margin) var(--space-4);
+  }
+  .g-frame--nav .tabbar {
+    position: static;
+  }
+  .g-frame--side {
+    max-inline-size: var(--sidebar-w);
+  }
+  .g-frame--side .tabbar {
+    position: static;
+    block-size: auto;
+    border-inline-end: 0;
+  }
+}

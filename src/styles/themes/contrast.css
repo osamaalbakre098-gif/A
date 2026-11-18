@@ -1,0 +1,34 @@
+/* Farben Hoher Kontrast (Rollen in tokens.css, Werte hier) */
+@layer tokens {
+  [data-theme='contrast'] {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f0f0f0;
+    --text: #000000;
+    --text-muted: #1a1a1a;
+    --primary: #00206b;
+    --on-primary: #ffffff;
+    --accent-alt: #00574f;
+    --success: #0b4a1c;
+    --warning: #5c3a00;
+    --danger: #7a0000;
+    --focus: #0040d0;
+    --border: #000000;
+    --border-soft: #000000;
+    --line: #000000;
+    --field-border: #000000;
+    --field-bw: 2px;
+    --card-bw: 2px;
+    --btn2-border: #000000;
+    --btn2-bw: 2px;
+    --tint: #ffffff;
+    --tint-strong: #f0f0f0;
+    --track-off: #ffffff;
+    --thumb-off: #000000;
+    --arc-off: #bdbdbd;
+    --glass: #ffffff;
+    --shadow-1: none;
+    --shadow-2: none;
+    --shadow-btn: none;
+  }
+}

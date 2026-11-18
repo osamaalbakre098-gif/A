@@ -9,3 +9,5 @@
 6. **Cloudflare:** KV-Namespace und Secret `PAIRING_CODE` anlegen (Schritte in `docs/KONNEKTOR_ANLEITUNG.md`), nachdem die Seite ausgeliefert ist.
 7. **Echter Test:** Einmal einen echten „baum"-Auftrag durch Claude laufen lassen; danach Antwortqualität und Schemafehler auswerten und ggf. Anweisungen nachschärfen.
 8. **Version 2:** Proxy/Turnstile/Budget/mehrere Nutzer (zurückgestellt).
+9. **UI Phase A:** WebKit/echtes iPhone: Safe Area (`env()`), Unschärfe der Kopfzeile/Navigation, Sheet mit dem Finger ziehen, Dynamic Island. Bitte auf dem iPhone ansehen (Vorschau-Links in der Meldung).
+10. **UI-Vorgabe:** Die Vorgabe nennt „Aufträge" auch als Karte auf „Heute"; `Heute` zeigt sie bisher nur bei vorbereiteten Fähigkeiten (kommt in Phase B mit den Zuständen A–F).

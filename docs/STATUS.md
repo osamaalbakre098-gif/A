@@ -169,3 +169,19 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 - Automatisch getestet: `tests/e2e/layout-handy.spec.ts` (3 Größen × 6 Seiten bei 150 % Schrift: Navigation einzeilig, nichts Bedienbares unter einer simulierten 47-px-Statusleiste, kein seitliches Scrollen, Überschriften ohne Silbentrennung; Hauptknopf ≥ 48 px und breit, Linkfarbe nicht Browser-Violett).
 - Mit Screenshots (Chromium, 2× Auflösung, simulierte Statusleiste) angesehen: Heute leer/Plan, Fach, Leser, Aufträge, Deine Daten bei 3 Breiten in Hell, Dunkel, Hoher Kontrast.
 - **Nicht geprüft:** echtes Safari (echte `env()`-Werte, Dynamic Island, Home-Indikator), echter Displayzoom; die Statusleiste wird im Test nur über die Variable simuliert.
+
+## UI-Vorgabe Phase A – Fundament (Stand)
+
+| Baustein | Gebaut | Automatisch getestet | Auf echtem iPhone geprüft |
+| --- | --- | --- | --- |
+| Tokens (`src/styles`: Schrift, Abstand 4-px, Radien, Schichten, Bewegung, Rollen) | ja | Kontrasttest, Token-Test | nein |
+| Themes Hell/Dunkel/Hoher Kontrast (aufgeteilt in `themes/*.css`) | ja | `pnpm a11y:contrast`, axe | nein |
+| Layout: Screen, Stack, Cluster, Grid, Divider, Spacer | ja | Unit-Tests | nein |
+| App-Rahmen: Safe Area, AppBar mit großem Titel und Zurück, TabBar/Seitenleiste | ja | E2E (`rahmen.spec`, `layout-handy.spec`): einzeilige Navigation bei 320, nichts unter 47-px-Statusleiste, Tippflächen ≥ 44 px, Zurück/Titel beim Scrollen, Seitenleiste 280 px, RTL, axe in 3 Themes | nein |
+| Sheet (unten, 3 Höhen, Ziehen/Esc/Hintergrund/Knopf), Toast, Banner, Skeleton (300 ms), Fehleransicht | ja | Unit + E2E (Galerie) | nein |
+| Buttons nach Vorgabe (48/52, volle Breite, plain, destructive, deaktiviert lesbar) | ja | Galerie-axe | nein |
+| Stylelint-Regeln (Hex, rohe px, left/right, !important) | ja, für alles Neue; Altdateien auf Ausnahmeliste | Negativtest gelaufen | – |
+| Galerie `/dev/components` mit allen neuen Bausteinen | ja | axe Hell/Dunkel/Kontrast × LTR/RTL, 200 % ohne Überlauf | – |
+
+- Noch nicht umgesetzt (spätere Phasen): Bildschirme nach Abschnitt 6 (Phase B/C), SearchField, Stepper, Slider, ListGroup/ListRow, Card-Varianten, SkillRow, StepList, CopyBlock, ConfidencePrompt, Meter, Ring/Arc nach Vorgabe, Illustrationen (außer vorhandenen), `/dev/screens`, visuelle Regression (`toHaveScreenshot`), WebKit-Lauf.
+- Bundle: Haupt-JS 105 KB gzip (Budget 170 KB).

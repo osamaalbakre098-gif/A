@@ -1,0 +1,64 @@
+@layer components {
+  .toast-region {
+    position: fixed;
+    inset-inline: max(var(--page-margin), var(--sal)) max(var(--page-margin), var(--sar));
+    inset-block-end: calc(var(--tabbar-h) + var(--sab) + var(--space-3));
+    z-index: var(--z-toast);
+    display: grid;
+    justify-items: center;
+    gap: var(--space-2);
+    pointer-events: none;
+  }
+  /* In der Lernsitzung (ohne Navigation) rückt der Hinweis nach unten */
+  :root:has(.shell[data-nav='hidden']) .toast-region {
+    inset-block-end: calc(var(--sab) + var(--space-3));
+  }
+  @media (min-width: 768px) {
+    /* neben der Seitenleiste: mittig über dem Inhalt, nicht über der Navigation */
+    .toast-region {
+      inset-block-end: calc(var(--sab) + var(--space-4));
+      inset-inline-start: calc(var(--sidebar-w) + var(--page-margin));
+    }
+    :root:has(.shell[data-nav='hidden']) .toast-region {
+      inset-inline-start: var(--page-margin);
+    }
+  }
+  .toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    max-inline-size: 36rem;
+    min-block-size: var(--tap);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-card);
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: var(--shadow-2);
+    font-size: var(--type-secondary);
+    line-height: var(--lh-secondary);
+    animation: toast-in var(--t-base) var(--ease);
+  }
+  .toast__text {
+    flex: 1;
+  }
+  .toast__action {
+    min-block-size: var(--tap);
+    padding-inline: var(--space-2);
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  [data-theme='contrast'] .toast {
+    border: 2px solid var(--bg);
+  }
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--space-4));
+    }
+  }
+}

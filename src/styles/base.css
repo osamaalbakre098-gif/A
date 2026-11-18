@@ -1,0 +1,77 @@
+@layer base {
+  html {
+    font-size: var(--fs-base);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: var(--type-body);
+    line-height: var(--lh-body);
+    hyphens: manual; /* nie mitten im Wort trennen */
+    overflow-wrap: anywhere; /* bricht nur, wenn ein Wort allein nicht passt */
+    text-wrap: pretty;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :lang(ar) body,
+  [lang='ar'] body {
+    font-family: var(--font-ar);
+    line-height: 1.75;
+    font-size: 1.1rem;
+  }
+
+  h1 {
+    font-size: var(--type-large-title);
+    line-height: var(--lh-large-title);
+    font-weight: 700;
+    letter-spacing: -0.022em;
+  }
+  h2 {
+    font-size: var(--type-title);
+    line-height: var(--lh-title);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  h3 {
+    font-size: var(--type-headline);
+    line-height: var(--lh-headline);
+    font-weight: 600;
+  }
+  h1,
+  h2,
+  h3 {
+    hyphens: none;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .t-note {
+    font-size: var(--type-note);
+    line-height: var(--lh-note);
+    color: var(--text-secondary);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Linkfarben für alle Zustände aus den Tokens (Spezifität 0: Knöpfe und Karten behalten ihre eigene Farbe) */
+  :where(a:link),
+  :where(a:visited) {
+    color: var(--accent);
+  }
+  :where(a:hover) {
+    color: var(--accent);
+    text-decoration-thickness: 2px;
+  }
+  :where(a:active) {
+    color: var(--accent);
+  }
+}

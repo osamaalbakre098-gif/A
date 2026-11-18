@@ -1,0 +1,38 @@
+/* Farben Dunkel (Rollen in tokens.css, Werte hier) */
+@layer tokens {
+  [data-theme='dark'] {
+    --bg: #0e1013;
+    --surface: #1a1d21;
+    --surface-2: #272b31;
+    --text: #e8e6e1;
+    --text-muted: #a3a7ae;
+    --primary: #8fb3e8;
+    --on-primary: #0e1726;
+    --accent-alt: #7dbfb4;
+    --success: #7fc28f;
+    --warning: #e0b060;
+    --danger: #ef8f8f;
+    --focus: #8fb3e8;
+    --border: #6f7680;
+    --border-soft: #2e333a;
+    --line: #2e333a;
+    --field-border: #72757a;
+    --track-off: #72757a;
+    --arc-off: #3a3f47;
+    --thumb-off: #e8e6e1;
+    --tint: color-mix(in srgb, var(--primary) 16%, var(--surface));
+    --tint-strong: color-mix(in srgb, var(--primary) 24%, var(--surface));
+    --shadow-1: none;
+    --shadow-2: 0 10px 40px rgb(0 0 0 / 0.5);
+    --shadow-btn: none;
+    --subj-sage: #8fbf9a;
+    --subj-ocean: #7fb4d6;
+    --subj-brick: #e09a85;
+    --subj-sand: #d4b27a;
+    --subj-plum: #c79ac7;
+    --subj-moss: #b0c27a;
+    --subj-slate: #9fb0c7;
+    --subj-amber: #e0b060;
+    color-scheme: dark;
+  }
+}

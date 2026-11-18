@@ -1,3 +1,5 @@
+// Die Schichten (layers.css) müssen als Allererstes geladen werden, sonst gilt die Reihenfolge der ersten Verwendung.
+import './styles';
 import { StrictMode, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/inter';
@@ -6,9 +8,9 @@ import '@fontsource/ibm-plex-sans-arabic/600.css';
 import './i18n';
 import { setupPwa } from './pwa/pwa';
 import { initSettings } from './ui/settings/settings';
-import './ui/tokens/tokens.css';
 import './index.css';
 import App from './App.tsx';
+import { RootErrorBoundary } from './ui/ErrorBoundary';
 
 initSettings();
 void setupPwa();
@@ -36,7 +38,9 @@ createRoot(document.getElementById('root')!).render(
         <Gallery />
       </Suspense>
     ) : (
-      <App />
+      <RootErrorBoundary>
+        <App />
+      </RootErrorBoundary>
     )}
   </StrictMode>,
 );

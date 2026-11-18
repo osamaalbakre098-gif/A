@@ -1,0 +1,32 @@
+@layer screens {
+  .shell {
+    min-block-size: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .shell__col {
+    flex: 1;
+    min-inline-size: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .shell__main {
+    flex: 1;
+    inline-size: 100%;
+    padding-block: var(--space-2) var(--space-14);
+    outline: none;
+  }
+  .shell[data-bleed] .shell__col {
+    padding-block-start: 0;
+  }
+  /* Eigene Zurück-Links der Bildschirme entfallen: die Kopfzeile hat den Zurück-Knopf */
+  .shell:not([data-bleed]) .backlink {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    /* Seitenleiste links (in RTL rechts): row-reverse, weil die Navigation im Quelltext zuletzt kommt */
+    .shell {
+      flex-direction: row-reverse;
+    }
+  }
+}

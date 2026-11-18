@@ -1,0 +1,39 @@
+{
+  "rules": {
+    "declaration-no-important": true,
+    "color-no-hex": true,
+    "property-disallowed-list": [
+      "left",
+      "right",
+      "margin-left",
+      "margin-right",
+      "padding-left",
+      "padding-right",
+      "border-left",
+      "border-right",
+      "border-top-left-radius",
+      "border-top-right-radius",
+      "border-bottom-left-radius",
+      "border-bottom-right-radius",
+      "float"
+    ],
+    "declaration-property-value-disallowed-list": {
+      "/^(margin|padding)(-|$)/": ["/\\d+(\\.\\d+)?px/"],
+      "/^(gap|row-gap|column-gap)$/": ["/\\d+(\\.\\d+)?px/"],
+      "/^border(-.+)?-radius$/": ["/\\d+(\\.\\d+)?px/"],
+      "box-shadow": ["/\\d+(\\.\\d+)?px/"],
+      "font-size": ["/\\d+(\\.\\d+)?px/"],
+      "text-align": ["left", "right"]
+    }
+  },
+  "overrides": [
+    {
+      "files": ["src/styles/tokens.css", "src/styles/themes/*.css"],
+      "rules": {
+        "color-no-hex": null,
+        "declaration-property-value-disallowed-list": null
+      }
+    }
+  ],
+  "ignoreFiles": ["src/index.css", "src/ui/components/components.css"]
+}

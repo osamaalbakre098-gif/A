@@ -1,12 +1,12 @@
 import { lazy, Suspense, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppShell, type NavId } from './ui/screens/AppShell';
-import PwaBanner from './ui/screens/PwaBanner';
+import PwaNotices from './ui/screens/PwaNotices';
 import SettingsPanel from './ui/screens/SettingsPanel';
-import { EmptyState, Stack } from './ui/components';
+import { EmptyState, Skeleton, Stack, ToastProvider } from './ui/components';
 import { DbProvider } from './ui/DbProvider';
 import ErrorBoundary from './ui/ErrorBoundary';
-import { useHashRoute, type RouteName } from './ui/useHashRoute';
+import { hrefTo, useHashRoute, type RouteName } from './ui/useHashRoute';
 
 // Datenbank und ZIP-Code erst laden, wenn „Deine Daten" geöffnet wird (kleineres Start-Bundle).
 const DataPage = lazy(() => import('./ui/screens/DataPage'));
@@ -79,65 +79,89 @@ export default function App() {
         ? null
         : route.name;
   const bleed = route.name === 'doc';
+  const immersive = route.name === 'session';
+  const main =
+    route.name === 'today' ||
+    route.name === 'subjects' ||
+    route.name === 'progress' ||
+    route.name === 'search';
+  // Zurück: eine Stufe in der Verlaufsliste, sonst zur übergeordneten Seite
+  const parent =
+    route.name === 'tree' && route.id
+      ? hrefTo('subject', route.id)
+      : route.name === 'jobs' || route.name === 'data'
+        ? '#settings'
+        : route.name === 'settings'
+          ? '#today'
+          : '#subjects';
+  const onBack = main
+    ? undefined
+    : () => {
+        if (history.length > 1) history.back();
+        else location.hash = parent;
+      };
   return (
-    <AppShell active={active} banner={<PwaBanner />} bleed={bleed}>
-      {route.name === 'settings' && <SettingsPage />}
-      <ErrorBoundary resetKey={route.name + (route.id ?? '')}>
-        <Suspense fallback={null}>
-          {route.name === 'data' && <DataPage />}
-          {route.name === 'subjects' && (
-            <DbProvider>
-              <SubjectsPage />
-            </DbProvider>
-          )}
-          {route.name === 'subject' && route.id && (
-            <DbProvider>
-              <SubjectPage id={route.id} key={route.id} />
-            </DbProvider>
-          )}
-          {route.name === 'doc' && route.id && (
-            <DbProvider>
-              <ReaderPage
-                id={route.id}
-                key={route.id}
-                page={Number(route.params.get('page')) || 1}
-                query={route.params.get('q') ?? ''}
-              />
-            </DbProvider>
-          )}
-          {route.name === 'today' && (
-            <DbProvider>
-              <TodayPage />
-            </DbProvider>
-          )}
-          {route.name === 'session' && (
-            <DbProvider>
-              <SessionPage />
-            </DbProvider>
-          )}
-          {route.name === 'jobs' && (
-            <DbProvider>
-              <JobsPage />
-            </DbProvider>
-          )}
-          {route.name === 'practice' && route.id && (
-            <DbProvider>
-              <PracticePage skillId={route.id} key={route.id} />
-            </DbProvider>
-          )}
-          {route.name === 'tree' && route.id && (
-            <DbProvider>
-              <TreePage subjectId={route.id} key={route.id} />
-            </DbProvider>
-          )}
-          {route.name === 'search' && (
-            <DbProvider>
-              <SearchPage />
-            </DbProvider>
-          )}
-        </Suspense>
-      </ErrorBoundary>
-      {route.name === 'progress' && <Placeholder route={route.name} />}
-    </AppShell>
+    <ToastProvider>
+      <PwaNotices quiet={immersive} />
+      <AppShell active={active} bleed={bleed} immersive={immersive} onBack={onBack}>
+        {route.name === 'settings' && <SettingsPage />}
+        <ErrorBoundary resetKey={route.name + (route.id ?? '')}>
+          <Suspense fallback={<Skeleton variant="rows" lines={3} />}>
+            {route.name === 'data' && <DataPage />}
+            {route.name === 'subjects' && (
+              <DbProvider>
+                <SubjectsPage />
+              </DbProvider>
+            )}
+            {route.name === 'subject' && route.id && (
+              <DbProvider>
+                <SubjectPage id={route.id} key={route.id} />
+              </DbProvider>
+            )}
+            {route.name === 'doc' && route.id && (
+              <DbProvider>
+                <ReaderPage
+                  id={route.id}
+                  key={route.id}
+                  page={Number(route.params.get('page')) || 1}
+                  query={route.params.get('q') ?? ''}
+                />
+              </DbProvider>
+            )}
+            {route.name === 'today' && (
+              <DbProvider>
+                <TodayPage />
+              </DbProvider>
+            )}
+            {route.name === 'session' && (
+              <DbProvider>
+                <SessionPage />
+              </DbProvider>
+            )}
+            {route.name === 'jobs' && (
+              <DbProvider>
+                <JobsPage />
+              </DbProvider>
+            )}
+            {route.name === 'practice' && route.id && (
+              <DbProvider>
+                <PracticePage skillId={route.id} key={route.id} />
+              </DbProvider>
+            )}
+            {route.name === 'tree' && route.id && (
+              <DbProvider>
+                <TreePage subjectId={route.id} key={route.id} />
+              </DbProvider>
+            )}
+            {route.name === 'search' && (
+              <DbProvider>
+                <SearchPage />
+              </DbProvider>
+            )}
+          </Suspense>
+        </ErrorBoundary>
+        {route.name === 'progress' && <Placeholder route={route.name} />}
+      </AppShell>
+    </ToastProvider>
   );
 }

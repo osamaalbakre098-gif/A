@@ -1,0 +1,43 @@
+/* Farben Hell (Rollen in tokens.css, Werte hier) */
+@layer tokens {
+  :root {
+    --bg: #f2f2f7;
+    --surface: #ffffff;
+    --surface-2: #e9e9ef;
+    --text: #1c1f24;
+    --text-muted: #565b65;
+    --primary: #1f3a5f;
+    --on-primary: #ffffff;
+    --accent-alt: #38756d; /* Zweitfarbe (Teal); die Hauptfarbe --accent steht in tokens.css */
+    --success: #2f6b3f;
+    --warning: #8a5a12;
+    --danger: #9b2c2c;
+    --focus: #2f6fdb;
+    --border: #7a7a85;
+    --border-soft: #d8d8de;
+    --line: #d8d8de;
+    --field-border: #84848a;
+    --field-bw: 1px;
+    --card-bw: 0px;
+    --btn2-border: transparent;
+    --btn2-bw: 0px;
+    --tint: color-mix(in srgb, var(--primary) 12%, var(--surface));
+    --tint-strong: color-mix(in srgb, var(--primary) 18%, var(--surface));
+    --track-off: #84848a;
+    --thumb-off: #ffffff;
+    --glass: color-mix(in srgb, var(--surface) 86%, transparent);
+    --arc-off: #d8d8de;
+    --shadow-1: 0 1px 2px rgb(16 24 40 / 0.05), 0 4px 18px rgb(16 24 40 / 0.07);
+    --shadow-2: 0 2px 6px rgb(16 24 40 / 0.06), 0 14px 40px rgb(16 24 40 / 0.12);
+    --shadow-btn: 0 1px 2px rgb(16 24 40 / 0.12);
+    --subj-sage: #4f7a5a;
+    --subj-ocean: #2f6a8f;
+    --subj-brick: #a0462f;
+    --subj-sand: #8a6a2f;
+    --subj-plum: #7a4a7a;
+    --subj-moss: #5f6f2f;
+    --subj-slate: #4a5a6f;
+    --subj-amber: #946000;
+    color-scheme: light;
+  }
+}

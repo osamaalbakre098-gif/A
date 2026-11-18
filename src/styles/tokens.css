@@ -1,0 +1,155 @@
+/*
+ * Klarsicht-Tokens (docs/UI_VORGABE.md, Abschnitt 3). EINZIGE Quelle für Abstand, Radius, Schatten-Stärke, Schrift und Rollen.
+ * Farbwerte stehen in themes/*.css. Außerhalb von src/styles stehen weder Hex-Farben noch rohe px-Werte
+ * für Abstand, Radius, Schatten und Schrift (Stylelint prüft das).
+ */
+@layer tokens {
+  :root {
+    /* Sichere Bereiche (Statusleiste, Home-Indikator); Tests können sie überschreiben */
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+
+    /* ---- Schrift (3.1) ---- */
+    --font: system-ui, -apple-system, 'Inter Variable', 'Inter', 'Segoe UI', sans-serif;
+    --font-ar: system-ui, 'IBM Plex Sans Arabic', 'Noto Sans Arabic', sans-serif;
+    /* Basis in px; die App-Textgröße (90–200 %) setzt --fs-base am html-Element (siehe settings.ts) */
+    --fs-base: 16px;
+    --type-large-title: clamp(1.75rem, 8vw, 2.25rem);
+    --type-title: 1.5rem;
+    --type-headline: 1.25rem;
+    --type-row: 1.0625rem;
+    --type-body: 1.0625rem;
+    --type-secondary: 0.9375rem;
+    --type-note: 0.8125rem;
+    /* Tab-Beschriftung: bewusst fest (11 px), damit vier Einträge bei 320 pt und großer Schrift nie umbrechen */
+    --type-tab: 11px;
+    --lh-large-title: 1.15;
+    --lh-title: 1.2;
+    --lh-headline: 1.3;
+    --lh-row: 1.35;
+    --lh-body: 1.55;
+    --lh-secondary: 1.5;
+    --lh-note: 1.4;
+    --lh-tab: 1.2;
+    --measure: 66ch;
+    /* ältere Namen (werden in Phase B schrittweise ersetzt) */
+    --fs-1: var(--type-note);
+    --fs-2: var(--type-secondary);
+    --fs-3: var(--type-body);
+    --fs-4: var(--type-headline);
+    --fs-5: var(--type-title);
+    --fs-6: 1.875rem;
+    --fs-7: var(--type-large-title);
+    --lh: var(--lh-body);
+    --lh-tight: var(--lh-large-title);
+
+    /* ---- Abstand (3.2), 4-px-Raster ---- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-14: 56px;
+    --space-18: 72px;
+    --page-margin: var(--space-4);
+    --tap: 44px;
+    --tap-button: 48px;
+    --tap-button-l: 52px;
+    --tap-row: 52px;
+    --tabbar-h: 56px;
+    --appbar-h: 56px;
+    --sidebar-w: 280px;
+    /* semantische Abstände für Stack/Cluster */
+    --space-tight: var(--space-2);
+    --space-stack: var(--space-4);
+    --space-group: var(--space-6);
+    --space-section: var(--space-8);
+    --space-card: var(--space-5);
+    --space-card-hero: var(--space-6);
+    --space-inline: var(--space-3);
+    /* ältere Namen */
+    --s-1: var(--space-1);
+    --s-2: var(--space-2);
+    --s-3: var(--space-3);
+    --s-4: var(--space-4);
+    --s-5: var(--space-6);
+    --s-6: var(--space-8);
+    --s-7: 48px;
+    --s-8: 64px;
+
+    /* ---- Radien (3.3) ---- */
+    --radius-field: 12px;
+    --radius-button: 14px;
+    --radius-card: 20px;
+    --radius-hero: 28px;
+    --radius-sheet: 28px;
+    --radius-pill: 999px;
+    --r-sm: 10px;
+    --r-md: 16px;
+    --r-lg: 24px;
+    --r-xl: 32px;
+    --r-pill: var(--radius-pill);
+
+    /* ---- Schichten (3.6) ---- */
+    --z-nav: 10;
+    --z-appbar: 20;
+    --z-sheet: 40;
+    --z-dialog: 50;
+    --z-toast: 60;
+
+    /* ---- Bewegung (3.5) ---- */
+    --t-fast: 120ms;
+    --t-base: 200ms;
+    --t-slow: 320ms;
+    --ease: cubic-bezier(0.2, 0, 0, 1);
+    --ease-out: cubic-bezier(0.4, 0, 1, 1);
+
+    /* ---- Rollen (3.4): Werte kommen aus den Themes; hier die Namen aus der Vorgabe ---- */
+    --bg-grouped: var(--bg);
+    --surface-raised: var(--surface);
+    --fill: var(--tint);
+    --fill-pressed: var(--tint-strong);
+    --separator: var(--line);
+    --outline: var(--field-border);
+    --text-secondary: var(--text-muted);
+    --text-on-accent: var(--on-primary);
+    --accent: var(--primary);
+    --accent-tint: var(--tint);
+    --success-tint: color-mix(in srgb, var(--success) 12%, var(--surface));
+    --warning-tint: color-mix(in srgb, var(--warning) 12%, var(--surface));
+    --danger-tint: color-mix(in srgb, var(--danger) 12%, var(--surface));
+    --arc-active: var(--primary);
+    --arc-inactive: var(--arc-off);
+  }
+
+  /* Bewegung reduzieren: System-Einstellung oder App-Schalter schaltet alle Übergänge aus */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --t-fast: 0ms;
+      --t-base: 0ms;
+      --t-slow: 0ms;
+    }
+  }
+  [data-motion='reduce'] {
+    --t-fast: 0ms;
+    --t-base: 0ms;
+    --t-slow: 0ms;
+  }
+
+  /* Seitenrand wächst mit der Breite: 16 → 24 (ab 768) → 32 (ab 1024) */
+  @media (min-width: 768px) {
+    :root {
+      --page-margin: var(--space-6);
+    }
+  }
+  @media (min-width: 1024px) {
+    :root {
+      --page-margin: var(--space-8);
+    }
+  }
+}

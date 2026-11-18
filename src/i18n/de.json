@@ -18,7 +18,9 @@
     "search": "Suche",
     "subject": "Fächer",
     "doc": "Fächer",
-    "jobs": "Aufträge"
+    "jobs": "Aufträge",
+    "back": "Zurück",
+    "settingsOpen": "Einstellungen öffnen"
   },
   "settings": {
     "title": "Einstellungen",
@@ -462,5 +464,27 @@
     "dateLabel": "Datum der Prüfung",
     "add": "Prüfung eintragen",
     "note": "Madar plant rückwärts vom Prüfungstag. Verschiebst du den Termin, wird neu geplant – ohne Vorwurf. Einen Notenschlüssel gibt es nur, wenn du ihn selbst einträgst."
+  },
+  "ui": {
+    "close": "Schließen",
+    "loading": "Wird geladen …",
+    "dragHandle": "Zum Schließen nach unten ziehen",
+    "dismiss": "Ausblenden"
+  },
+  "error": {
+    "title": "Das hat nicht geklappt",
+    "text": "Diese Seite konnte nicht angezeigt werden. Deine Daten sind unverändert. Lade die Seite neu oder geh zu „Heute“.",
+    "reload": "Neu laden",
+    "copy": "Fehler kopieren",
+    "copied": "Fehler kopiert",
+    "home": "Zu „Heute“"
+  },
+  "banner": {
+    "offline": "Du bist offline. Alles Gelernte bleibt gespeichert."
+  },
+  "toast": {
+    "updateReady": "Neue Version bereit",
+    "updateAction": "Jetzt laden",
+    "offlineReady": "Madar funktioniert jetzt auch ohne Internet."
   }
 }

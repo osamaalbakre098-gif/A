@@ -1,0 +1,2 @@
+/* Reihenfolge der Schichten: spätere gewinnen. Siehe docs/UI_VORGABE.md Abschnitt 9. */
+@layer reset, tokens, base, components, screens, utilities;

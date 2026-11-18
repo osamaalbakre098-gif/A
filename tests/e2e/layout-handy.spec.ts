@@ -32,7 +32,7 @@ for (const size of SIZES) {
         await expect(page.locator('#main')).toBeVisible();
 
         // Navigation: alle vier Einträge in EINER Zeile, Beschriftung ohne Umbruch
-        const links = page.locator('.shell__nav .navlink');
+        const links = page.locator('.tabbar .tabbar__link');
         await expect(links).toHaveCount(4);
         const boxes = await links.evaluateAll((els) =>
           els.map((e) => {
@@ -63,15 +63,11 @@ for (const size of SIZES) {
             .map((r) => Math.round(r.top)),
         );
         for (const t of tops) expect(t).toBeGreaterThanOrEqual(STATUS_BAR);
-        const brand = page.locator('.shell__brand');
-        const settingsBtn = page.locator('.shell__top .iconbtn');
-        if (await brand.count()) {
-          expect((await brand.boundingBox())!.y).toBeGreaterThanOrEqual(STATUS_BAR);
-          const bb = (await settingsBtn.boundingBox())!;
-          expect(bb.y).toBeGreaterThanOrEqual(STATUS_BAR);
-          expect(bb.width).toBeGreaterThanOrEqual(44);
-          expect(bb.height).toBeGreaterThanOrEqual(44);
-        }
+        const settingsBtn = page.locator('.appbar a[href="#settings"]');
+        const bb = (await settingsBtn.boundingBox())!;
+        expect(bb.y).toBeGreaterThanOrEqual(STATUS_BAR);
+        expect(bb.width).toBeGreaterThanOrEqual(44);
+        expect(bb.height).toBeGreaterThanOrEqual(44);
 
         // Kein seitliches Scrollen, Überschriften ohne Silbentrennung
         expect(
@@ -103,7 +99,7 @@ test.describe('Heute, leer, 320 pt', () => {
     expect(bg).not.toBe('rgba(0, 0, 0, 0)');
     // besuchter Link behält die Token-Farbe (nicht das Browser-Violett)
     const color = await page
-      .locator('.backlink, .navlink')
+      .locator('.tabbar__link')
       .first()
       .evaluate((e) => getComputedStyle(e).color);
     expect(color).not.toBe('rgb(85, 26, 139)');

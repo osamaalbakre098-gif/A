@@ -99,3 +99,27 @@
 **Rückfall ohne Server bleibt gleichwertig:** Kopieren/Einfügen oder Datei (Regel 7).
 
 **Ehrliche Grenze:** Ob dein Claude-Tarif eigene Konnektoren erlaubt, konnte ich nicht prüfen; der Server ist nur mit eigenen Tests gegen die Protokollform getestet, nicht mit einem echten Claude.
+
+## UI-Vorgabe Phase A (Fundament)
+
+**Ablage:** Die Vorgabe liegt in `docs/UI_VORGABE.md` und ersetzt alle losen Layout-Hinweise, auch die Mängelliste vom iPhone (sie ist in der Vorgabe enthalten).
+
+**Struktur wie vorgegeben:** `src/styles/` (layers, reset, tokens, base, themes/light|dark|contrast), neue Bausteine in `src/ui/<Name>/` mit eigener CSS-Datei und Test. Die alten Bausteine (`src/ui/components/`, `src/index.css`) bleiben, werden aber in Schichten gelegt (`components`, `screens`) und in Phase B Bildschirm für Bildschirm migriert.
+
+**Schichten-Reihenfolge steht inline in `index.html`.** Der Bündler (Vite/Lightning) lässt die Zeile `@layer reset, tokens, …;` aus der CSS-Datei weg; dann gilt die Reihenfolge des ersten Auftretens und die Linkfarbe überschrieb Knopffarben. Eine Inline-Zeile im `<head>` ist unabhängig vom Bündeln. Sicherheit/Verständlichkeit vor Code-Eleganz.
+
+**Schriftgröße-Basis 16 px statt 17 px.** Die Vorgabe rechnet Rollen in `rem` mit 1,0625 rem Fließtext (= 17 px bei 16 px Basis). Dieselben Pixel wie vorher, aber die Skala stimmt jetzt mit der Vorgabe überein; die alten `--fs-*`-Namen zeigen auf die neuen Rollen.
+
+**`--accent` ist jetzt die Hauptfarbe** (vorher `--primary`; das frühere Teal heißt `--accent-alt`). Alte Namen (`--primary`, `--tint`, `--text-muted`, …) bleiben als Quelle der Werte; die neuen Rollen (`--fill`, `--separator`, `--outline`, …) sind Aliase in `tokens.css`.
+
+**Tab-Beschriftung 11 px fest.** Die Vorgabe erlaubt 11 px nur dafür. Bei 150–200 % Textgröße würde eine mitskalierende Beschriftung bei 320 pt umbrechen oder abgeschnitten; fest 11 px mit `nowrap` hält vier Einträge in einer Zeile (Vorgabe 4: „Beschriftungen bleiben").
+
+**Eine Navigations-Komponente für Tab-Leiste und Seitenleiste** (`TabBar`, `SidebarNav` ist dieselbe mit `variant="sidebar"`); die Breite entscheidet per CSS ab 768 px. So gibt es nie zwei Navigationen im Dokument (Screenreader).
+
+**Neue Bibliothek:** `stylelint` (Entwicklungsabhängigkeit), verlangt von der Vorgabe (Hex-Farben, rohe px-Werte für Abstand/Radius/Schatten/Schrift, `left/right`). Begründung: automatische Durchsetzung statt Disziplin. Die zwei Altdateien (`src/index.css`, `src/ui/components/components.css`) stehen bis Phase B auf der Ausnahmeliste in `.stylelintrc.json`; alles Neue wird geprüft.
+
+**Eigene Zurück-Links der Bildschirme sind im Rahmen ausgeblendet** (`.backlink`), weil die Kopfzeile den Zurück-Knopf hat; sie werden in Phase B aus den Bildschirmen entfernt.
+
+**Update-Hinweis als Toast, nie in der Lernsitzung.** In der Lernsitzung (Vollbild) werden Update- und Offline-Hinweise zurückgehalten (`quiet`).
+
+**Sheet schließt ohne Austrittsanimation** (natives `dialog`); Eintritt 320 ms. Der Austritt folgt in Phase D (Politur), wenn nötig.
