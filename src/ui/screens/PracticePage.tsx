@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { normalizeDe } from '../../content/text';
 import { systemNow } from '../../data/clock';
 import type { Item } from '../../data/db/schema';
-import { appendEvent } from '../../data/events/events';
-import { newId } from '../../data/ids';
+import { recordAnswer, reportItem, ensureCards } from '../../data/learning';
 import {
   Button,
   ChoiceList,
@@ -56,16 +55,18 @@ function prüfen(item: Item, eingabe: string): boolean {
   return false;
 }
 
-function Aufgabe({
+export function Aufgabe({
   item,
   nr,
   total,
   weiter,
+  askConfidence = nr % 3 === 0,
 }: {
   item: Item;
   nr: number;
   total: number;
   weiter: () => void;
+  askConfidence?: boolean;
 }) {
   const { t } = useTranslation();
   const db = useDb();
@@ -79,6 +80,8 @@ function Aufgabe({
   }>(null);
   const [haken, setHaken] = useState<string[]>([]);
   const [vormerken, setVormerken] = useState(false);
+  const [confidence, setConfidence] = useState<1 | 2 | 3 | undefined>(undefined);
+  const [reported, setReported] = useState(false);
   const [zeit, setZeit] = useState(0);
   const r = (item.rubric ?? {}) as Rubric;
   const offen = item.subtype === 'offen' || item.subtype === 'transfer';
@@ -104,38 +107,19 @@ function Aufgabe({
     const ok = offen ? bewertungOffen.ok : !!aufgedeckt?.ok;
     const teil = offen ? bewertungOffen.teil : false;
     const ts = systemNow();
-    const attemptId = newId();
-    await db.attempts.add({
-      id: attemptId,
-      itemId: item.id,
-      ts,
+    await recordAnswer(db, {
+      item,
       correct: ok,
       partial: teil,
       hintLevel: hilfe,
       latencyMs: ts - start.current,
+      confidence,
+      answerText: eingabe.trim() || undefined,
+      selfChecked: offen ? haken : undefined,
       gradedBy: offen ? 'self' : 'rule',
-      ...(eingabe.trim() ? { answerText: eingabe } : {}),
-      ...(offen ? { selfChecked: haken } : {}),
-      ...(offen && vormerken ? { gradingState: 'queued' as const } : {}),
+      queueForGrading: offen && vormerken,
+      now: ts,
     });
-    for (let level = 1; level <= hilfe; level++)
-      await appendEvent(db, { type: 'HintUsed', payload: { itemId: item.id, level } }, ts);
-    await appendEvent(
-      db,
-      {
-        type: 'AnswerSubmitted',
-        payload: {
-          attemptId,
-          itemId: item.id,
-          skillId: item.skillId,
-          correct: ok,
-          partial: teil,
-          hintLevel: hilfe,
-          latencyMs: ts - start.current,
-        },
-      },
-      ts,
-    );
     weiter();
   };
 
@@ -171,6 +155,18 @@ function Aufgabe({
               onChange={(e) => setEingabe(e.target.value)}
               inputMode={item.subtype === 'rechnung' ? 'decimal' : undefined}
               autoComplete="off"
+            />
+          )}
+          {askConfidence && !offen && (
+            <ChoiceList
+              legend={t('practice.confidence')}
+              choices={[
+                { id: '1', text: t('practice.conf1') },
+                { id: '2', text: t('practice.conf2') },
+                { id: '3', text: t('practice.conf3') },
+              ]}
+              value={confidence ? String(confidence) : null}
+              onChange={(v) => setConfidence(Number(v) as 1 | 2 | 3)}
             />
           )}
           {hilfe > 0 && (
@@ -269,6 +265,16 @@ function Aufgabe({
             </fieldset>
           )}
           <Cluster>
+            <Button
+              variant="quiet"
+              disabled={reported}
+              onClick={() => {
+                setReported(true);
+                void reportItem(db, item.id, systemNow());
+              }}
+            >
+              {reported ? t('practice.reported') : t('practice.report')}
+            </Button>
             <Button onClick={() => void abschliessen()}>
               {nr === total ? t('practice.finish') : t('practice.next')}
             </Button>
@@ -296,6 +302,7 @@ export default function PracticePage({ skillId }: { skillId: string }) {
   // Aufgaben einmal festlegen (nicht bei jedem Versuch neu mischen)
   useEffect(() => {
     let alive = true;
+    void ensureCards(db, systemNow());
     void db.items
       .where('skillId')
       .equals(skillId)

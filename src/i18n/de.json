@@ -308,7 +308,13 @@
     "doneText": "{count, plural, one {# Aufgabe} other {# Aufgaben}} bearbeitet.",
     "answerRequired": "Schreibe zuerst eine Antwort.",
     "explain": "Erklärung",
-    "showExplain": "Erklärung anzeigen"
+    "showExplain": "Erklärung anzeigen",
+    "confidence": "Wie sicher bist du?",
+    "conf1": "Eher geraten",
+    "conf2": "Ziemlich sicher",
+    "conf3": "Ganz sicher",
+    "report": "Fehler melden",
+    "reported": "Gemeldet, wird nicht mehr gezeigt"
   },
   "skillstate": {
     "not_started": "Neu",

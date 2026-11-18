@@ -1,4 +1,5 @@
 import { learningDaysBetween } from '../time';
+import { MODEL_CONFIG } from './config';
 
 /**
  * Fähigkeitsstand nur aus Belegen (Versuchen), nach den Regeln aus Schritt 8.1.
@@ -108,4 +109,29 @@ export function documentProgress(states: SkillState[], evidenceCount: number): P
     evidence: evidenceCount,
     counts,
   };
+}
+
+export interface ReviewSignal {
+  /** Aktive Karten der Fähigkeit */
+  cardsTotal: number;
+  cardsDue: number;
+  /** Die Kernkarte (erste Karte der Fähigkeit) ist fällig */
+  coreDue: boolean;
+  /** Die letzten Antworten, neueste zuletzt (true = richtig) */
+  recent: boolean[];
+}
+
+/**
+ * Aus `mastered` wird `review_due`, wenn mindestens ein Drittel der Karten fällig ist, die Kernkarte fällig ist
+ * oder zwei Fehler in Folge vorkamen. Alle anderen Zustände bleiben; ein Rückfall geht nie unter `review_due`.
+ */
+export function applyReview(state: SkillState, r: ReviewSignal): SkillState {
+  if (state !== 'mastered' && state !== 'review_due') return state;
+  const wrongInRow =
+    r.recent.length >= MODEL_CONFIG.consecutiveWrongForReview &&
+    r.recent.slice(-MODEL_CONFIG.consecutiveWrongForReview).every((x) => !x);
+  const share = r.cardsTotal ? r.cardsDue / r.cardsTotal : 0;
+  return r.coreDue || share >= MODEL_CONFIG.reviewDueFraction || wrongInRow
+    ? 'review_due'
+    : 'mastered';
 }

@@ -308,7 +308,13 @@
     "doneText": "{count, plural, one {# task} other {# tasks}} completed.",
     "answerRequired": "Write an answer first.",
     "explain": "Explanation",
-    "showExplain": "Show explanation"
+    "showExplain": "Show explanation",
+    "confidence": "How sure are you?",
+    "conf1": "Mostly a guess",
+    "conf2": "Fairly sure",
+    "conf3": "Completely sure",
+    "report": "Report a mistake",
+    "reported": "Reported, won't be shown again"
   },
   "skillstate": {
     "not_started": "New",

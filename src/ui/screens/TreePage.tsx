@@ -20,7 +20,7 @@ export default function TreePage({ subjectId }: { subjectId: string }) {
     const topics = (await db.topics.where('subjectId').equals(subjectId).toArray()).sort(
       (a, b) => a.order - b.order,
     );
-    const infos = await skillInfos(db);
+    const infos = await skillInfos(db, systemNow());
     return topics.map((tp) => ({
       topic: tp,
       skills: [...infos.values()]

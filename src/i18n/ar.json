@@ -308,7 +308,13 @@
     "doneText": "{count, plural, one {أُنجزت مهمة واحدة} two {أُنجزت مهمتان} other {أُنجزت # مهام}}.",
     "answerRequired": "اكتب إجابة أولاً.",
     "explain": "الشرح",
-    "showExplain": "عرض الشرح"
+    "showExplain": "عرض الشرح",
+    "confidence": "ما مدى ثقتك؟",
+    "conf1": "تخمين غالبًا",
+    "conf2": "واثق إلى حد ما",
+    "conf3": "واثق تمامًا",
+    "report": "الإبلاغ عن خطأ",
+    "reported": "تم الإبلاغ، لن يظهر مرة أخرى"
   },
   "skillstate": {
     "not_started": "جديد",

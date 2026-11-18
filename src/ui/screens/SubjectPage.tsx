@@ -95,7 +95,7 @@ export default function SubjectPage({ id }: { id: string }) {
   const skillRows = useLiveQuery(async () => {
     const topics = await db.topics.where('subjectId').equals(id).toArray();
     const ids = new Set(topics.map((x) => x.id));
-    const infos = await skillInfos(db);
+    const infos = await skillInfos(db, systemNow());
     return [...infos.values()].filter((i) => ids.has(i.skill.topicId) && !i.skill.hidden);
   }, [db, id]);
   const [status, setStatus] = useState<Status[]>([]);
