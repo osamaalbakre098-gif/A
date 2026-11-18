@@ -1,16 +1,11 @@
 import type { Page } from '@playwright/test';
 
-const THEME_LABEL: Record<string, string> = {
-  light: 'Hell',
-  dark: 'Dunkel',
-  contrast: 'Hoher Kontrast',
-  system: 'System',
-};
-const LANG_LABEL: Record<string, string> = { de: 'Deutsch', en: 'English', ar: 'العربية' };
+const THEMES = ['light', 'dark', 'contrast', 'system'];
+const LANGS = ['de', 'en', 'ar'];
 
-/** Stellt Erscheinungsbild und Sprache im geöffneten Einstellungsbereich ein (erst Erscheinungsbild: Beschriftung ist deutsch). */
+/** Stellt Erscheinungsbild und Sprache im geöffneten Einstellungsbereich ein (nach Position, unabhängig von der Sprache der Beschriftung). */
 export async function setView(page: Page, lang: string, theme: string) {
-  const root = page.locator('.settings');
-  await root.getByText(THEME_LABEL[theme]!, { exact: true }).click();
-  await root.getByText(LANG_LABEL[lang]!, { exact: true }).click();
+  const groups = page.locator('.settings fieldset');
+  await groups.nth(0).locator('input[type=radio]').nth(THEMES.indexOf(theme)).check({ force: true });
+  await groups.nth(1).locator('input[type=radio]').nth(LANGS.indexOf(lang)).check({ force: true });
 }

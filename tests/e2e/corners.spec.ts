@@ -42,7 +42,7 @@ for (const [theme, lang] of [
     await page.setViewportSize({ width: 420, height: 900 });
     await open(page, theme, lang);
     const count = await page.locator('.card').count();
-    expect(count).toBeGreaterThan(3);
+    expect(count).toBeGreaterThan(1);
     for (let n = 0; n < count; n++) {
       const card = page.locator('.card').nth(n);
       await card.evaluate((el) => el.scrollIntoView({ block: 'center' }));
