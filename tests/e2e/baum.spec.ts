@@ -11,6 +11,7 @@ test('Text einfügen → Könnensbaum entsteht von selbst, Liste ist bedienbar u
   await page.getByLabel('Name des Fachs').fill('Physik');
   await page.getByRole('button', { name: 'Anlegen', exact: true }).click();
   await page.getByRole('link', { name: /Physik/ }).click();
+  await page.getByRole('button', { name: 'Material hinzufügen' }).click();
   await page.getByRole('button', { name: 'Text einfügen' }).click();
   const text = `# Vektoren\n\nEin Vektor hat Betrag und Richtung. ${'Die Geschwindigkeit ist ein Vektor. '.repeat(8)}\n\n## Addition\n\nVektoren addiert man komponentenweise. ${'Kräfte addiert man ebenso. '.repeat(8)}\n`;
   await page.getByLabel(/Text/).last().fill(text);
@@ -18,8 +19,8 @@ test('Text einfügen → Könnensbaum entsteht von selbst, Liste ist bedienbar u
     .getByRole('button', { name: /Speichern|Hinzufügen/ })
     .first()
     .click();
-  await expect(page.getByText('Addition verstehen').first()).toBeVisible();
-  await page.getByRole('link', { name: 'Könnensbaum ansehen' }).click();
+  await expect(page.locator('a.listrow[href^="#doc/"]')).toHaveCount(1);
+  await page.getByRole('link', { name: 'Könnensbaum' }).click();
   await expect(page.getByRole('heading', { level: 1, name: /Könnensbaum/ })).toBeVisible();
   await page.getByRole('button', { name: /Addition verstehen/ }).click();
   await expect(page.getByText('Zustand: Neu')).toBeVisible();

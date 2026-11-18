@@ -62,18 +62,21 @@ test('Heute: leer → Material → echter Plan → Sitzung → beendet', async (
   await page.getByLabel('Name des Fachs').fill('Physik');
   await page.getByRole('button', { name: 'Anlegen', exact: true }).click();
   await page.getByRole('link', { name: /Physik/ }).click();
+  await page.getByRole('button', { name: 'Material hinzufügen' }).click();
   await page.getByRole('button', { name: 'Text einfügen' }).click();
   await page.getByLabel(/Text/).last().fill(TEXT);
   await page
     .getByRole('button', { name: /Speichern|Hinzufügen/ })
     .first()
     .click();
+  await expect(page.locator('a.listrow[href^="#doc/"]')).toHaveCount(1);
+  await page.getByRole('link', { name: 'Könnensbaum' }).click();
   await expect(page.getByText('Addition verstehen').first()).toBeVisible();
 
   // Ohne Aufgaben: Plan sagt ehrlich „im Material lesen", und weist auf Aufträge hin
   await page.goto('/#today');
   await expect(page.getByRole('link', { name: 'Starten', exact: true })).toBeVisible();
-  await expect(page.getByText(/noch keine Aufgaben/)).toBeVisible();
+  await expect(page.getByText(/noch keine Aufgaben/).first()).toBeVisible();
   await page.getByRole('button', { name: 'Warum?' }).click();
   await expect(page.getByText(/Aufgaben/).first()).toBeVisible();
 

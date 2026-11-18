@@ -12,6 +12,7 @@ import {
   Banner,
   Button,
   Card,
+  Chip,
   EmptyState,
   LargeTitle,
   ListGroup,
@@ -93,9 +94,7 @@ function FileRow({ d }: { d: DocumentRow }) {
               {t('material.textless', { count: d.textlessPages.length })}
             </span>
           )}
-          {d.ocrStatus === 'pending' && (
-            <span className="listrow__sub">{t('material.statusOcr')}</span>
-          )}
+          {d.ocrStatus === 'pending' && <Chip tone="warning">{t('material.statusOcr')}</Chip>}
         </>
       }
     />
