@@ -48,7 +48,8 @@
     "unitHour": "س",
     "textPreview": "هكذا يبدو حجم نصك.",
     "connection": "المهام والاتصال",
-    "dataRow": "بياناتك"
+    "dataRow": "بياناتك",
+    "dataSub": "النسخ الاحتياطي والتخزين والتثبيت"
   },
   "lichtung": {
     "greeting": "سعيد برؤيتك.",

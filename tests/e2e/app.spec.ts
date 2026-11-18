@@ -4,10 +4,10 @@ import { expect, test } from '@playwright/test';
 test('Sprachwechsel DE → AR spiegelt die Seite, EN wirkt sofort', async ({ page }, info) => {
   await page.goto('/#settings');
   await expect(page.getByRole('heading', { name: 'Einstellungen', level: 1 })).toBeVisible();
-  await page.getByLabel('Sprache').selectOption('en');
+  await page.getByRole('radio', { name: 'English' }).check({ force: true });
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.getByText('Skip to content')).toBeAttached();
-  await page.getByLabel('Language').selectOption('ar');
+  await page.getByRole('radio', { name: 'العربية' }).check({ force: true });
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await page.screenshot({ path: `test-results/rtl-${info.project.name}.png` });
   const res = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag22aa']).analyze();
@@ -34,7 +34,9 @@ test('Tastatur: Skip-Link und Einstellungen erreichbar, Fokus sichtbar', async (
 test('Hoher Kontrast und Dunkel: axe ohne Verstöße', async ({ page }) => {
   await page.goto('/#settings');
   for (const t of ['dark', 'contrast']) {
-    await page.getByLabel('Erscheinungsbild').selectOption(t);
+    await page
+      .getByRole('radio', { name: t === 'dark' ? 'Dunkel' : 'Hoher Kontrast', exact: true })
+      .check({ force: true });
     const res = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
       .analyze();

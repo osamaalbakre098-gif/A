@@ -62,6 +62,7 @@ test.describe('Rahmen 320 pt', () => {
     // Unterebene: Zurück-Knopf in der Kopfzeile, Titel anfangs unsichtbar
     const title = page.locator('.appbar__title');
     await expect(title).toHaveCSS('opacity', '0');
+    await page.setViewportSize({ width: 320, height: 300 }); // kurze Ansicht, damit die Seite scrollt
     await page.evaluate(() => window.scrollBy(0, 600));
     await expect(page.locator('.appbar')).toHaveClass(/appbar--scrolled/);
     await expect(title).toHaveCSS('opacity', '1');

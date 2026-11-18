@@ -47,8 +47,9 @@
     "unitMin": "Min.",
     "unitHour": "Uhr",
     "textPreview": "So groß erscheint dein Text.",
-    "connection": "Aufträge und Verbindung",
-    "dataRow": "Deine Daten"
+    "connection": "Aufträge und Ver|bindung",
+    "dataRow": "Deine Daten",
+    "dataSub": "Sichern, Speicher, Installation"
   },
   "lichtung": {
     "greeting": "Schön, dass du da bist.",

@@ -67,7 +67,7 @@ function SettingsPage() {
           <ListRow
             icon={Lock}
             title={t('settings.dataRow')}
-            subtitle={t('settings.dataLink')}
+            subtitle={t('settings.dataSub')}
             href="#data"
           />
         </ListGroup>

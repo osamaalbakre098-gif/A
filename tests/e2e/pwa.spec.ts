@@ -66,7 +66,7 @@ test('Einstellungen bleiben nach dem Neuladen erhalten und liegen in der Datenba
   page,
 }) => {
   await page.goto('/#settings');
-  await page.getByLabel('Erscheinungsbild').selectOption('dark');
+  await page.getByRole('radio', { name: 'Dunkel', exact: true }).check({ force: true });
   // Zuerst warten, bis die Datenbank-Kopie geschrieben ist (für Export und Sicherung) ...
   await expect.poll(() => readSetting(page, 'theme')).toBe('dark');
   // ... dann Neuladen: die Einstellung ist weiterhin aktiv.

@@ -48,7 +48,8 @@
     "unitHour": "h",
     "textPreview": "This is how big your text looks.",
     "connection": "Jobs and connection",
-    "dataRow": "Your data"
+    "dataRow": "Your data",
+    "dataSub": "Backup, storage, install"
   },
   "lichtung": {
     "greeting": "Good to see you.",
