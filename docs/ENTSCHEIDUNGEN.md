@@ -123,3 +123,19 @@
 **Update-Hinweis als Toast, nie in der Lernsitzung.** In der Lernsitzung (Vollbild) werden Update- und Offline-Hinweise zurückgehalten (`quiet`).
 
 **Sheet schließt ohne Austrittsanimation** (natives `dialog`); Eintritt 320 ms. Der Austritt folgt in Phase D (Politur), wenn nötig.
+
+## UI-Feinschliff (docs/UI_DETAILS.md), Durchgänge 1–3
+
+**Neuere Maße gelten:** Wo UI_DETAILS andere Zahlen nennt als UI_VORGABE (Karteninnenabstand 16 statt 20, zwischen Karten 12, Abschnitte 28 statt 32, Seitenrand 20/24 statt 24/32 ab 768/1024), gilt UI_DETAILS als die spätere, genauere Vorgabe. Umgesetzt über Tokens.
+
+**Großer Titel wird bei großer Textskala auf schmalen Anzeigen begrenzt** (`min(28–36 px, Basis × 1,25 + 6vw)`): Bei 200 % und 320 pt wäre er 72 px groß, und kein deutsches Wort ab 7 Zeichen passte in eine Zeile. Er bleibt deutlich größer als der Fließtext (bei 200 %: 59 px gegenüber 34 px). Zusammen mit festen Trennstellen aus den Übersetzungen („|" → weiches Trennzeichen) gibt es keinen Umbruch mitten im Wort mehr.
+
+**Ziffern überall tabellarisch** (am `body`), statt Klasse für Klasse: so springt keine Zahl, auch nicht in künftigen Bildschirmen; in Fließtext mit Systemschrift kaum sichtbar.
+
+**Arabisch mit lateinischen Ziffern** (`ar-u-nu-latn`) als Standard; eine Einstellung zum Umschalten gibt es noch nicht (offen).
+
+**Glas deckender** (96 % im Hellen, 30 px Unschärfe): Für stark vergrößertes Lesen ist ein ruhiger Hintergrund wichtiger als der Durchscheine-Effekt.
+
+**Einstellungs-Knopf fehlt auf den Einstellungen selbst** (nichts doppelt).
+
+**Visuelle Regression** mit Referenzbildern unter `tests/e2e/ui-details.spec.ts-snapshots/` (Chromium/Linux). Sie gelten nur für diese Umgebung; auf anderen Rechnern müssen sie neu erzeugt werden.

@@ -11,3 +11,4 @@
 8. **Version 2:** Proxy/Turnstile/Budget/mehrere Nutzer (zurückgestellt).
 9. **UI Phase A:** WebKit/echtes iPhone: Safe Area (`env()`), Unschärfe der Kopfzeile/Navigation, Sheet mit dem Finger ziehen, Dynamic Island. Bitte auf dem iPhone ansehen (Vorschau-Links in der Meldung).
 10. **UI-Vorgabe:** Die Vorgabe nennt „Aufträge" auch als Karte auf „Heute"; `Heute` zeigt sie bisher nur bei vorbereiteten Fähigkeiten (kommt in Phase B mit den Zuständen A–F).
+11. **Arabische Ziffern:** Standard ist jetzt lateinisch (1, 2, 3). Möchtest du eine Einstellung, um arabisch-indische Ziffern (١، ٢، ٣) zu wählen?

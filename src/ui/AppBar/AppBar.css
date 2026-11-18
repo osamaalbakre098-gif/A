@@ -4,23 +4,43 @@
     inset-block-start: 0;
     z-index: var(--z-appbar);
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    /* Seiten fest (je 44 px mindestens), Titel in der Mitte: beim Seitenwechsel verschiebt sich nichts */
+    grid-template-columns: minmax(var(--tap), max-content) minmax(0, 1fr) minmax(
+        var(--tap),
+        max-content
+      );
     align-items: center;
     gap: var(--space-2);
     min-block-size: calc(var(--appbar-h) + var(--sat));
     padding-block-start: var(--sat);
-    padding-inline: max(var(--page-margin), var(--sal)) max(var(--page-margin), var(--sar));
+    /* Knöpfe fluchten mit der Lesespalte (auch auf breiten Anzeigen) */
+    padding-inline: max(
+        var(--page-margin),
+        var(--sal),
+        calc((100% - var(--measure-read)) / 2 + var(--page-margin))
+      )
+      max(
+        var(--page-margin),
+        var(--sar),
+        calc((100% - var(--measure-read)) / 2 + var(--page-margin))
+      );
     background: var(--bg);
-    border-block-end: 1px solid transparent;
+    border-block-end: var(--hairline) solid transparent;
     transition:
       background-color var(--t-base) var(--ease),
       border-color var(--t-base) var(--ease);
   }
   .appbar--scrolled {
     background: var(--glass);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(30px);
+    backdrop-filter: saturate(180%) blur(30px);
     border-block-end-color: var(--separator);
+  }
+  /* Ohne Unschärfe: deckende Fläche, damit Text darunter nie durchscheint */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .appbar--scrolled {
+      background: var(--surface);
+    }
   }
   [data-theme='contrast'] .appbar--scrolled {
     background: var(--surface);
@@ -36,7 +56,8 @@
     justify-content: flex-end;
   }
   .appbar__title {
-    max-inline-size: 60vw;
+    min-inline-size: 0;
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

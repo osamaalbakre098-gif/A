@@ -4,11 +4,16 @@
     inset-block-end: 0;
     z-index: var(--z-nav);
     background: var(--glass);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    backdrop-filter: saturate(180%) blur(20px);
-    border-block-start: 1px solid var(--separator);
+    -webkit-backdrop-filter: saturate(180%) blur(30px);
+    backdrop-filter: saturate(180%) blur(30px);
+    border-block-start: var(--hairline) solid var(--separator);
     padding-block-end: var(--sab);
     padding-inline: var(--sal) var(--sar);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .tabbar {
+      background: var(--surface);
+    }
   }
   [data-theme='contrast'] .tabbar {
     background: var(--surface);
@@ -29,7 +34,7 @@
     justify-content: center;
     gap: var(--space-1);
     min-inline-size: 0;
-    min-block-size: var(--tabbar-h);
+    block-size: var(--tabbar-h);
     padding: var(--space-1);
     color: var(--text-secondary);
     text-decoration: none;
@@ -39,7 +44,8 @@
     display: grid;
     place-items: center;
     inline-size: min(100%, 3.5rem);
-    block-size: var(--space-8);
+    block-size: var(--tab-pill-h);
+    flex-shrink: 0;
     border-radius: var(--radius-pill);
     transition:
       background-color var(--t-base) var(--ease),
@@ -52,8 +58,9 @@
     white-space: nowrap;
     hyphens: none;
     font-size: var(--type-tab);
-    line-height: var(--lh-tab);
-    font-weight: 600;
+    line-height: var(--tab-label-lh);
+    letter-spacing: var(--tracking-small);
+    font-weight: var(--weight-semibold);
   }
   .tabbar__link[aria-current='page'] {
     color: var(--accent);
@@ -74,7 +81,7 @@
     block-size: 100dvh;
     inline-size: var(--sidebar-w);
     border-block-start: 0;
-    border-inline-end: 1px solid var(--separator);
+    border-inline-end: var(--hairline) solid var(--separator);
     padding: calc(var(--space-6) + var(--sat)) var(--space-3) var(--space-6);
   }
   .tabbar--sidebar ul {
@@ -84,6 +91,8 @@
     padding: 0;
   }
   .tabbar--sidebar .tabbar__link {
+    block-size: auto;
+    min-block-size: var(--tap-row);
     flex-direction: row;
     justify-content: flex-start;
     gap: var(--space-3);
@@ -91,11 +100,13 @@
     border-radius: var(--radius-pill);
   }
   .tabbar--sidebar .tabbar__icon {
+    block-size: var(--space-8);
     inline-size: var(--space-10);
     flex-shrink: 0;
   }
   .tabbar--sidebar .tabbar__label {
     font-size: var(--type-row);
+    line-height: var(--lh-row);
   }
   .tabbar--sidebar .tabbar__link[aria-current='page'] {
     background: var(--fill);
@@ -120,7 +131,7 @@
       block-size: 100dvh;
       inline-size: var(--sidebar-w);
       border-block-start: 0;
-      border-inline-end: 1px solid var(--separator);
+      border-inline-end: var(--hairline) solid var(--separator);
       padding: calc(var(--space-6) + var(--sat)) var(--space-3) var(--space-6);
     }
     .tabbar--auto ul {
@@ -130,6 +141,8 @@
       padding: 0;
     }
     .tabbar--auto .tabbar__link {
+      block-size: auto;
+      min-block-size: var(--tap-row);
       flex-direction: row;
       justify-content: flex-start;
       gap: var(--space-3);
@@ -137,11 +150,13 @@
       border-radius: var(--radius-pill);
     }
     .tabbar--auto .tabbar__icon {
+      block-size: var(--space-8);
       inline-size: var(--space-10);
       flex-shrink: 0;
     }
     .tabbar--auto .tabbar__label {
       font-size: var(--type-row);
+      line-height: var(--lh-row);
     }
     .tabbar--auto .tabbar__link[aria-current='page'] {
       background: var(--fill);

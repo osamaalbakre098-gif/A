@@ -64,6 +64,7 @@
     gap: var(--space-section);
   }
   .heute__empty {
+    inline-size: 100%;
     align-items: center;
     text-align: center;
     max-inline-size: 28rem;

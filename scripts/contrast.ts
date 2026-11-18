@@ -44,6 +44,18 @@ for (const [name, t] of Object.entries(themes)) {
         ] as [string, string, number][])),
     [t.focus, t.bg, UI],
     [t.focus, t.surface, UI],
+    // Glas (Tab-Leiste, Kopfzeile beim Scrollen): 92 % Fläche über dem hellsten und dunkelsten möglichen Inhalt.
+    // Unschärfe mischt höchstens so stark; Text darauf muss in beiden Fällen halten (UI_DETAILS 4).
+    ...(name === 'contrast'
+      ? []
+      : (['#ffffff', '#000000'].flatMap((under) => {
+          const glass = mixHex(t.surface, under, 0.92);
+          return [
+            [t.text, glass, TEXT],
+            [t.textMuted, glass, TEXT],
+            [t.primary, glass, TEXT],
+          ];
+        }) as [string, string, number][])),
   ];
   for (const [fg, bg, min] of pairs) {
     const r = contrastRatio(fg, bg);

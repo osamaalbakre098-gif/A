@@ -11,6 +11,7 @@
     "build:static": "TARGET=gallery vite build -c vite.static.config.ts && TARGET=app vite build -c vite.static.config.ts && TARGET=heute vite build -c vite.static.config.ts && TARGET=daten vite build -c vite.static.config.ts",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:ui-details": "playwright test tests/e2e/ui-details.spec.ts tests/e2e/rahmen.spec.ts tests/e2e/corners.spec.ts --project=chromium",
     "typecheck": "tsc -b --noEmit",
     "lint": "eslint . && tsx scripts/lint-css.ts && stylelint \"src/**/*.css\"",
     "format": "prettier --write .",

@@ -63,7 +63,7 @@ for (const size of SIZES) {
             .map((r) => Math.round(r.top)),
         );
         for (const t of tops) expect(t).toBeGreaterThanOrEqual(STATUS_BAR);
-        const settingsBtn = page.locator('.appbar a[href="#settings"]');
+        const settingsBtn = page.locator('.appbar .appbar__btn').last(); // Einstellungen oder (auf den Einstellungen) Zurück
         const bb = (await settingsBtn.boundingBox())!;
         expect(bb.y).toBeGreaterThanOrEqual(STATUS_BAR);
         expect(bb.width).toBeGreaterThanOrEqual(44);
@@ -77,7 +77,7 @@ for (const size of SIZES) {
           .locator('h1')
           .first()
           .evaluate((e) => getComputedStyle(e).hyphens);
-        expect(hy).toBe('none');
+        expect(hy).not.toBe('auto'); // nur festgelegte Trennstellen (weiches Trennzeichen), nie automatisch
       });
     }
   });

@@ -103,7 +103,13 @@ export default function App() {
   return (
     <ToastProvider>
       <PwaNotices quiet={immersive} />
-      <AppShell active={active} bleed={bleed} immersive={immersive} onBack={onBack}>
+      <AppShell
+        active={active}
+        bleed={bleed}
+        immersive={immersive}
+        onBack={onBack}
+        showSettings={route.name !== 'settings'}
+      >
         {route.name === 'settings' && <SettingsPage />}
         <ErrorBoundary resetKey={route.name + (route.id ?? '')}>
           <Suspense fallback={<Skeleton variant="rows" lines={3} />}>

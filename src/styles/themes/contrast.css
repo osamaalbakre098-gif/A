@@ -29,6 +29,7 @@
     --glass: #ffffff;
     --shadow-1: none;
     --shadow-2: none;
+    --card-edge: 2px solid #000000;
     --shadow-btn: none;
   }
 }

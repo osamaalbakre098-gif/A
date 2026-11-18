@@ -23,6 +23,9 @@
     --tint: color-mix(in srgb, var(--primary) 16%, var(--surface));
     --tint-strong: color-mix(in srgb, var(--primary) 24%, var(--surface));
     --shadow-1: none;
+    /* Dunkel: Tiefe durch hellere Fläche + Haarlinie statt Schatten */
+    --surface-raised: #22262b;
+    --card-edge: var(--hairline) solid #2e333a;
     --shadow-2: 0 10px 40px rgb(0 0 0 / 0.5);
     --shadow-btn: none;
     --subj-sage: #8fbf9a;

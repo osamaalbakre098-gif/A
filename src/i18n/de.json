@@ -14,7 +14,7 @@
     "main": "Hauptnavigation",
     "today": "Heute",
     "subjects": "Fächer",
-    "progress": "Fortschritt",
+    "progress": "Fort|schritt",
     "search": "Suche",
     "subject": "Fächer",
     "doc": "Fächer",
@@ -23,7 +23,7 @@
     "settingsOpen": "Einstellungen öffnen"
   },
   "settings": {
-    "title": "Einstellungen",
+    "title": "Einstel|lungen",
     "language": "Sprache",
     "theme": "Erscheinungsbild",
     "themeSystem": "System",

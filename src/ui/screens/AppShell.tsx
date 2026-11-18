@@ -47,6 +47,7 @@ export function AppShell({
   onBack,
   wide,
   forceOffline,
+  showSettings = true,
 }: {
   active: NavId | null;
   children: ReactNode;
@@ -59,6 +60,7 @@ export function AppShell({
   wide?: boolean;
   /** Für Galerie und Tests */
   forceOffline?: boolean;
+  showSettings?: boolean;
 }) {
   const { t } = useTranslation();
   const online = useOnline();
@@ -87,7 +89,7 @@ export function AppShell({
         {t('nav.skipToContent')}
       </a>
       <div className="shell__col">
-        {!immersive && !bleed && <AppBar onBack={onBack} />}
+        {!immersive && !bleed && <AppBar onBack={onBack} showSettings={showSettings} />}
         <main id="main" tabIndex={-1} className="shell__main">
           {bleed ? (
             children

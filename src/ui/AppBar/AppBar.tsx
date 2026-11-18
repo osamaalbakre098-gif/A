@@ -34,6 +34,7 @@ export function AppBar({
   watch = '#main h1',
   right,
   forceTitle,
+  showSettings = true,
 }: {
   onBack?: (() => void) | undefined;
   settingsHref?: string;
@@ -42,6 +43,8 @@ export function AppBar({
   right?: ReactNode;
   /** Für Galerie und Tests: kleinen Titel fest zeigen */
   forceTitle?: string;
+  /** Auf den Einstellungen selbst entfällt der Knopf (nichts doppelt) */
+  showSettings?: boolean;
 }) {
   const { t } = useTranslation();
   const barRef = useRef<HTMLElement>(null);
@@ -89,19 +92,21 @@ export function AppBar({
       <div className="appbar__side">
         {onBack && <BackButton onClick={onBack} label={t('nav.back')} />}
       </div>
-      <p className="appbar__title" aria-hidden="true">
+      <p className="appbar__title" aria-hidden="true" dir="auto">
         {shown}
       </p>
       <div className="appbar__side appbar__side--end">
         {right}
-        <a
-          className="appbar__btn"
-          href={settingsHref}
-          aria-label={t('nav.settings')}
-          title={t('nav.settings')}
-        >
-          <Icon as={Settings} />
-        </a>
+        {showSettings && (
+          <a
+            className="appbar__btn"
+            href={settingsHref}
+            aria-label={t('nav.settings')}
+            title={t('nav.settings')}
+          >
+            <Icon as={Settings} />
+          </a>
+        )}
       </div>
     </header>
   );

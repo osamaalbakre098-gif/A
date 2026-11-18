@@ -12,27 +12,36 @@
     hyphens: manual; /* nie mitten im Wort trennen */
     overflow-wrap: anywhere; /* bricht nur, wenn ein Wort allein nicht passt */
     text-wrap: pretty;
+    font-synthesis: none;
+    /* Ziffern tabellarisch: Zähler, Zeiten, Prozent springen nie seitlich */
+    font-variant-numeric: tabular-nums;
     -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--text-on-accent);
   }
 
   :lang(ar) body,
   [lang='ar'] body {
     font-family: var(--font-ar);
-    line-height: 1.75;
+    /* Arabisch: +0,1 Zeilenhöhe, keine Kursive */
+    line-height: calc(var(--lh-body) + 0.1);
     font-size: 1.1rem;
+    font-style: normal;
   }
 
   h1 {
     font-size: var(--type-large-title);
     line-height: var(--lh-large-title);
-    font-weight: 700;
-    letter-spacing: -0.022em;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
   }
   h2 {
     font-size: var(--type-title);
     line-height: var(--lh-title);
-    font-weight: 700;
-    letter-spacing: -0.015em;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
   }
   h3 {
     font-size: var(--type-headline);
@@ -42,7 +51,8 @@
   h1,
   h2,
   h3 {
-    hyphens: none;
+    /* nur an festgelegten Stellen (weiches Trennzeichen aus den Übersetzungen, „|"), nie automatisch */
+    hyphens: manual;
     overflow-wrap: anywhere;
     text-wrap: balance;
   }
@@ -50,6 +60,7 @@
   .t-note {
     font-size: var(--type-note);
     line-height: var(--lh-note);
+    letter-spacing: var(--tracking-small);
     color: var(--text-secondary);
   }
 

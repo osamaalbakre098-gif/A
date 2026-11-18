@@ -10,7 +10,9 @@ const target = ['app', 'heute', 'daten'].includes(process.env.TARGET ?? '')
 export default defineConfig({
   root: 'static',
   define: { __BUILD_ID__: JSON.stringify('vorschau') },
-  resolve: { alias: { 'virtual:pwa-register': new URL('./static/pwa-stub.ts', import.meta.url).pathname } },
+  resolve: {
+    alias: { 'virtual:pwa-register': new URL('./static/pwa-stub.ts', import.meta.url).pathname },
+  },
   plugins: [react(), viteSingleFile()],
   build: {
     outDir: `../dist-static/${target}`,

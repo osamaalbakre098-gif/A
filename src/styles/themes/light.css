@@ -25,7 +25,7 @@
     --tint-strong: color-mix(in srgb, var(--primary) 18%, var(--surface));
     --track-off: #84848a;
     --thumb-off: #ffffff;
-    --glass: color-mix(in srgb, var(--surface) 86%, transparent);
+    --glass: color-mix(in srgb, var(--surface) 96%, transparent);
     --arc-off: #d8d8de;
     --shadow-1: 0 1px 2px rgb(16 24 40 / 0.05), 0 4px 18px rgb(16 24 40 / 0.07);
     --shadow-2: 0 2px 6px rgb(16 24 40 / 0.06), 0 14px 40px rgb(16 24 40 / 0.12);
@@ -38,6 +38,7 @@
     --subj-moss: #5f6f2f;
     --subj-slate: #4a5a6f;
     --subj-amber: #946000;
+    --card-edge: 0 solid transparent;
     color-scheme: light;
   }
 }

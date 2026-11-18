@@ -14,6 +14,9 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
 };
 export const isRtl = (l: Language) => l === 'ar';
 
+/** Locale für Intl (Zahlen, Datum, Zeit): Arabisch mit lateinischen Ziffern als Standard (UI_DETAILS 3). */
+export const intlLocale = (lng: string): string => (lng.startsWith('ar') ? 'ar-u-nu-latn' : lng);
+
 export const resources = {
   de: { translation: de },
   en: { translation: en },
@@ -21,13 +24,20 @@ export const resources = {
 };
 
 void i18n
-  .use(new ICU())
+  .use(new ICU({ parseLngForICU: intlLocale }))
+  // „|" in Übersetzungen markiert erlaubte Trennstellen langer Wörter (weiches Trennzeichen), siehe UI_DETAILS 3
+  .use({
+    type: 'postProcessor',
+    name: 'softBreak',
+    process: (v: string) => v.replace(/\|/g, '\u00AD'),
+  })
   .use(initReactI18next)
   .init({
     resources,
     lng: 'de',
     fallbackLng: 'de',
     interpolation: { escapeValue: false },
+    postProcess: ['softBreak'],
   });
 
 export default i18n;

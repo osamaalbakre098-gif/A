@@ -4,12 +4,12 @@
     align-content: start;
     gap: var(--space-section);
     inline-size: 100%;
-    max-inline-size: 40rem;
+    max-inline-size: var(--measure-read);
     margin-inline: auto;
     padding-inline: max(var(--page-margin), var(--sal)) max(var(--page-margin), var(--sar));
   }
   .screen--wide {
-    max-inline-size: 60rem;
+    max-inline-size: var(--measure-grid);
   }
   .grid {
     display: grid;
@@ -18,7 +18,7 @@
   }
   .divider {
     border: 0;
-    border-block-start: 1px solid var(--separator);
+    border-block-start: var(--hairline) solid var(--separator);
     margin: 0;
   }
   .divider--inset {
