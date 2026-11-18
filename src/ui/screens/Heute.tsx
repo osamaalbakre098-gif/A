@@ -1,19 +1,25 @@
-import { CircleHelp } from 'lucide-react';
-import { useId, useState } from 'react';
+import { CalendarClock, CircleHelp, Info, Send, Sprout, SlidersHorizontal } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
+  Card,
+  Chip,
   Cluster,
-  ContentCard,
   DoneMotif,
   EmptyMotif,
-  ProgressArc,
+  LargeTitle,
+  ListGroup,
+  ListRow,
+  SectionHeader,
   SegmentBar,
-  Icon,
+  Sheet,
+  Skeleton,
   Stack,
-  TreeMotif,
+  StickyAction,
   type SkillState,
 } from '../components';
+import './Heute.css';
 
 export interface TodayData {
   state: 'plan' | 'done' | 'empty';
@@ -24,22 +30,22 @@ export interface TodayData {
   progress: { done: number; total: number };
   topic: string;
   minutes: number;
-  resume: { topic: string; done: number; total: number };
-  review: { count: number; minutes: number };
   /** Überschreibt „kurze Übung" in der Hauptzeile (z. B. die gewählte Methode) */
   kindLabel?: string;
+  /** Fachfarbe der Hauptkarte (Punkt, nie Fläche) */
+  subjectColor?: string;
+  resume: { topic: string; done: number; total: number };
+  review: { count: number; minutes: number };
   tomorrow: {
     count: number;
     minutes: number;
     exam?: { subject: string; date: string; sits: string; building: string };
   };
+  /** Nahe Prüfung (höchstens 14 Tage): Hinweis in der Hauptkarte */
+  examChip?: { subject: string; days: number };
+  /** Aufträge, die auf Claude warten */
+  jobsOpen?: number;
   tree: { subject: string; nodes: SkillState[] };
-}
-
-function greetingKey(hour: number) {
-  if (hour < 11) return 'heute.greetingMorning';
-  if (hour < 18) return 'heute.greetingDay';
-  return 'heute.greetingEvening';
 }
 
 /** Zusätze für die echte Seite (Verweise, echte Begründungen, Ändern). In der Vorschau fehlen sie. */
@@ -49,6 +55,7 @@ export interface TodayExtras {
   resumeHref?: string;
   treeHref?: string;
   emptyHref?: string;
+  jobsHref?: string;
   /** Übersetzte Begründungen für „Warum?" */
   reasons?: string[];
   onChange?: () => void;
@@ -57,100 +64,134 @@ export interface TodayExtras {
   noNewNote?: string;
   /** Hinweis auf fehlende Aufgaben (übersetzt) */
   prepNote?: string;
+  loading?: boolean;
 }
 
-/** Startseite „Heute": eine große Hauptaktion, darunter ruhig drei kleine Bereiche. */
+const greetingKey = (hour: number) =>
+  hour < 11 ? 'heute.greetingMorning' : hour < 18 ? 'heute.greetingDay' : 'heute.greetingEvening';
+
+/** Startseite „Heute": eine Hauptsache (angeheftete Aktion über der Navigation), darunter ruhig drei kleine Bereiche. */
 export default function Heute({ data, extras = {} }: { data: TodayData; extras?: TodayExtras }) {
   const { t } = useTranslation();
-  const [whyOpen, setWhyOpen] = useState(false);
-  const whyId = useId();
+  const [why, setWhy] = useState(false);
   const count = (s: SkillState) => data.tree.nodes.filter((n) => n === s).length;
+  const total = data.tree.nodes.length;
+  const sits = count('sits') + count('refresh');
 
-  if (data.state === 'empty') {
+  if (extras.loading)
     return (
-      <Stack space="section" className="heute view">
-        <h1 className="heute__greet">{t(greetingKey(data.hour))}</h1>
+      <>
+        <LargeTitle>{t(greetingKey(data.hour))}</LargeTitle>
+        <Skeleton variant="card" />
+        <Skeleton variant="rows" lines={3} />
+      </>
+    );
+
+  const treeRow = total > 0 && (
+    <ListGroup>
+      <ListRow
+        icon={Sprout}
+        title={t('heute.treeRowTitle')}
+        subtitle={t('heute.treeRowSub', { sits, total })}
+        href={extras.treeHref ?? '#subjects'}
+      />
+    </ListGroup>
+  );
+
+  if (data.state === 'empty')
+    return (
+      <>
+        <LargeTitle>{t(greetingKey(data.hour))}</LargeTitle>
         <Stack space="stack" className="heute__empty">
           <EmptyMotif label={t('heute.emptyAlt')} />
           <h2>{t('heute.emptyTitle')}</h2>
           <p>{t('heute.emptyText')}</p>
-          <Cluster className="heute__cluster-full">
-            {extras.emptyHref ? (
-              <a className="btn btn--primary heute__cta" href={extras.emptyHref}>
-                {t('heute.emptyCta')}
-              </a>
-            ) : (
-              <Button>{t('heute.emptyCta')}</Button>
-            )}
-          </Cluster>
         </Stack>
-      </Stack>
+        <StickyAction>
+          <a className="btn btn--primary btn--l btn--block" href={extras.emptyHref ?? '#subjects'}>
+            {t('heute.emptyCta')}
+          </a>
+        </StickyAction>
+      </>
     );
-  }
+
+  const reasons = extras.reasons ?? [t('heute.whyText')];
+  const whySheet = (
+    <Sheet
+      open={why}
+      onClose={() => setWhy(false)}
+      title={t('heute.whyTitle')}
+      size="sm"
+      footer={
+        <Button variant="plain" onClick={() => setWhy(false)}>
+          {t('heute.whyOk')}
+        </Button>
+      }
+    >
+      <ListGroup>
+        {reasons.map((r) => (
+          <ListRow key={r} icon={Info} title={r} />
+        ))}
+      </ListGroup>
+    </Sheet>
+  );
 
   return (
-    <Stack space="section" className="heute view">
-      <h1 className="heute__greet">{t(greetingKey(data.hour))}</h1>
+    <>
+      <LargeTitle>{t(greetingKey(data.hour))}</LargeTitle>
 
       {data.state === 'plan' ? (
-        <ContentCard hero accent="ocean">
-          <Stack space="tight">
-            <h2 className="card__title">{t('heute.start')}</h2>
-            <p>
-              {t(data.reviews > 0 ? 'heute.planLine' : 'heute.planLineNoReview', {
-                reviews: data.reviews,
-                topic: data.topic,
-                kind: data.kindLabel ?? t('heute.kindPractice'),
-                minutes: data.minutes,
-              })}
-            </p>
-          </Stack>
-          <Stack space="tight">
-            <SegmentBar
-              done={data.progress.done}
-              total={data.progress.total}
-              label={t('heute.progress', data.progress)}
-            />
-            <p className="t-note">{t('heute.progress', data.progress)}</p>
-          </Stack>
-          {extras.goHref ? (
-            <a className="btn btn--primary heute__cta" href={extras.goHref}>
-              {t('heute.go')}
-            </a>
-          ) : (
-            <Button className="heute__cta">{t('heute.go')}</Button>
+        <Card variant="hero" aria-labelledby="heute-hero">
+          <div className="card__eyebrow">
+            {data.subjectColor && (
+              <span
+                className="heute__dot"
+                style={{ background: `var(--subj-${data.subjectColor})` }}
+                aria-hidden="true"
+              />
+            )}
+            <h2 id="heute-hero" className="heute__hero-title">
+              {t('heute.start')}
+            </h2>
+          </div>
+          <p className="heute__line">
+            {t(data.reviews > 0 ? 'heute.planLine' : 'heute.planLineNoReview', {
+              reviews: data.reviews,
+              topic: data.topic,
+              kind: data.kindLabel ?? t('heute.kindPractice'),
+              minutes: data.minutes,
+            })}
+          </p>
+          {data.examChip && (
+            <Chip icon={CalendarClock} tone="warning">
+              {t('heute.examChip', data.examChip)}
+            </Chip>
+          )}
+          {data.progress.done > 0 && (
+            <Stack space="tight">
+              <SegmentBar
+                done={data.progress.done}
+                total={data.progress.total}
+                label={t('heute.progress', data.progress)}
+              />
+              <p className="t-note">{t('heute.progress', data.progress)}</p>
+            </Stack>
           )}
           <Cluster>
-            <Button
-              variant="secondary"
-              aria-expanded={whyOpen}
-              aria-controls={whyId}
-              onClick={() => setWhyOpen(!whyOpen)}
-            >
-              <Icon as={CircleHelp} size={20} />
+            <Button variant="plain" onClick={() => setWhy(true)}>
+              <CircleHelp size={20} aria-hidden="true" />
               {t('heute.why')}
             </Button>
             {extras.onChange && (
-              <Button variant="secondary" onClick={extras.onChange}>
+              <Button variant="plain" onClick={extras.onChange}>
+                <SlidersHorizontal size={20} aria-hidden="true" />
                 {t('heute.change')}
               </Button>
             )}
           </Cluster>
-          {whyOpen &&
-            (extras.reasons ? (
-              <ul id={whyId} className="why-text">
-                {extras.reasons.map((r) => (
-                  <li key={r}>{r}</li>
-                ))}
-              </ul>
-            ) : (
-              <p id={whyId} className="why-text">
-                {t('heute.whyText')}
-              </p>
-            ))}
           {extras.noNewNote && <p className="t-note">{extras.noNewNote}</p>}
           {extras.prepNote && <p className="t-note">{extras.prepNote}</p>}
-        </ContentCard>
+        </Card>
       ) : (
         <Stack space="stack" className="heute__empty">
           <DoneMotif label={t('heute.doneAlt')} />
@@ -158,81 +199,69 @@ export default function Heute({ data, extras = {} }: { data: TodayData; extras?:
           <p>
             {t('heute.doneText', { count: data.tomorrow.count, minutes: data.tomorrow.minutes })}
           </p>
+          <a className="btn btn--secondary btn--block" href={extras.goHref ?? '#session'}>
+            {t('heute.keepGoing')}
+          </a>
         </Stack>
       )}
 
       {data.state === 'plan' && (
-        <div className="heute__grid">
-          {data.resume.topic && (
-            <ContentCard title={t('heute.resumeTitle')} accent="sage">
-              <Cluster>
-                <ProgressArc
-                  done={data.resume.done}
-                  total={data.resume.total}
-                  label={data.resume.topic}
-                />
-                <p>{t('heute.resumeText', data.resume)}</p>
-              </Cluster>
-              <Cluster>
-                {extras.resumeHref ? (
-                  <a className="btn btn--secondary" href={extras.resumeHref}>
-                    {t('heute.resumeCta')}
-                  </a>
-                ) : (
-                  <Button variant="secondary">{t('heute.resumeCta')}</Button>
-                )}
-              </Cluster>
-            </ContentCard>
-          )}
-          {data.review.count > 0 && (
-            <ContentCard title={t('heute.reviewTitle')} accent="amber">
-              <p>{t('heute.reviewText', data.review)}</p>
-              <Cluster>
-                {extras.reviewHref ? (
-                  <a className="btn btn--secondary" href={extras.reviewHref}>
-                    {t('heute.reviewCta')}
-                  </a>
-                ) : (
-                  <Button variant="secondary">{t('heute.reviewCta')}</Button>
-                )}
-              </Cluster>
-            </ContentCard>
-          )}
-        </div>
+        <Stack space="tight">
+          <SectionHeader>{t('heute.after')}</SectionHeader>
+          <ListGroup label={t('heute.after')}>
+            {data.resume.topic && (
+              <ListRow
+                dot="sage"
+                title={t('heute.resumeTitle')}
+                subtitle={t('heute.resumeText', data.resume)}
+                href={extras.resumeHref ?? '#subjects'}
+              />
+            )}
+            {data.review.count > 0 && (
+              <ListRow
+                dot="amber"
+                title={t('heute.reviewTitle')}
+                subtitle={t('heute.reviewText', data.review)}
+                href={extras.reviewHref ?? '#session'}
+              />
+            )}
+            <ListRow
+              dot="slate"
+              title={t('heute.tomorrowTitle')}
+              subtitle={t('heute.tomorrowCards', data.tomorrow)}
+            />
+          </ListGroup>
+        </Stack>
       )}
 
-      <ContentCard title={t('heute.tomorrowTitle')} accent="slate">
-        <p>{t('heute.tomorrowCards', data.tomorrow)}</p>
-        {data.tomorrow.exam && (
-          <Stack space="tight">
-            <p className="strong">{t('heute.examLine', data.tomorrow.exam)}</p>
-            <p>{t('heute.examStatus', data.tomorrow.exam)}</p>
-            {extras.examNote && <p className="t-note">{extras.examNote}</p>}
-          </Stack>
-        )}
-      </ContentCard>
+      {data.tomorrow.exam && (
+        <Card variant="plain">
+          <p className="heute__strong">{t('heute.examLine', data.tomorrow.exam)}</p>
+          <p>{t('heute.examStatus', data.tomorrow.exam)}</p>
+          {extras.examNote && <p className="t-note">{extras.examNote}</p>}
+        </Card>
+      )}
 
-      <ContentCard title={t('heute.treeTitle')} accent="moss">
-        <Cluster space="group">
-          <TreeMotif
-            label={t('heute.treeAlt', {
-              subject: data.tree.subject,
-              sits: count('sits'),
-              building: count('building'),
-              fresh: count('new'),
-              due: count('refresh'),
-            })}
-            nodes={data.tree.nodes}
-          />
-          {extras.treeHref ? (
-            <a className="btn btn--quiet" href={extras.treeHref}>
-              {t('heute.treeCta')}
-            </a>
-          ) : (
-            <Button variant="quiet">{t('heute.treeCta')}</Button>
-          )}
-        </Cluster>
-      </ContentCard>
-    </Stack>
+      {(data.jobsOpen ?? 0) > 0 && (
+        <Card variant="tinted">
+          <h2 className="heute__hero-title">{t('heute.jobsTitle', { count: data.jobsOpen })}</h2>
+          <a className="btn btn--secondary btn--block" href={extras.jobsHref ?? '#jobs'}>
+            <Send size={20} aria-hidden="true" />
+            {t('heute.jobsCta')}
+          </a>
+        </Card>
+      )}
+
+      {treeRow}
+
+      {data.state === 'plan' && (
+        <StickyAction>
+          <a className="btn btn--primary btn--l btn--block" href={extras.goHref ?? '#session'}>
+            {t('heute.go')}
+          </a>
+        </StickyAction>
+      )}
+      {whySheet}
+    </>
   );
 }

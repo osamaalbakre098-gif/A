@@ -34,7 +34,21 @@
     "textSizeValue": "{percent, number} %",
     "reducedMotion": "Bewegung reduzieren",
     "dataLink": "Deine Daten: Sichern, Speicher, Installation",
-    "version": "Version {id}"
+    "version": "Version {id}",
+    "look": "Darstellung",
+    "sectionLearn": "Lernen",
+    "sectionLook": "Darstellung",
+    "sectionClaude": "Claude",
+    "sectionData": "Daten",
+    "sectionAbout": "Über",
+    "dayStart": "Tagesbeginn",
+    "minus": "Weniger",
+    "plus": "Mehr",
+    "unitMin": "Min.",
+    "unitHour": "Uhr",
+    "textPreview": "So groß erscheint dein Text.",
+    "connection": "Aufträge und Verbindung",
+    "dataRow": "Deine Daten"
   },
   "lichtung": {
     "greeting": "Schön, dass du da bist.",
@@ -87,7 +101,16 @@
     "latestHour": "Späteste Uhrzeit (Stunde, 0–23)",
     "blockMinutes": "Blockzeit bis zur Pause (Minuten)",
     "settingsHint": "Madar plant damit. Du kannst es jederzeit ändern.",
-    "planLineNoReview": "{topic} · {kind} · ca. {minutes} Min."
+    "planLineNoReview": "{topic} · {kind} · ca. {minutes} Min.",
+    "after": "Danach",
+    "whyTitle": "Warum jetzt?",
+    "whyOk": "Verstanden",
+    "keepGoing": "Freiwillig weiterüben",
+    "treeRowTitle": "Könnensbaum",
+    "treeRowSub": "{sits} von {total} sitzen",
+    "examChip": "{subject}-Prüfung in {days, plural, =0 {null Tagen} one {# Tag} other {# Tagen}}",
+    "jobsTitle": "{count, plural, one {# Auftrag wartet} other {# Aufträge warten}} auf Claude",
+    "jobsCta": "Aufträge öffnen"
   },
   "data": {
     "title": "Deine Daten",
@@ -224,7 +247,8 @@
     "openFailed": "Das Dokument lässt sich nicht anzeigen.",
     "scroller": "Dokument",
     "selection": "Ausgewählter Text",
-    "aiText": "Von Claude gelesen, kann Fehler enthalten."
+    "aiText": "Von Claude gelesen, kann Fehler enthalten.",
+    "modeLegend": "Ansicht"
   },
   "search": {
     "title": "Suche",
@@ -300,7 +324,16 @@
     "reviewNote": "Nur eine Empfehlung. Madar ändert den Plan nicht.",
     "reviewStrengths": "Das läuft gut",
     "reviewGaps": "Hier sind Lücken",
-    "reviewTips": "Empfehlungen"
+    "reviewTips": "Empfehlungen",
+    "connected": "Verbunden mit Claude",
+    "notConnected": "Nicht verbunden. Kopieren und Einfügen geht trotzdem.",
+    "step1": "Auftrag kopieren",
+    "step2": "In Claude einfügen und das Stichwort madar schreiben",
+    "step3": "Antwort hier einfügen",
+    "stepDone": "erledigt",
+    "codeShow": "Code zeigen",
+    "codeHide": "Code verbergen",
+    "nothingHalf": "Nichts wird halb gespeichert."
   },
   "practice": {
     "title": "Üben",
@@ -455,7 +488,12 @@
       "core": "Kern",
       "practice": "Üben",
       "closing": "Abschluss"
-    }
+    },
+    "closeLabel": "Sitzung verlassen",
+    "leaveTitle": "Pause machen?",
+    "leaveText": "Alles, was du beantwortet hast, bleibt gespeichert. Morgen plant Madar neu.",
+    "leaveStay": "Weitermachen",
+    "leaveGo": "Für heute aufhören"
   },
   "exam": {
     "title": "Prüfung",
@@ -463,7 +501,9 @@
     "moveLabel": "Prüfung am {date} (Datum ändern)",
     "dateLabel": "Datum der Prüfung",
     "add": "Prüfung eintragen",
-    "note": "Madar plant rückwärts vom Prüfungstag. Verschiebst du den Termin, wird neu geplant – ohne Vorwurf. Einen Notenschlüssel gibt es nur, wenn du ihn selbst einträgst."
+    "note": "Madar plant rückwärts vom Prüfungstag. Verschiebst du den Termin, wird neu geplant – ohne Vorwurf. Einen Notenschlüssel gibt es nur, wenn du ihn selbst einträgst.",
+    "rowSet": "Prüfung am {date} (in {days, plural, =0 {null Tagen} one {# Tag} other {# Tagen}})",
+    "saved": "Gespeichert. Madar plant rückwärts."
   },
   "ui": {
     "close": "Schließen",
@@ -486,5 +526,10 @@
     "updateReady": "Neue Version bereit",
     "updateAction": "Jetzt laden",
     "offlineReady": "Madar funktioniert jetzt auch ohne Internet."
+  },
+  "fach": {
+    "filesTitle": "Dateien",
+    "progressTitle": "Fortschritt im Fach",
+    "progressLine": "{sits} von {total} Fähigkeiten sitzen"
   }
 }

@@ -1,0 +1,67 @@
+@layer components {
+  .seg {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-inline-size: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .seg__legend {
+    padding: 0;
+    font-size: var(--type-secondary);
+    line-height: var(--lh-secondary);
+    font-weight: var(--weight-semibold);
+  }
+  .seg__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+    padding: var(--space-1);
+    border-radius: var(--radius-field);
+    background: var(--fill);
+  }
+  .seg__item {
+    position: relative;
+    display: grid;
+  }
+  .seg__input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .seg__label {
+    display: grid;
+    place-items: center;
+    min-block-size: var(--tap);
+    padding-inline: var(--space-2);
+    border-radius: calc(var(--radius-field) - var(--space-1));
+    text-align: center;
+    font-size: var(--type-secondary);
+    line-height: var(--lh-secondary);
+    font-weight: var(--weight-medium);
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .seg__input:checked + .seg__label {
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-1);
+    font-weight: var(--weight-bold);
+  }
+  .seg__input:focus-visible + .seg__label {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  [data-theme='contrast'] .seg__track {
+    background: var(--surface);
+    border: 2px solid var(--border);
+  }
+  [data-theme='contrast'] .seg__input:checked + .seg__label {
+    background: var(--accent);
+    color: var(--text-on-accent);
+    box-shadow: none;
+  }
+}

@@ -34,7 +34,21 @@
     "textSizeValue": "{percent, number}٪",
     "reducedMotion": "تقليل الحركة",
     "dataLink": "بياناتك: النسخ الاحتياطي والتخزين والتثبيت",
-    "version": "الإصدار {id}"
+    "version": "الإصدار {id}",
+    "look": "المظهر",
+    "sectionLearn": "التعلّم",
+    "sectionLook": "المظهر",
+    "sectionClaude": "Claude",
+    "sectionData": "البيانات",
+    "sectionAbout": "حول",
+    "dayStart": "بداية اليوم",
+    "minus": "أقل",
+    "plus": "أكثر",
+    "unitMin": "د",
+    "unitHour": "س",
+    "textPreview": "هكذا يبدو حجم نصك.",
+    "connection": "المهام والاتصال",
+    "dataRow": "بياناتك"
   },
   "lichtung": {
     "greeting": "سعيد برؤيتك.",
@@ -87,7 +101,16 @@
     "latestHour": "أقصى ساعة (0–23)",
     "blockMinutes": "مدة الكتلة قبل الاستراحة (دقائق)",
     "settingsHint": "يخطط مدار وفق هذه القيم. يمكنك تغييرها في أي وقت.",
-    "planLineNoReview": "{topic} · {kind} · نحو {minutes} د"
+    "planLineNoReview": "{topic} · {kind} · نحو {minutes} د",
+    "after": "بعد ذلك",
+    "whyTitle": "لماذا الآن؟",
+    "whyOk": "فهمت",
+    "keepGoing": "تابع التدرب طوعًا",
+    "treeRowTitle": "شجرة المهارات",
+    "treeRowSub": "{sits} من {total} راسخة",
+    "examChip": "امتحان {subject} بعد {days, plural, =0 {0 يوم} one {يوم} other {# أيام}}",
+    "jobsTitle": "{count, plural, one {مهمة واحدة تنتظر} other {# مهام تنتظر}} Claude",
+    "jobsCta": "فتح المهام"
   },
   "data": {
     "title": "بياناتك",
@@ -224,7 +247,8 @@
     "openFailed": "تعذّر عرض المستند.",
     "scroller": "المستند",
     "selection": "النص المحدد",
-    "aiText": "قرأه Claude، وقد يحتوي أخطاء."
+    "aiText": "قرأه Claude، وقد يحتوي أخطاء.",
+    "modeLegend": "العرض"
   },
   "search": {
     "title": "بحث",
@@ -300,7 +324,16 @@
     "reviewNote": "مجرد توصية. مدار لا تغيّر الخطة.",
     "reviewStrengths": "ما يسير جيداً",
     "reviewGaps": "الثغرات",
-    "reviewTips": "التوصيات"
+    "reviewTips": "التوصيات",
+    "connected": "متصل بـ Claude",
+    "notConnected": "غير متصل. النسخ واللصق يعملان رغم ذلك.",
+    "step1": "انسخ المهمة",
+    "step2": "الصقها في Claude واكتب الكلمة madar",
+    "step3": "الصق الإجابة هنا",
+    "stepDone": "تم",
+    "codeShow": "إظهار الرمز",
+    "codeHide": "إخفاء الرمز",
+    "nothingHalf": "لا يُحفظ شيء ناقصًا."
   },
   "practice": {
     "title": "تمرين",
@@ -455,7 +488,12 @@
       "core": "الجوهر",
       "practice": "تدرّب",
       "closing": "ختام"
-    }
+    },
+    "closeLabel": "مغادرة الجلسة",
+    "leaveTitle": "أخذ استراحة؟",
+    "leaveText": "كل ما أجبت عنه يبقى محفوظًا. يخطط مدار من جديد غدًا.",
+    "leaveStay": "تابع",
+    "leaveGo": "توقف لهذا اليوم"
   },
   "exam": {
     "title": "الامتحان",
@@ -463,7 +501,9 @@
     "moveLabel": "الامتحان في {date} (تغيير التاريخ)",
     "dateLabel": "تاريخ الامتحان",
     "add": "إضافة امتحان",
-    "note": "يخطط مدار عكسيًا من يوم الامتحان. إن غيّرت الموعد يُعاد التخطيط دون لوم. لا يوجد سلّم درجات إلا إذا أدخلته بنفسك."
+    "note": "يخطط مدار عكسيًا من يوم الامتحان. إن غيّرت الموعد يُعاد التخطيط دون لوم. لا يوجد سلّم درجات إلا إذا أدخلته بنفسك.",
+    "rowSet": "امتحان في {date} (بعد {days, plural, =0 {0 يوم} one {يوم} other {# أيام}})",
+    "saved": "تم الحفظ. يخطط مدار عكسيًا."
   },
   "ui": {
     "close": "إغلاق",
@@ -486,5 +526,10 @@
     "updateReady": "إصدار جديد جاهز",
     "updateAction": "تحميل الآن",
     "offlineReady": "يعمل مدار الآن أيضًا بدون إنترنت."
+  },
+  "fach": {
+    "filesTitle": "الملفات",
+    "progressTitle": "التقدم في المادة",
+    "progressLine": "{sits} من {total} مهارة راسخة"
   }
 }

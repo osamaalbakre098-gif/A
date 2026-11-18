@@ -27,7 +27,26 @@ import {
 import { systemNow } from '../../data/clock';
 import type { AuswertungErgebnis } from '../../ai/jobs/schemas';
 import type { z } from 'zod';
-import { Button, Cluster, ContentCard, Stack, TextArea, TextField } from '../components';
+import {
+  Banner,
+  Button,
+  Card,
+  Chip,
+  Cluster,
+  CopyBlock,
+  Disclosure,
+  LargeTitle,
+  ListGroup,
+  ListRow,
+  SectionHeader,
+  StepList,
+  Stack,
+  Switch,
+  TextArea,
+  TextField,
+} from '../components';
+import { Sparkles } from 'lucide-react';
+import './Jobs.css';
 import { useDb } from '../DbProvider';
 
 type Row = { id: string; type: string; status: string; payload: JobPayload; createdAt: number };
@@ -90,114 +109,147 @@ function JobCard({ j, onChange }: { j: Row; onChange: (msg: string) => void }) {
     onChange(t('jobs.retried'));
   };
 
+  const open = j.status === 'pending' || j.status === 'running' || j.status === 'failed';
+  const tone =
+    sk === 'done' ? 'success' : sk === 'failed' || sk === 'partial' ? 'warning' : 'neutral';
   return (
     <li className="jobcard">
-      <Stack space="tight">
-        <div className="jobcard__head">
-          <strong className="docrow__name">{j.payload.paket.titel}</strong>
-          <span className="chip">{t(`jobs.status.${sk}`)}</span>
-        </div>
-        <p className="t-note">
-          {t(`jobs.typ.${j.type}`)}
-          {teil.von > 1 ? ` · ${t('jobs.part', { index: teil.index, total: teil.von })}` : ''}
-        </p>
-        {(j.status === 'pending' || j.status === 'running' || j.status === 'failed') && (
-          <>
-            <Cluster>
-              <Button variant="secondary" onClick={kopieren}>
-                {t('jobs.copy')}
-              </Button>
-              <Button variant="quiet" onClick={herunterladen}>
-                {t('jobs.download')}
-              </Button>
-              <Button variant="quiet" aria-expanded={zeigen} onClick={() => setZeigen(!zeigen)}>
-                {t('jobs.show')}
-              </Button>
-            </Cluster>
-            {zeigen && (
-              <textarea
-                className="input jobcard__text"
-                readOnly
-                value={text}
-                aria-label={t('jobs.show')}
-                rows={8}
-              />
-            )}
-            <TextArea
-              label={t('jobs.answerLabel')}
-              value={antwort}
-              onChange={(e) => setAntwort(e.target.value)}
-              rows={4}
+      <Disclosure
+        open={open}
+        summary={
+          <span className="jobcard__sum">
+            <span className="jobcard__title">
+              <bdi dir="auto">{j.payload.paket.titel}</bdi>
+            </span>
+            <span className="jobcard__meta">
+              <Chip tone={tone}>{t(`jobs.status.${sk}`)}</Chip>
+              <span className="t-note">
+                {t(`jobs.typ.${j.type}`)}
+                {teil.von > 1 ? ` · ${t('jobs.part', { index: teil.index, total: teil.von })}` : ''}
+              </span>
+            </span>
+          </span>
+        }
+      >
+        <Stack space="stack">
+          {open && (
+            <StepList
+              doneLabel={t('jobs.stepDone')}
+              steps={[
+                {
+                  title: t('jobs.step1'),
+                  done: j.status !== 'pending',
+                  children: (
+                    <Stack space="tight">
+                      <Cluster>
+                        <Button variant="secondary" onClick={kopieren}>
+                          {t('jobs.copy')}
+                        </Button>
+                        <Button variant="quiet" onClick={herunterladen}>
+                          {t('jobs.download')}
+                        </Button>
+                        <Button
+                          variant="quiet"
+                          aria-expanded={zeigen}
+                          onClick={() => setZeigen(!zeigen)}
+                        >
+                          {t('jobs.show')}
+                        </Button>
+                      </Cluster>
+                      {zeigen && (
+                        <CopyBlock
+                          text={text}
+                          label={t('jobs.show')}
+                          copyLabel={t('jobs.copy')}
+                          copiedLabel={t('jobs.copied')}
+                        />
+                      )}
+                    </Stack>
+                  ),
+                },
+                { title: t('jobs.step2'), done: j.status === 'running' },
+                {
+                  title: t('jobs.step3'),
+                  children: (
+                    <Stack space="tight">
+                      <TextArea
+                        label={t('jobs.answerLabel')}
+                        value={antwort}
+                        onChange={(e) => setAntwort(e.target.value)}
+                        rows={4}
+                      />
+                      <Cluster>
+                        <Button onClick={importieren} loading={busy} disabled={!antwort.trim()}>
+                          {busy ? t('jobs.importing') : t('jobs.import')}
+                        </Button>
+                        <Button variant="quiet" onClick={() => fileRef.current?.click()}>
+                          {t('jobs.answerFile')}
+                        </Button>
+                        <input
+                          ref={fileRef}
+                          type="file"
+                          hidden
+                          accept=".json,.txt,application/json,text/plain"
+                          aria-label={t('jobs.answerFile')}
+                          onChange={async (e) => {
+                            const f = e.target.files?.[0];
+                            if (f) setAntwort(await f.text());
+                            e.target.value = '';
+                          }}
+                        />
+                      </Cluster>
+                    </Stack>
+                  ),
+                },
+              ]}
             />
-            <Cluster>
-              <Button onClick={importieren} loading={busy} disabled={!antwort.trim()}>
-                {busy ? t('jobs.importing') : t('jobs.import')}
-              </Button>
-              <Button variant="quiet" onClick={() => fileRef.current?.click()}>
-                {t('jobs.answerFile')}
-              </Button>
-              <input
-                ref={fileRef}
-                type="file"
-                hidden
-                accept=".json,.txt,application/json,text/plain"
-                aria-label={t('jobs.answerFile')}
-                onChange={async (e) => {
-                  const f = e.target.files?.[0];
-                  if (f) setAntwort(await f.text());
-                  e.target.value = '';
-                }}
-              />
-            </Cluster>
-          </>
-        )}
-        {b && (
-          <div aria-live="polite" className="jobcard__result">
-            <p
-              role={b.importiert === 0 && b.fehler.length ? 'alert' : 'status'}
-              className={b.fehler.length && !b.importiert ? 'msg msg--error' : 'msg'}
-            >
-              {b.fehler.length === 0
-                ? '✓ ' + t('jobs.resultOk', { count: b.importiert })
-                : b.importiert > 0
-                  ? '⚠ ' + t('jobs.resultPartial', { count: b.importiert })
-                  : '⚠ ' + t('jobs.resultFail')}
-            </p>
-            {b.uebersprungen > 0 && (
-              <p className="t-note">{t('jobs.skipped', { count: b.uebersprungen })}</p>
-            )}
-            {b.fehler.length > 0 && (
-              <>
-                <h3>{t('jobs.errorsTitle')}</h3>
-                <ul className="plain">
-                  {b.fehler.slice(0, 12).map((f, i) => (
-                    <li key={i} className="t-note">
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Cluster>
-                  <Button variant="secondary" onClick={neu}>
-                    {t('jobs.retry')}
-                  </Button>
-                </Cluster>
-              </>
-            )}
-            {b.hinweise.length > 0 && (
-              <>
-                <h3>{t('jobs.notesTitle')}</h3>
-                <ul className="plain">
-                  {b.hinweise.slice(0, 8).map((f, i) => (
-                    <li key={i} className="t-note">
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </div>
-        )}
-      </Stack>
+          )}
+          {b && (
+            <div aria-live="polite" className="jobcard__result">
+              <Banner
+                tone={b.fehler.length === 0 ? 'success' : b.importiert > 0 ? 'warning' : 'danger'}
+              >
+                {b.fehler.length === 0
+                  ? t('jobs.resultOk', { count: b.importiert })
+                  : b.importiert > 0
+                    ? t('jobs.resultPartial', { count: b.importiert })
+                    : t('jobs.resultFail')}
+              </Banner>
+              <p className="t-note">{t('jobs.nothingHalf')}</p>
+              {b.uebersprungen > 0 && (
+                <p className="t-note">{t('jobs.skipped', { count: b.uebersprungen })}</p>
+              )}
+              {b.fehler.length > 0 && (
+                <Disclosure summary={t('jobs.errorsTitle')}>
+                  <ul className="plain">
+                    {b.fehler.slice(0, 12).map((f, i) => (
+                      <li key={i} className="t-note">
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Cluster>
+                    <Button variant="secondary" onClick={neu}>
+                      {t('jobs.retry')}
+                    </Button>
+                  </Cluster>
+                </Disclosure>
+              )}
+              {b.hinweise.length > 0 && (
+                <Disclosure summary={t('jobs.notesTitle')}>
+                  <ul className="plain">
+                    {b.hinweise.slice(0, 8).map((f, i) => (
+                      <li key={i} className="t-note">
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </Disclosure>
+              )}
+            </div>
+          )}
+        </Stack>
+      </Disclosure>
     </li>
   );
 }
@@ -210,8 +262,9 @@ function Auswertung() {
   if (!v) return null;
   const e = v.ergebnis;
   return (
-    <ContentCard title={t('jobs.reviewTitle')} accent="plum">
-      <p className="strong">{t('jobs.reviewNote')}</p>
+    <Card>
+      <h2>{t('jobs.reviewTitle')}</h2>
+      <p className="t-note">{t('jobs.reviewNote')}</p>
       <p>{e.zusammenfassung}</p>
       {e.staerken.length > 0 && (
         <>
@@ -245,7 +298,7 @@ function Auswertung() {
           </ul>
         </>
       )}
-    </ContentCard>
+    </Card>
   );
 }
 
@@ -269,6 +322,7 @@ export default function JobsPage() {
   const [syncing, setSyncing] = useState(false);
   const [sync, setSync] = useState<AbgleichBericht | null>(null);
   const [connMsg, setConnMsg] = useState('');
+  const [showCode, setShowCode] = useState(false);
   const base = typeof location === 'undefined' ? '' : location.origin;
 
   const erstellen = async (v: Vorschlag) => {
@@ -305,33 +359,31 @@ export default function JobsPage() {
   const urlText = saved ? `${base}/mcp/${saved}` : '';
 
   return (
-    <Stack space="section" className="view">
-      <Stack space="tight">
-        <a className="backlink" href="#settings">
-          ← {t('nav.settings')}
-        </a>
-        <h1>{t('jobs.title')}</h1>
-      </Stack>
+    <>
+      <LargeTitle>{t('jobs.title')}</LargeTitle>
+      <Banner tone={saved ? 'success' : 'info'}>
+        {saved ? t('jobs.connected') : t('jobs.notConnected')}
+      </Banner>
       <p>{t('jobs.intro')}</p>
 
-      <ContentCard title={t('jobs.suggestTitle')} accent="ocean">
-        {sug && sug.length === 0 && <p className="t-note">{t('jobs.suggestNone')}</p>}
-        <ul className="plain doclist">
-          {sug?.map((v, i) => (
-            <li key={`${v.typ}-${v.ref ?? i}`} className="docrow">
-              <span className="docrow__name">{v.titel}</span>
-              <span className="t-note">
-                {t(`jobs.typ.${v.typ as JobTyp}`)}
-                {v.detail ? ` · ${v.detail}` : ''}
-              </span>
-              <Cluster>
-                <Button variant="secondary" onClick={() => void erstellen(v)}>
-                  {t('jobs.create')}
-                </Button>
-              </Cluster>
-            </li>
-          ))}
-        </ul>
+      <Stack space="tight">
+        <SectionHeader>{t('jobs.suggestTitle')}</SectionHeader>
+        {sug && sug.length === 0 ? (
+          <p className="t-note">{t('jobs.suggestNone')}</p>
+        ) : (
+          <ListGroup label={t('jobs.suggestTitle')}>
+            {sug?.map((v, i) => (
+              <ListRow
+                key={`${v.typ}-${v.ref ?? i}`}
+                icon={Sparkles}
+                title={<bdi dir="auto">{v.titel}</bdi>}
+                subtitle={`${t(`jobs.typ.${v.typ as JobTyp}`)}${v.detail ? ` · ${v.detail}` : ''}`}
+                value={t('jobs.create')}
+                onClick={() => void erstellen(v)}
+              />
+            ))}
+          </ListGroup>
+        )}
         <div aria-live="polite">
           {msg && (
             <p role="status" className="msg">
@@ -339,66 +391,75 @@ export default function JobsPage() {
             </p>
           )}
         </div>
-      </ContentCard>
+      </Stack>
 
-      <ContentCard title={t('jobs.connTitle')} accent="slate">
-        <p className="t-note">{t('jobs.connText')}</p>
-        <TextField
-          label={t('jobs.code')}
-          hint={t('jobs.codeHint')}
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          autoComplete="off"
-          spellCheck={false}
-        />
-        <Cluster>
-          <Button
-            variant="secondary"
-            onClick={speichern}
-            disabled={code.trim().length < 24 && code.trim() !== ''}
-          >
-            {t('jobs.codeSave')}
-          </Button>
-          <Button variant="quiet" onClick={() => setCode(neuerCode())}>
-            {t('jobs.codeNew')}
-          </Button>
-          {saved && (
-            <Button
-              variant="quiet"
-              onClick={() => {
-                setCode('');
-                speicherKopplung(null);
-                setSaved('');
-              }}
-            >
-              {t('jobs.codeRemove')}
-            </Button>
-          )}
-        </Cluster>
-        {urlText && (
-          <>
+      <Auswertung />
+
+      <Stack space="tight">
+        <SectionHeader>{t('jobs.listTitle')}</SectionHeader>
+        {jobs && jobs.length === 0 ? (
+          <p className="t-note">{t('jobs.listNone')}</p>
+        ) : (
+          <ul className="plain jobs__list">
+            {jobs?.map((j) => (
+              <JobCard key={j.id} j={j} onChange={setMsg} />
+            ))}
+          </ul>
+        )}
+      </Stack>
+
+      <Card>
+        <Stack space="stack">
+          <h2>{t('jobs.connTitle')}</h2>
+          <p className="t-note">{t('jobs.connText')}</p>
+          <div className="jobs__code">
             <TextField
-              label={t('jobs.urlLabel')}
-              value={urlText}
-              readOnly
-              onFocus={(e) => e.target.select()}
+              label={t('jobs.code')}
+              hint={t('jobs.codeHint')}
+              type={showCode ? 'text' : 'password'}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              autoComplete="off"
+              spellCheck={false}
             />
-            <Cluster>
+            <Button variant="quiet" aria-pressed={showCode} onClick={() => setShowCode(!showCode)}>
+              {showCode ? t('jobs.codeHide') : t('jobs.codeShow')}
+            </Button>
+          </div>
+          <Cluster>
+            <Button
+              variant="secondary"
+              onClick={speichern}
+              disabled={code.trim().length < 24 && code.trim() !== ''}
+            >
+              {t('jobs.codeSave')}
+            </Button>
+            <Button variant="quiet" onClick={() => setCode(neuerCode())}>
+              {t('jobs.codeNew')}
+            </Button>
+            {saved && (
               <Button
                 variant="quiet"
-                onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText(urlText);
-                    setConnMsg(t('jobs.urlCopied'));
-                  } catch {
-                    /* markieren */
-                  }
+                onClick={() => {
+                  setCode('');
+                  speicherKopplung(null);
+                  setSaved('');
                 }}
               >
-                {t('jobs.urlCopy')}
+                {t('jobs.codeRemove')}
               </Button>
+            )}
+          </Cluster>
+          {urlText && (
+            <>
+              <CopyBlock
+                text={urlText}
+                label={t('jobs.urlLabel')}
+                copyLabel={t('jobs.urlCopy')}
+                copiedLabel={t('jobs.urlCopied')}
+              />
               <Button
-                variant="quiet"
+                variant="secondary"
                 onClick={async () =>
                   setConnMsg(
                     (await verbindungPruefen({ baseUrl: base, code: saved })) ?? t('jobs.testOk'),
@@ -407,62 +468,33 @@ export default function JobsPage() {
               >
                 {t('jobs.test')}
               </Button>
-            </Cluster>
-            <label className="switch" style={{ alignSelf: 'flex-start' }}>
-              <input
-                type="checkbox"
-                role="switch"
-                className="switch__input"
-                checked={report}
-                onChange={(e) => setReport(e.target.checked)}
-              />
-              <span className="switch__track" aria-hidden="true">
-                <span className="switch__thumb" />
-              </span>
-              <span>{t('jobs.withReport')}</span>
-            </label>
-            <Cluster>
+              <Switch label={t('jobs.withReport')} checked={report} onChange={setReport} />
               <Button onClick={abgleich} loading={syncing}>
                 {syncing ? t('jobs.syncing') : t('jobs.sync')}
               </Button>
-            </Cluster>
-          </>
-        )}
-        <div aria-live="polite">
-          {connMsg && (
-            <p role="status" className="msg">
-              {connMsg}
-            </p>
-          )}
-          {sync && (
-            <>
-              <p role="status" className="msg">
-                {t('jobs.syncResult', { up: sync.hochgeladen, down: sync.abgeholt })}
-              </p>
-              {sync.fehler.map((f, i) => (
-                <p key={i} role="alert" className="msg msg--error">
-                  ⚠ {f}
-                </p>
-              ))}
             </>
           )}
-        </div>
-      </ContentCard>
-
-      <Auswertung />
-
-      <Stack space="stack">
-        <h2>{t('jobs.listTitle')}</h2>
-        {jobs && jobs.length === 0 ? (
-          <p className="t-note">{t('jobs.listNone')}</p>
-        ) : (
-          <ul className="plain doclist">
-            {jobs?.map((j) => (
-              <JobCard key={j.id} j={j} onChange={setMsg} />
-            ))}
-          </ul>
-        )}
-      </Stack>
-    </Stack>
+          <div aria-live="polite">
+            {connMsg && (
+              <p role="status" className="msg">
+                {connMsg}
+              </p>
+            )}
+            {sync && (
+              <>
+                <p role="status" className="msg">
+                  {t('jobs.syncResult', { up: sync.hochgeladen, down: sync.abgeholt })}
+                </p>
+                {sync.fehler.map((f, i) => (
+                  <p key={i} role="alert" className="msg msg--error">
+                    ⚠ {f}
+                  </p>
+                ))}
+              </>
+            )}
+          </div>
+        </Stack>
+      </Card>
+    </>
   );
 }

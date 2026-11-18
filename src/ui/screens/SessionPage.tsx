@@ -9,7 +9,20 @@ import { planForNow } from '../../data/director-data';
 import { ensureCards } from '../../data/learning';
 import { medianLatency } from '../../data/progress';
 import { buildQueue, endSession, startSession, type Step } from '../../data/session-queue';
-import { Button, Cluster, ContentCard, EmptyState, Stack, TextArea } from '../components';
+import { X } from 'lucide-react';
+import {
+  Button,
+  Card,
+  Cluster,
+  EmptyState,
+  Icon,
+  ProgressBar,
+  Sheet,
+  Stack,
+  StickyAction,
+  TextArea,
+} from '../components';
+import './Session.css';
 import { useDb } from '../DbProvider';
 import { hrefTo } from '../useHashRoute';
 import { Aufgabe } from './PracticePage';
@@ -36,6 +49,7 @@ export default function SessionPage() {
   const [signals, setSignals] = useState(0);
   const [finished, setFinished] = useState(false);
   const [closingText, setClosingText] = useState('');
+  const [leave, setLeave] = useState(false);
   const startedAt = useRef(0);
   const lastBreak = useRef(0);
   const doneSkills = useRef(new Set<string>());
@@ -166,8 +180,10 @@ export default function SessionPage() {
           <li>{t('session.pause2')}</li>
           <li>{t('session.pause3')}</li>
         </ul>
-        <Cluster>
+        <StickyAction>
           <Button
+            size="l"
+            fullWidth
             onClick={() => {
               lastBreak.current = systemNow();
               setPause(null);
@@ -177,28 +193,32 @@ export default function SessionPage() {
           >
             {t('session.continue')}
           </Button>
-        </Cluster>
+        </StickyAction>
       </Stack>
     );
 
   if (advice)
     return (
       <Stack space="section" className="view">
-        <ContentCard
-          title={
-            advice.value.action === 'end' ? t('session.endSuggest') : t('session.breakSuggest')
-          }
-          accent="amber"
-        >
-          <p>{advice.reasons.map((r) => t(`reason.${r}`)).join(' ')}</p>
+        <Card variant="tinted">
+          <Stack space="tight">
+            <h1 className="session__h">
+              {advice.value.action === 'end' ? t('session.endSuggest') : t('session.breakSuggest')}
+            </h1>
+            <p>{advice.reasons.map((r) => t(`reason.${r}`)).join(' ')}</p>
+          </Stack>
+        </Card>
+        <StickyAction>
+          {advice.value.action === 'break' ? (
+            <Button size="l" fullWidth onClick={() => setPause(advice.value.minutes ?? 5)}>
+              {t('session.takeBreak', { minutes: advice.value.minutes ?? 5 })}
+            </Button>
+          ) : (
+            <Button size="l" fullWidth onClick={() => void stopNow('suggested')}>
+              {t('session.finish')}
+            </Button>
+          )}
           <Cluster>
-            {advice.value.action === 'break' ? (
-              <Button onClick={() => setPause(advice.value.minutes ?? 5)}>
-                {t('session.takeBreak', { minutes: advice.value.minutes ?? 5 })}
-              </Button>
-            ) : (
-              <Button onClick={() => void stopNow('suggested')}>{t('session.finish')}</Button>
-            )}
             <Button
               variant="secondary"
               onClick={() => {
@@ -215,7 +235,7 @@ export default function SessionPage() {
               </Button>
             )}
           </Cluster>
-        </ContentCard>
+        </StickyAction>
       </Stack>
     );
 
@@ -225,73 +245,127 @@ export default function SessionPage() {
   const blockLabel = t(`session.block.${step.block}`);
 
   return (
-    <Stack space="section" className="view">
-      <Stack space="tight">
-        <a className="backlink" href="#today">
-          ← {t('session.back')}
-        </a>
-        <h1>{blockLabel}</h1>
-        <p className="t-note">
-          {data.skillTitle[step.type === 'item' ? step.item.skillId : step.skillId] ?? ''}
-        </p>
-      </Stack>
-      {step.type === 'lesson' && (
-        <ContentCard title={t('session.lesson')} accent="sage">
-          <p>{data.lesson[step.skillId]}</p>
-          <Cluster>
-            <Button onClick={() => void next(false)}>{t('session.understood')}</Button>
-          </Cluster>
-        </ContentCard>
-      )}
-      {step.type === 'read' && (
-        <ContentCard title={t('session.read')} accent="sage">
-          <p>{t('session.readText', { title: data.skillTitle[step.skillId] ?? '' })}</p>
-          <Cluster>
-            {step.documentId && (
-              <a
-                className="btn btn--secondary"
-                href={hrefTo('doc', step.documentId, { page: step.page })}
-              >
-                {t('session.openMaterial')}
-              </a>
-            )}
-            <Button onClick={() => void next(false)}>{t('session.readDone')}</Button>
-          </Cluster>
-        </ContentCard>
-      )}
-      {step.type === 'item' && (
-        <Aufgabe
-          key={step.item.id + i}
-          item={step.item}
-          nr={nr}
-          total={total}
-          weiter={() => void next(true)}
-        />
-      )}
-      {step.type === 'closing' && (
-        <ContentCard title={t('session.closingTitle')} accent="ocean">
-          <TextArea
-            label={t('session.closingPrompt')}
-            value={closingText}
-            onChange={(e) => setClosingText(e.target.value)}
-            rows={4}
+    <div className="session">
+      <header className="session__head">
+        <button
+          type="button"
+          className="session__close"
+          aria-label={t('session.closeLabel')}
+          onClick={() => setLeave(true)}
+        >
+          <Icon as={X} size={24} />
+        </button>
+        <div className="session__progress">
+          <ProgressBar
+            percent={Math.round((nr / Math.max(total, 1)) * 100)}
+            label={t('practice.of', { n: nr, total })}
           />
-          {closingText.trim() && (
-            <div className="why-text">
-              <h3>{t('session.coreTitle')}</h3>
-              <p>
-                {data.skillNote[step.skillId] ||
-                  data.lesson[step.skillId] ||
-                  data.skillTitle[step.skillId]}
-              </p>
-              <p className="t-note">{t('session.notGraded')}</p>
-            </div>
-          )}
-          <Cluster>
-            <Button onClick={() => void next(false)}>{t('session.finish')}</Button>
-          </Cluster>
-        </ContentCard>
-      )}
-    </Stack>
+        </div>
+      </header>
+      <Stack space="section" className="view session__body">
+        <Stack space="tight">
+          <h1 className="session__h">{blockLabel}</h1>
+          <p className="t-note">
+            {data.skillTitle[step.type === 'item' ? step.item.skillId : step.skillId] ?? ''}
+          </p>
+        </Stack>
+        {step.type === 'lesson' && (
+          <>
+            <Card>
+              <Stack space="tight">
+                <h2>{t('session.lesson')}</h2>
+                <p>{data.lesson[step.skillId]}</p>
+              </Stack>
+            </Card>
+            <StickyAction>
+              <Button size="l" fullWidth onClick={() => void next(false)}>
+                {t('session.understood')}
+              </Button>
+            </StickyAction>
+          </>
+        )}
+        {step.type === 'read' && (
+          <>
+            <Card>
+              <Stack space="tight">
+                <h2>{t('session.read')}</h2>
+                <p>{t('session.readText', { title: data.skillTitle[step.skillId] ?? '' })}</p>
+              </Stack>
+            </Card>
+            <StickyAction>
+              <Button size="l" fullWidth onClick={() => void next(false)}>
+                {t('session.readDone')}
+              </Button>
+              {step.documentId && (
+                <a
+                  className="btn btn--secondary btn--block"
+                  href={hrefTo('doc', step.documentId, { page: step.page })}
+                >
+                  {t('session.openMaterial')}
+                </a>
+              )}
+            </StickyAction>
+          </>
+        )}
+        {step.type === 'item' && (
+          <Aufgabe
+            key={step.item.id + i}
+            item={step.item}
+            nr={nr}
+            total={total}
+            weiter={() => void next(true)}
+          />
+        )}
+        {step.type === 'closing' && (
+          <>
+            <Card>
+              <Stack space="stack">
+                <h2>{t('session.closingTitle')}</h2>
+                <TextArea
+                  label={t('session.closingPrompt')}
+                  value={closingText}
+                  onChange={(e) => setClosingText(e.target.value)}
+                  rows={4}
+                />
+                {closingText.trim() && (
+                  <div className="why-text">
+                    <h3>{t('session.coreTitle')}</h3>
+                    <p>
+                      {data.skillNote[step.skillId] ||
+                        data.lesson[step.skillId] ||
+                        data.skillTitle[step.skillId]}
+                    </p>
+                    <p className="t-note">{t('session.notGraded')}</p>
+                  </div>
+                )}
+              </Stack>
+            </Card>
+            <StickyAction>
+              <Button size="l" fullWidth onClick={() => void next(false)}>
+                {t('session.finish')}
+              </Button>
+            </StickyAction>
+          </>
+        )}
+      </Stack>
+      <Sheet
+        open={leave}
+        onClose={() => setLeave(false)}
+        title={t('session.leaveTitle')}
+        size="sm"
+        footer={
+          <Stack space="tight">
+            <Button size="l" fullWidth onClick={() => setLeave(false)}>
+              {t('session.leaveStay')}
+            </Button>
+            <Button variant="quiet" size="l" fullWidth onClick={() => void stopNow('left')}>
+              {t('session.leaveGo')}
+            </Button>
+          </Stack>
+        }
+      >
+        <p>{t('session.leaveText')}</p>
+      </Sheet>
+    </div>
   );
 }

@@ -373,7 +373,7 @@ for (const [theme, lang] of [
     await expect.poll(() => renderedCanvases(page)).toBeGreaterThan(0);
     await page.getByRole('button', { name: /Im Dokument suchen|بحث في المستند/ }).click();
     await scan('Leser');
-    await page.locator('.reader__head button').nth(1).click(); // Umfließen
+    await page.getByText('Umfließen', { exact: true }).click();
     await scan('Umfließen');
     await page.goto('/#search');
     await page.getByRole('searchbox').fill('Vektor');

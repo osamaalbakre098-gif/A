@@ -3,7 +3,17 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { systemNow } from '../../data/clock';
 import { newId } from '../../data/ids';
-import { Button, Cluster, ContentCard, Dialog, EmptyState, Stack, TextField } from '../components';
+import { Plus } from 'lucide-react';
+import {
+  Button,
+  EmptyState,
+  LargeTitle,
+  ListGroup,
+  ListRow,
+  Sheet,
+  Stack,
+  TextField,
+} from '../components';
 import { useDb } from '../DbProvider';
 import { hrefTo } from '../useHashRoute';
 
@@ -49,36 +59,45 @@ export default function SubjectsPage() {
     setOpen(false);
   };
 
+  const visible = subjects?.filter((s) => !s.archived) ?? [];
   return (
-    <Stack space="section" className="view">
-      <h1>{t('subjects.title')}</h1>
-      {subjects && subjects.length === 0 ? (
+    <>
+      <LargeTitle>{t('subjects.title')}</LargeTitle>
+      {subjects && visible.length === 0 ? (
         <EmptyState
           title={t('subjects.emptyTitle')}
           text={t('subjects.emptyText')}
-          action={<Button onClick={() => setOpen(true)}>{t('subjects.add')}</Button>}
-        />
-      ) : (
-        <>
-          <div className="heute__grid">
-            {subjects
-              ?.filter((s) => !s.archived)
-              .map((s) => (
-                <a key={s.id} className="cardlink" href={hrefTo('subject', s.id)}>
-                  <ContentCard title={s.name} accent={s.colorKey}>
-                    <p className="t-note">{t('subjects.docs', { count: counts?.[s.id] ?? 0 })}</p>
-                  </ContentCard>
-                </a>
-              ))}
-          </div>
-          <Cluster>
-            <Button variant="secondary" onClick={() => setOpen(true)}>
+          action={
+            <Button size="l" onClick={() => setOpen(true)}>
               {t('subjects.add')}
             </Button>
-          </Cluster>
-        </>
+          }
+        />
+      ) : (
+        <ListGroup label={t('subjects.title')}>
+          {visible.map((s) => (
+            <ListRow
+              key={s.id}
+              dot={s.colorKey}
+              title={<bdi dir="auto">{s.name}</bdi>}
+              subtitle={t('subjects.docs', { count: counts?.[s.id] ?? 0 })}
+              href={hrefTo('subject', s.id)}
+            />
+          ))}
+          <ListRow icon={Plus} title={t('subjects.add')} onClick={() => setOpen(true)} />
+        </ListGroup>
       )}
-      <Dialog open={open} onClose={() => setOpen(false)} title={t('subjects.add')}>
+      <Sheet
+        open={open}
+        onClose={() => setOpen(false)}
+        title={t('subjects.add')}
+        size="sm"
+        footer={
+          <Button size="l" fullWidth disabled={!name.trim()} onClick={() => void create()}>
+            {t('subjects.create')}
+          </Button>
+        }
+      >
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -93,18 +112,12 @@ export default function SubjectsPage() {
               onChange={(e) => setName(e.target.value)}
               autoFocus
               maxLength={60}
+              enterKeyHint="done"
+              autoComplete="off"
             />
-            <Cluster>
-              <Button type="submit" disabled={!name.trim()}>
-                {t('subjects.create')}
-              </Button>
-              <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
-                {t('common.cancel')}
-              </Button>
-            </Cluster>
           </Stack>
         </form>
-      </Dialog>
-    </Stack>
+      </Sheet>
+    </>
   );
 }

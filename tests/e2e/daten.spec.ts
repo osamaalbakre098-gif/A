@@ -3,6 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { unzipSync } from 'fflate';
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { setView } from './view-helpers';
 import { join } from 'node:path';
 
 test.use({ baseURL: 'http://localhost:5173' });
@@ -13,9 +14,7 @@ async function open(page: Page, opts: { ios?: boolean; theme?: string; lang?: st
   if (opts.ios) await page.getByLabel(/iPhone im Safari-Tab/).check();
   if (opts.theme || opts.lang) {
     await page.getByText('Ansicht einstellen').click();
-    const sel = page.locator('.settings select');
-    if (opts.lang) await sel.nth(0).selectOption(opts.lang);
-    if (opts.theme) await sel.nth(1).selectOption(opts.theme);
+    await setView(page, opts.lang ?? 'de', opts.theme ?? 'light');
   }
 }
 

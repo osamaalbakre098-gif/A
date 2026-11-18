@@ -1,27 +1,33 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Camera, FilePlus, FileText } from 'lucide-react';
-import { useRef, useState, type DragEvent } from 'react';
+import { Camera, FilePlus, FileText, Plus, Sprout } from 'lucide-react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { buildFallbackTree } from '../../content/tree-builder/fallback';
 import { importMaterial, type ImportDeps, type ImportPhase } from '../../content/import';
 import { systemNow } from '../../data/clock';
 import { DataError } from '../../data/db/errors';
-import { buildFallbackTree } from '../../content/tree-builder/fallback';
-import { fileProgress, skillInfos } from '../../data/progress';
 import type { DocumentRow } from '../../data/db/schema';
+import { fileProgress, skillInfos } from '../../data/progress';
 import {
+  Banner,
   Button,
-  Cluster,
-  ContentCard,
-  Dialog,
+  Card,
   EmptyState,
-  Icon,
+  LargeTitle,
+  ListGroup,
+  ListRow,
+  ProgressArc,
+  ProgressBar,
+  SectionHeader,
+  Sheet,
   Stack,
   TextArea,
   TextField,
 } from '../components';
 import { useDb } from '../DbProvider';
-import ExamCard from './ExamCard';
 import { hrefTo } from '../useHashRoute';
+import { ExamRow, ExamSheet } from './ExamCard';
+import './Fach.css';
 
 /** pdf.js erst laden, wenn wirklich ein PDF kommt. */
 const deps: ImportDeps = {
@@ -43,45 +49,56 @@ interface Status {
   text: string;
 }
 
-function DocRow({ d }: { d: DocumentRow }) {
+function FileRow({ d }: { d: DocumentRow }) {
   const { t, i18n } = useTranslation();
+  const db = useDb();
   const kind =
     d.type === 'application/pdf'
       ? 'kindPdf'
       : d.type.startsWith('image/')
         ? 'kindImage'
         : 'kindText';
-  const date = new Intl.DateTimeFormat(i18n.language, { dateStyle: 'medium' }).format(d.importedAt);
-  const db = useDb();
+  const date = new Intl.DateTimeFormat(i18n.language === 'ar' ? 'ar-u-nu-latn' : i18n.language, {
+    dateStyle: 'medium',
+  }).format(d.importedAt);
   const progress = useLiveQuery(() => fileProgress(db, d.id), [db, d.id]);
+  const label =
+    progress?.percent == null
+      ? progress && progress.skills > 0
+        ? t('progress.few')
+        : t('progress.noSkills')
+      : t('progress.percent', {
+          percent: progress.percent,
+          sits: progress.sits,
+          skills: progress.skills,
+        });
   return (
-    <li>
-      <a className="docrow docrow--file" href={hrefTo('doc', d.id)}>
-        <span className="docrow__name">{d.name}</span>
-        <span className="t-note">
-          {[t(`material.${kind}`), t('material.pages', { count: d.pageCount ?? 1 }), date].join(
-            ' · ',
-          )}
-        </span>
-        {progress && (
-          <span className="t-note" data-testid="file-progress">
-            {progress.percent === null
-              ? progress.skills === 0
-                ? t('progress.noSkills')
-                : t('progress.few')
-              : t('progress.percent', {
-                  percent: progress.percent,
-                  sits: progress.sits,
-                  skills: progress.skills,
-                })}
+    <ListRow
+      icon={FileText}
+      title={<bdi dir="auto">{d.name}</bdi>}
+      subtitle={[
+        t(`material.${kind}`),
+        t('material.pages', { count: d.pageCount ?? 1 }),
+        date,
+      ].join(' · ')}
+      href={hrefTo('doc', d.id)}
+      extra={
+        <>
+          <ProgressBar percent={progress?.percent ?? null} label={`${d.name}: ${label}`} />
+          <span className="listrow__sub" data-testid="file-progress">
+            {label}
           </span>
-        )}
-        {d.ocrStatus === 'pending' && <span className="chip">{t('material.statusOcr')}</span>}
-        {!!d.textlessPages?.length && d.ocrStatus !== 'pending' && (
-          <span className="chip">{t('material.textless', { count: d.textlessPages.length })}</span>
-        )}
-      </a>
-    </li>
+          {!!d.textlessPages?.length && d.ocrStatus !== 'pending' && (
+            <span className="listrow__sub">
+              {t('material.textless', { count: d.textlessPages.length })}
+            </span>
+          )}
+          {d.ocrStatus === 'pending' && (
+            <span className="listrow__sub">{t('material.statusOcr')}</span>
+          )}
+        </>
+      }
+    />
   );
 }
 
@@ -93,17 +110,23 @@ export default function SubjectPage({ id }: { id: string }) {
     () => db.documents.where('subjectId').equals(id).reverse().sortBy('importedAt'),
     [db, id],
   );
-  const skillRows = useLiveQuery(async () => {
+  const skillSummary = useLiveQuery(async () => {
     const topics = await db.topics.where('subjectId').equals(id).toArray();
     const ids = new Set(topics.map((x) => x.id));
-    const infos = await skillInfos(db, systemNow());
-    return [...infos.values()].filter((i) => ids.has(i.skill.topicId) && !i.skill.hidden);
+    const infos = [...(await skillInfos(db, systemNow())).values()].filter(
+      (i) => ids.has(i.skill.topicId) && !i.skill.hidden,
+    );
+    return {
+      total: infos.length,
+      sits: infos.filter((i) => i.state === 'mastered' || i.state === 'review_due').length,
+    };
   }, [db, id]);
   const [status, setStatus] = useState<Status[]>([]);
+  const [addOpen, setAddOpen] = useState(false);
   const [paste, setPaste] = useState(false);
+  const [exam, setExam] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [drag, setDrag] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const photoRef = useRef<HTMLInputElement>(null);
   const counter = useRef(0);
@@ -152,12 +175,6 @@ export default function SubjectPage({ id }: { id: string }) {
       await run(f.name, f.type, new Uint8Array(await f.arrayBuffer()));
   }
 
-  const onDrop = (e: DragEvent) => {
-    e.preventDefault();
-    setDrag(false);
-    void onFiles(e.dataTransfer.files);
-  };
-
   const savePaste = async () => {
     const text = body.trim();
     if (!text) return;
@@ -182,158 +199,142 @@ export default function SubjectPage({ id }: { id: string }) {
       />
     );
 
+  const sum = skillSummary ?? { total: 0, sits: 0 };
   return (
-    <Stack space="section" className="view">
-      <Stack space="tight">
-        <a className="backlink" href="#subjects">
-          ← {t('subjects.back')}
-        </a>
-        <h1>{subject.name}</h1>
-      </Stack>
+    <>
+      <LargeTitle>{subject.name}</LargeTitle>
 
-      <ContentCard title={t('material.add')} accent={subject.colorKey}>
-        <div
-          className={`dropzone${drag ? ' dropzone--over' : ''}`}
-          onDragOver={(e) => {
-            e.preventDefault();
-            setDrag(true);
-          }}
-          onDragLeave={() => setDrag(false)}
-          onDrop={onDrop}
-        >
-          <Cluster>
-            <Button onClick={() => fileRef.current?.click()}>
-              <Icon as={FilePlus} size={20} />
-              {t('material.addFile')}
-            </Button>
-            <Button variant="secondary" onClick={() => photoRef.current?.click()}>
-              <Icon as={Camera} size={20} />
-              {t('material.takePhoto')}
-            </Button>
-            <Button variant="secondary" onClick={() => setPaste(true)}>
-              <Icon as={FileText} size={20} />
-              {t('material.pasteText')}
-            </Button>
-          </Cluster>
-          <p className="t-note">
-            {t('material.accepted')}
-            <span className="dropzone__hint"> · {t('material.dropHint')}</span>
+      {status.length > 0 && (
+        <Stack space="tight">
+          {status.map((s) => (
+            <Banner
+              key={s.key}
+              tone={s.kind === 'error' ? 'danger' : s.kind === 'ok' ? 'success' : 'info'}
+            >
+              {s.kind === 'busy' ? `${s.name}: ${s.text}` : s.text}
+            </Banner>
+          ))}
+        </Stack>
+      )}
+
+      <Card aria-label={t('fach.progressTitle')}>
+        <div className="fach__head">
+          <ProgressArc
+            done={sum.sits}
+            total={Math.max(sum.total, 1)}
+            label={t('fach.progressLine', { sits: sum.sits, total: sum.total })}
+          />
+          <p className="fach__line">
+            {sum.total
+              ? t('fach.progressLine', { sits: sum.sits, total: sum.total })
+              : t('progress.noSkills')}
           </p>
         </div>
-        <input
-          ref={fileRef}
-          type="file"
-          hidden
-          multiple
-          accept=".pdf,.txt,.md,.markdown,application/pdf,text/plain,text/markdown,image/*"
-          aria-label={t('material.addFile')}
-          onChange={(e) => {
-            void onFiles(e.target.files);
-            e.target.value = '';
-          }}
-        />
-        <input
-          ref={photoRef}
-          type="file"
-          hidden
-          accept="image/*"
-          capture="environment"
-          aria-label={t('material.takePhoto')}
-          onChange={(e) => {
-            void onFiles(e.target.files);
-            e.target.value = '';
-          }}
-        />
-        <div aria-live="polite" className="importlog">
-          {status.map((s) => (
-            <p
-              key={s.key}
-              role={s.kind === 'error' ? 'alert' : 'status'}
-              className={s.kind === 'error' ? 'msg msg--error' : 'msg'}
-            >
-              {s.kind === 'error' ? '⚠ ' : s.kind === 'ok' ? '✓ ' : ''}
-              {s.kind === 'busy' ? `${s.name}: ${s.text}` : s.text}
-            </p>
+      </Card>
+
+      <ListGroup>
+        <ExamRow subjectId={id} onOpen={() => setExam(true)} />
+        <ListRow icon={Sprout} title={t('heute.treeRowTitle')} href={hrefTo('tree', id)} />
+      </ListGroup>
+
+      <Stack space="tight">
+        <SectionHeader>{t('fach.filesTitle')}</SectionHeader>
+        <ListGroup label={t('fach.filesTitle')}>
+          {docs?.map((d) => (
+            <FileRow key={d.id} d={d} />
           ))}
-        </div>
-      </ContentCard>
-
-      <Stack space="stack">
-        <h2>{t('material.title')}</h2>
-        {docs && docs.length === 0 ? (
-          <p className="t-note">{t('material.empty')}</p>
-        ) : (
-          <ul className="plain doclist">
-            {docs?.map((d) => (
-              <DocRow key={d.id} d={d} />
-            ))}
-          </ul>
-        )}
+          <ListRow icon={Plus} title={t('material.add')} onClick={() => setAddOpen(true)} />
+        </ListGroup>
+        {docs && docs.length === 0 && <p className="t-note">{t('material.empty')}</p>}
       </Stack>
 
-      <ExamCard subjectId={id} />
+      <input
+        ref={fileRef}
+        type="file"
+        hidden
+        multiple
+        accept=".pdf,.txt,.md,.markdown,application/pdf,text/plain,text/markdown,image/*"
+        aria-label={t('material.addFile')}
+        onChange={(e) => {
+          void onFiles(e.target.files);
+          e.target.value = '';
+        }}
+      />
+      <input
+        ref={photoRef}
+        type="file"
+        hidden
+        accept="image/*"
+        capture="environment"
+        aria-label={t('material.takePhoto')}
+        onChange={(e) => {
+          void onFiles(e.target.files);
+          e.target.value = '';
+        }}
+      />
 
-      <Stack space="stack">
-        <h2>{t('skills.title')}</h2>
-        <Cluster>
-          <a className="btn btn--secondary" href={hrefTo('tree', id)}>
-            {t('tree.openTree')}
-          </a>
-        </Cluster>
-        {skillRows && skillRows.length === 0 ? (
-          <p className="t-note">{t('skills.none')}</p>
-        ) : (
-          <ul className="plain doclist">
-            {skillRows?.map((r) => (
-              <li key={r.skill.id}>
-                <a className="docrow" href={hrefTo('practice', r.skill.id)}>
-                  <span className="docrow__name">{r.skill.title}</span>
-                  <span className="t-note">
-                    {[
-                      t(`skillstate.${r.state}`),
-                      r.items > 0
-                        ? t('skills.items', { count: r.items })
-                        : t('skills.itemsMissing'),
-                    ].join(' · ')}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </Stack>
+      <Sheet open={addOpen} onClose={() => setAddOpen(false)} title={t('material.add')} size="sm">
+        <Stack space="stack">
+          <ListGroup>
+            <ListRow
+              icon={FilePlus}
+              title={t('material.addFile')}
+              subtitle={t('material.accepted')}
+              onClick={() => {
+                setAddOpen(false);
+                fileRef.current?.click();
+              }}
+            />
+            <ListRow
+              icon={Camera}
+              title={t('material.takePhoto')}
+              onClick={() => {
+                setAddOpen(false);
+                photoRef.current?.click();
+              }}
+            />
+            <ListRow
+              icon={FileText}
+              title={t('material.pasteText')}
+              onClick={() => {
+                setAddOpen(false);
+                setPaste(true);
+              }}
+            />
+          </ListGroup>
+        </Stack>
+      </Sheet>
 
-      <Dialog open={paste} onClose={() => setPaste(false)} title={t('material.pasteTitle')}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            void savePaste();
-          }}
-        >
-          <Stack space="stack">
-            <TextField
-              label={t('material.pasteName')}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              maxLength={80}
-            />
-            <TextArea
-              label={t('material.pasteBody')}
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              rows={8}
-            />
-            <Cluster>
-              <Button type="submit" disabled={!body.trim()}>
-                {t('common.save')}
-              </Button>
-              <Button type="button" variant="secondary" onClick={() => setPaste(false)}>
-                {t('common.cancel')}
-              </Button>
-            </Cluster>
-          </Stack>
-        </form>
-      </Dialog>
-    </Stack>
+      <Sheet
+        open={paste}
+        onClose={() => setPaste(false)}
+        title={t('material.pasteTitle')}
+        size="lg"
+        footer={
+          <Button size="l" fullWidth disabled={!body.trim()} onClick={() => void savePaste()}>
+            {t('common.save')}
+          </Button>
+        }
+      >
+        <Stack space="stack">
+          <TextField
+            label={t('material.pasteName')}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            maxLength={80}
+            enterKeyHint="next"
+            autoComplete="off"
+          />
+          <TextArea
+            label={t('material.pasteBody')}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            rows={8}
+          />
+        </Stack>
+      </Sheet>
+
+      <ExamSheet subjectId={id} open={exam} onClose={() => setExam(false)} />
+    </>
   );
 }

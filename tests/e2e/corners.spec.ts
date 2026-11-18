@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { setView } from './view-helpers';
 import { PNG } from 'pngjs';
 
 test.use({ baseURL: 'http://localhost:5173' });
@@ -7,9 +8,7 @@ async function open(page: Page, theme: string, lang: string) {
   await page.goto('/dev/heute');
   await page.getByText('Ansicht einstellen').click();
   await page.locator('#settings-title').waitFor();
-  const sel = page.locator('.settings select');
-  await sel.nth(0).selectOption(lang);
-  await sel.nth(1).selectOption(theme);
+  await setView(page, lang, theme);
   await page
     .getByText(/Ansicht einstellen|عرض/)
     .first()

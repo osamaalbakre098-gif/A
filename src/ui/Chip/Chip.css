@@ -1,0 +1,32 @@
+@layer components {
+  .chip2 {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    justify-self: start;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--fill);
+    color: var(--text);
+    font-size: var(--type-note);
+    line-height: var(--lh-note);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-small);
+  }
+  .chip2--accent {
+    color: var(--accent);
+  }
+  .chip2--warning {
+    background: var(--warning-tint);
+    color: var(--warning);
+  }
+  .chip2--success {
+    background: var(--success-tint);
+    color: var(--success);
+  }
+  [data-theme='contrast'] .chip2 {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    color: var(--text);
+  }
+}

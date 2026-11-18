@@ -10,7 +10,7 @@ import { systemNow } from '../../data/clock';
 import { cardsDueTomorrow, planForNow, setOverride } from '../../data/director-data';
 import { appendEvent } from '../../data/events/events';
 import { skillInfos } from '../../data/progress';
-import { Button, Cluster, Dialog, Stack } from '../components';
+import { Button, ListGroup, ListRow, Sheet } from '../components';
 import { useDb } from '../DbProvider';
 import { hrefTo } from '../useHashRoute';
 import Heute, { type TodayData, type TodayExtras } from './Heute';
@@ -26,6 +26,9 @@ export default function TodayPage() {
     const infos = await skillInfos(db, now);
     const subjects = new Map((await db.subjects.toArray()).map((s) => [s.id, s]));
     const tomorrow = await cardsDueTomorrow(db, now);
+    const jobsOpen = (await db.jobs.toArray()).filter(
+      (j) => j.status === 'pending' || j.status === 'running',
+    ).length;
     const byId = new Map(snapshot.skills.map((s) => [s.id, s]));
     const prio = (id: string) => priority(byId.get(id)!, byId, snapshot.exams, today).total;
     const planned = new Set(plan.entries.map((e) => e.skillId));
@@ -103,7 +106,20 @@ export default function TodayPage() {
     const reviewCards = reviewEntries.reduce((a, e) => a + (byId.get(e.skillId)?.cardsDue ?? 0), 0);
     const core = plan.entries.find((e) => e.role === 'new' || e.role === 'gap') ?? plan.entries[0];
     const practicedSkills = snapshot.skills.filter((s) => s.practicedToday).length;
+    const coreSkill =
+      plan.entries.find((e) => e.role === 'new' || e.role === 'gap') ?? plan.entries[0];
+    const subjectColor = coreSkill ? subjects.get(coreSkill.subjectId)?.colorKey : undefined;
+    const nearExam =
+      upcoming && dayDiff(today, upcoming.date) <= 14
+        ? {
+            subject: subjects.get(upcoming.subjectId)?.name ?? '',
+            days: dayDiff(today, upcoming.date),
+          }
+        : undefined;
     return {
+      jobsOpen,
+      subjectColor,
+      nearExam,
       snapshot,
       plan,
       hour,
@@ -120,7 +136,24 @@ export default function TodayPage() {
     };
   }, [db, i18n.language]);
 
-  if (!view) return null;
+  if (!view)
+    return (
+      <Heute
+        data={{
+          state: 'plan',
+          hour: 12,
+          reviews: 0,
+          progress: { done: 0, total: 0 },
+          topic: '',
+          minutes: 0,
+          resume: { topic: '', done: 0, total: 0 },
+          review: { count: 0, minutes: 0 },
+          tomorrow: { count: 0, minutes: 0 },
+          tree: { subject: '', nodes: [] },
+        }}
+        extras={{ loading: true }}
+      />
+    );
   const { plan, snapshot } = view;
   const reasonText = (c: ReasonCode) => t(`reason.${c}`);
   const state: TodayData['state'] = !view.anySkills
@@ -145,6 +178,9 @@ export default function TodayPage() {
       ...(view.exam ? { exam: view.exam.data } : {}),
     },
     tree: { subject: view.first?.name ?? '', nodes: view.treeNodes },
+    jobsOpen: view.jobsOpen,
+    ...(view.subjectColor ? { subjectColor: view.subjectColor } : {}),
+    ...(view.nearExam ? { examChip: view.nearExam } : {}),
   };
   const reasons = view.core
     ? [
@@ -195,33 +231,34 @@ export default function TodayPage() {
         </p>
       )}
       <Heute data={data} extras={extras} />
-      <Dialog open={alt} onClose={() => setAlt(false)} title={t('heute.alternativesTitle')}>
-        <Stack space="stack">
-          <ul className="plain doclist">
-            {view.alternatives.map((s) => (
-              <li key={s.id}>
-                <button
-                  type="button"
-                  className="docrow treerow"
-                  onClick={() => void choose(s.id, s.title)}
-                >
-                  <span className="docrow__name">{t('heute.onlyX', { name: s.title })}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-          <Cluster>
+      <Sheet
+        open={alt}
+        onClose={() => setAlt(false)}
+        title={t('heute.alternativesTitle')}
+        size="md"
+        footer={
+          <>
             {snapshot.override && (
-              <Button variant="secondary" onClick={() => void choose(null)}>
+              <Button variant="secondary" fullWidth onClick={() => void choose(null)}>
                 {t('heute.reset')}
               </Button>
             )}
-            <Button variant="quiet" onClick={() => setAlt(false)}>
+            <Button variant="plain" onClick={() => setAlt(false)}>
               {t('heute.close')}
             </Button>
-          </Cluster>
-        </Stack>
-      </Dialog>
+          </>
+        }
+      >
+        <ListGroup>
+          {view.alternatives.map((s) => (
+            <ListRow
+              key={s.id}
+              title={t('heute.onlyX', { name: s.title })}
+              onClick={() => void choose(s.id, s.title)}
+            />
+          ))}
+        </ListGroup>
+      </Sheet>
     </>
   );
 }

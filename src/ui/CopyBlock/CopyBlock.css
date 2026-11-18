@@ -1,0 +1,24 @@
+@layer components {
+  .copyblock {
+    display: grid;
+    gap: var(--space-3);
+    min-inline-size: 0;
+  }
+  .copyblock__text {
+    margin: 0;
+    max-block-size: calc(var(--space-18) * 2);
+    overflow: auto;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-field);
+    background: var(--fill);
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: var(--type-note);
+    line-height: var(--lh-body);
+    white-space: pre;
+    user-select: text;
+  }
+  [data-theme='contrast'] .copyblock__text {
+    background: var(--surface);
+    border: 2px solid var(--border);
+  }
+}

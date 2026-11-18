@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { setView } from './view-helpers';
 
 test.use({ baseURL: 'http://localhost:5173' });
 
@@ -8,9 +9,7 @@ async function open(page: Page, state: string, theme = 'light', lang = 'de') {
   await page.getByLabel('Zustand').selectOption({ label: state });
   await page.getByText('Ansicht einstellen').click();
   await page.locator('#settings-title').waitFor();
-  const sel = page.locator('.settings select');
-  await sel.nth(0).selectOption(lang);
-  await sel.nth(1).selectOption(theme);
+  await setView(page, lang, theme);
 }
 
 const STATES = ['Es gibt einen Plan', 'Alles erledigt', 'Noch kein Material'];

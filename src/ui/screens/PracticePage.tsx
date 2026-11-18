@@ -7,11 +7,14 @@ import type { Item } from '../../data/db/schema';
 import { recordAnswer, reportItem, ensureCards } from '../../data/learning';
 import {
   Button,
+  Card,
   ChoiceList,
   Cluster,
-  ContentCard,
   EmptyState,
+  LargeTitle,
+  ProgressBar,
   Stack,
+  StickyAction,
   TextArea,
   TextField,
 } from '../components';
@@ -129,8 +132,17 @@ export function Aufgabe({
       : [];
 
   return (
-    <ContentCard title={t('practice.of', { n: nr, total })} accent="ocean">
-      <p className="practice__prompt">{item.prompt}</p>
+    <Stack space="stack">
+      <Stack space="tight">
+        <p className="t-note tabular">{t('practice.of', { n: nr, total })}</p>
+        <ProgressBar
+          percent={Math.round(((nr - 1) / Math.max(total, 1)) * 100)}
+          label={t('practice.of', { n: nr, total })}
+        />
+      </Stack>
+      <Card>
+        <p className="practice__prompt">{item.prompt}</p>
+      </Card>
 
       {!aufgedeckt && (
         <Stack space="stack">
@@ -178,26 +190,33 @@ export function Aufgabe({
               </ol>
             </div>
           )}
-          <Cluster>
-            <Button onClick={() => aufdecken(false)} disabled={!eingabe.trim() && !offen}>
-              {t('practice.check')}
-            </Button>
-            {hints.length > hilfe && (
-              <Button
-                variant="secondary"
-                disabled={!freigeschaltet}
-                onClick={() => setHilfe(hilfe + 1)}
-              >
-                {t('practice.hint', { level: hilfe + 1 })}
-              </Button>
-            )}
-            <Button variant="quiet" onClick={() => aufdecken(true)}>
-              {t('practice.dontKnow')}
-            </Button>
-          </Cluster>
           {hints.length > 0 && !freigeschaltet && (
             <p className="t-note">{t('practice.hintLocked')}</p>
           )}
+          <StickyAction>
+            <Button
+              size="l"
+              fullWidth
+              onClick={() => aufdecken(false)}
+              disabled={!eingabe.trim() && !offen}
+            >
+              {t('practice.check')}
+            </Button>
+            <Cluster>
+              {hints.length > hilfe && (
+                <Button
+                  variant="secondary"
+                  disabled={!freigeschaltet}
+                  onClick={() => setHilfe(hilfe + 1)}
+                >
+                  {t('practice.hint', { level: hilfe + 1 })}
+                </Button>
+              )}
+              <Button variant="quiet" onClick={() => aufdecken(true)}>
+                {t('practice.dontKnow')}
+              </Button>
+            </Cluster>
+          </StickyAction>
         </Stack>
       )}
 
@@ -264,24 +283,26 @@ export function Aufgabe({
               </label>
             </fieldset>
           )}
-          <Cluster>
-            <Button
-              variant="quiet"
-              disabled={reported}
-              onClick={() => {
-                setReported(true);
-                void reportItem(db, item.id, systemNow());
-              }}
-            >
-              {reported ? t('practice.reported') : t('practice.report')}
-            </Button>
-            <Button onClick={() => void abschliessen()}>
+          <StickyAction>
+            <Button size="l" fullWidth onClick={() => void abschliessen()}>
               {nr === total ? t('practice.finish') : t('practice.next')}
             </Button>
-          </Cluster>
+            <Cluster>
+              <Button
+                variant="quiet"
+                disabled={reported}
+                onClick={() => {
+                  setReported(true);
+                  void reportItem(db, item.id, systemNow());
+                }}
+              >
+                {reported ? t('practice.reported') : t('practice.report')}
+              </Button>
+            </Cluster>
+          </StickyAction>
         </Stack>
       )}
-    </ContentCard>
+    </Stack>
   );
 }
 
@@ -324,12 +345,7 @@ export default function PracticePage({ skillId }: { skillId: string }) {
   const back = topic ? hrefTo('subject', topic.subjectId) : '#subjects';
   return (
     <Stack space="section" className="view">
-      <Stack space="tight">
-        <a className="backlink" href={back}>
-          ← {t('practice.back')}
-        </a>
-        <h1>{skill.title}</h1>
-      </Stack>
+      <LargeTitle>{skill.title}</LargeTitle>
       {lessonRow && (
         <Stack space="tight">
           <Cluster>

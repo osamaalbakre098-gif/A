@@ -1,0 +1,35 @@
+@layer screens {
+  .session__head {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--z-nav);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-block: calc(var(--sat) + var(--space-2)) var(--space-2);
+    padding-inline: var(--page-margin);
+    background: var(--bg);
+  }
+  .session__close {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--fill);
+    color: var(--text);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .session__progress {
+    flex: 1;
+    min-inline-size: 0;
+  }
+  .session__h {
+    font-size: var(--type-title);
+    line-height: var(--lh-title);
+    font-weight: var(--weight-bold);
+  }
+}

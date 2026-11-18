@@ -4,9 +4,8 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react
 import { useTranslation } from 'react-i18next';
 import { newId } from '../../data/ids';
 import { findMatches } from '../../content/text';
-import { Button, EmptyState, Stack } from '../components';
+import { EmptyState, SegmentedControl, Stack } from '../components';
 import { useDb } from '../DbProvider';
-import { hrefTo } from '../useHashRoute';
 
 // pdf.js ist groß: erst laden, wenn ein PDF geöffnet wird.
 const PdfReader = lazy(() => import('./PdfReader'));
@@ -113,28 +112,18 @@ export default function ReaderPage({
   return (
     <div className="reader view">
       <div className="reader__head">
-        <a className="backlink" href={hrefTo('subject', doc.subjectId)}>
-          ← {t('reader.back')}
-        </a>
         <h1 className="reader__title" title={doc.name}>
-          {doc.name}
+          <bdi dir="auto">{doc.name}</bdi>
         </h1>
-        <div className="reader__modes">
-          <Button
-            variant={mode === 'page' ? 'primary' : 'secondary'}
-            aria-pressed={mode === 'page'}
-            onClick={() => setMode('page')}
-          >
-            {t('reader.modePage')}
-          </Button>
-          <Button
-            variant={mode === 'reflow' ? 'primary' : 'secondary'}
-            aria-pressed={mode === 'reflow'}
-            onClick={() => setMode('reflow')}
-          >
-            {t('reader.modeReflow')}
-          </Button>
-        </div>
+        <SegmentedControl
+          legend={t('reader.modeLegend')}
+          segments={[
+            { id: 'page' as const, label: t('reader.modePage') },
+            { id: 'reflow' as const, label: t('reader.modeReflow') },
+          ]}
+          value={mode}
+          onChange={setMode}
+        />
       </div>
 
       {mode === 'reflow' ? (

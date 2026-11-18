@@ -3,7 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { AppShell, type NavId } from './ui/screens/AppShell';
 import PwaNotices from './ui/screens/PwaNotices';
 import SettingsPanel from './ui/screens/SettingsPanel';
-import { EmptyState, Skeleton, Stack, ToastProvider } from './ui/components';
+import { Lock, Sparkles } from 'lucide-react';
+import {
+  EmptyState,
+  LargeTitle,
+  ListGroup,
+  ListRow,
+  SectionHeader,
+  Skeleton,
+  Stack,
+  ToastProvider,
+} from './ui/components';
 import { DbProvider } from './ui/DbProvider';
 import ErrorBoundary from './ui/ErrorBoundary';
 import { hrefTo, useHashRoute, type RouteName } from './ui/useHashRoute';
@@ -34,24 +44,41 @@ function Placeholder({ route }: { route: RouteName }) {
 function SettingsPage() {
   const { t } = useTranslation();
   return (
-    <Stack space="section" className="view">
-      <h1>{t('settings.title')}</h1>
-      <SettingsPanel hideTitle />
+    <>
+      <LargeTitle>{t('settings.title')}</LargeTitle>
       <Suspense fallback={null}>
         <DbProvider>
           <PlanSettings />
         </DbProvider>
       </Suspense>
       <Stack space="tight">
-        <a className="btn btn--secondary" href="#jobs">
-          {t('nav.jobs')}
-        </a>
-        <a className="btn btn--secondary" href="#data">
-          {t('settings.dataLink')}
-        </a>
-        <p className="t-note">{t('settings.version', { id: __BUILD_ID__ })}</p>
+        <SectionHeader>{t('settings.sectionLook')}</SectionHeader>
+        <SettingsPanel hideTitle />
       </Stack>
-    </Stack>
+      <Stack space="tight">
+        <SectionHeader>{t('settings.sectionClaude')}</SectionHeader>
+        <ListGroup label={t('settings.sectionClaude')}>
+          <ListRow icon={Sparkles} title={t('settings.connection')} href="#jobs" />
+        </ListGroup>
+      </Stack>
+      <Stack space="tight">
+        <SectionHeader>{t('settings.sectionData')}</SectionHeader>
+        <ListGroup label={t('settings.sectionData')}>
+          <ListRow
+            icon={Lock}
+            title={t('settings.dataRow')}
+            subtitle={t('settings.dataLink')}
+            href="#data"
+          />
+        </ListGroup>
+      </Stack>
+      <Stack space="tight">
+        <SectionHeader>{t('settings.sectionAbout')}</SectionHeader>
+        <ListGroup label={t('settings.sectionAbout')}>
+          <ListRow title={t('settings.version', { id: __BUILD_ID__ })} />
+        </ListGroup>
+      </Stack>
+    </>
   );
 }
 

@@ -34,7 +34,21 @@
     "textSizeValue": "{percent, number}%",
     "reducedMotion": "Reduce motion",
     "dataLink": "Your data: backup, storage, installation",
-    "version": "Version {id}"
+    "version": "Version {id}",
+    "look": "Appearance",
+    "sectionLearn": "Learning",
+    "sectionLook": "Appearance",
+    "sectionClaude": "Claude",
+    "sectionData": "Data",
+    "sectionAbout": "About",
+    "dayStart": "Day starts at",
+    "minus": "Less",
+    "plus": "More",
+    "unitMin": "min",
+    "unitHour": "h",
+    "textPreview": "This is how big your text looks.",
+    "connection": "Jobs and connection",
+    "dataRow": "Your data"
   },
   "lichtung": {
     "greeting": "Good to see you.",
@@ -87,7 +101,16 @@
     "latestHour": "Latest hour (0–23)",
     "blockMinutes": "Block length until a break (minutes)",
     "settingsHint": "Madar plans with these. You can change them any time.",
-    "planLineNoReview": "{topic} · {kind} · about {minutes} min"
+    "planLineNoReview": "{topic} · {kind} · about {minutes} min",
+    "after": "Next",
+    "whyTitle": "Why now?",
+    "whyOk": "Got it",
+    "keepGoing": "Keep practising anyway",
+    "treeRowTitle": "Skill tree",
+    "treeRowSub": "{sits} of {total} are solid",
+    "examChip": "{subject} exam in {days, plural, =0 {0 days} one {# day} other {# days}}",
+    "jobsTitle": "{count, plural, one {# job is} other {# jobs are}} waiting for Claude",
+    "jobsCta": "Open jobs"
   },
   "data": {
     "title": "Your data",
@@ -224,7 +247,8 @@
     "openFailed": "The document cannot be displayed.",
     "scroller": "Document",
     "selection": "Selected text",
-    "aiText": "Read by Claude, may contain errors."
+    "aiText": "Read by Claude, may contain errors.",
+    "modeLegend": "View"
   },
   "search": {
     "title": "Search",
@@ -300,7 +324,16 @@
     "reviewNote": "Only a recommendation. Madar does not change the plan.",
     "reviewStrengths": "Going well",
     "reviewGaps": "Gaps",
-    "reviewTips": "Recommendations"
+    "reviewTips": "Recommendations",
+    "connected": "Connected to Claude",
+    "notConnected": "Not connected. Copy and paste still works.",
+    "step1": "Copy the job",
+    "step2": "Paste it into Claude and write the keyword madar",
+    "step3": "Paste the answer here",
+    "stepDone": "done",
+    "codeShow": "Show code",
+    "codeHide": "Hide code",
+    "nothingHalf": "Nothing is saved halfway."
   },
   "practice": {
     "title": "Practice",
@@ -455,7 +488,12 @@
       "core": "Core",
       "practice": "Practice",
       "closing": "Wrap-up"
-    }
+    },
+    "closeLabel": "Leave session",
+    "leaveTitle": "Take a break?",
+    "leaveText": "Everything you answered stays saved. Madar plans again tomorrow.",
+    "leaveStay": "Keep going",
+    "leaveGo": "Stop for today"
   },
   "exam": {
     "title": "Exam",
@@ -463,7 +501,9 @@
     "moveLabel": "Exam on {date} (change date)",
     "dateLabel": "Exam date",
     "add": "Add exam",
-    "note": "Madar plans backwards from exam day. If you move the date, it re-plans – no blame. A grading scale exists only if you enter it yourself."
+    "note": "Madar plans backwards from exam day. If you move the date, it re-plans – no blame. A grading scale exists only if you enter it yourself.",
+    "rowSet": "Exam on {date} (in {days, plural, =0 {0 days} one {# day} other {# days}})",
+    "saved": "Saved. Madar plans backwards."
   },
   "ui": {
     "close": "Close",
@@ -486,5 +526,10 @@
     "updateReady": "New version ready",
     "updateAction": "Load now",
     "offlineReady": "Madar now also works without internet."
+  },
+  "fach": {
+    "filesTitle": "Files",
+    "progressTitle": "Progress in this subject",
+    "progressLine": "{sits} of {total} skills are solid"
   }
 }

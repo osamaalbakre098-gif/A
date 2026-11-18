@@ -1,0 +1,22 @@
+@layer screens {
+  .settings__preview {
+    margin-block-start: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-field);
+    background: var(--fill);
+    font-size: var(--type-body);
+    line-height: var(--lh-body);
+  }
+}
+@layer screens {
+  .data {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-section);
+  }
+  .data__h {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+}

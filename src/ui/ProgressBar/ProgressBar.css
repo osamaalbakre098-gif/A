@@ -1,0 +1,31 @@
+@layer components {
+  .pbar {
+    block-size: var(--space-2);
+    border-radius: var(--radius-pill);
+    background: var(--arc-inactive);
+    overflow: hidden;
+  }
+  .pbar__fill {
+    display: block;
+    block-size: 100%;
+    inline-size: 100%;
+    border-radius: var(--radius-pill);
+    background: var(--arc-active);
+    /* füllt sich einmal beim ersten Sichtbarwerden (nur transform), nie bei jedem Neuzeichnen */
+    transform-origin: left center;
+    transform: scaleX(var(--p));
+    animation: pbar-in var(--t-slow) var(--ease) both;
+  }
+  [dir='rtl'] .pbar__fill {
+    transform-origin: right center;
+  }
+  [data-theme='contrast'] .pbar {
+    border: 2px solid var(--border);
+    background: var(--surface);
+  }
+  @keyframes pbar-in {
+    from {
+      transform: scaleX(0);
+    }
+  }
+}

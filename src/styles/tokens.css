@@ -76,6 +76,8 @@
     --tap-button-l: 52px;
     --tap-row: 52px;
     --tabbar-h: 56px;
+    /* Symbolspalte in Listenzeilen (UI_DETAILS 2): Titel fluchten in jeder Zeile */
+    --lead-w: 28px;
     /* Tab: 4 + Pille 28 + 4 + Beschriftung 16 + 4 = 56 (genau im Raster) */
     --tab-pill-h: 28px;
     --tab-label-lh: 16px;

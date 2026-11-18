@@ -22,7 +22,21 @@ import { exportZip, importZip } from '../../data/db/transfer';
 import { systemNow } from '../../data/clock';
 import { getDb } from '../../data/instance';
 import { runStorageSelfTest } from '../../data/selftest';
-import { Button, Cluster, ContentCard, Dialog, InstallMotif, Stack } from '../components';
+import { Lock } from 'lucide-react';
+import {
+  Banner,
+  Button,
+  Card,
+  Cluster,
+  InstallMotif,
+  LargeTitle,
+  ListGroup,
+  ListRow,
+  SectionHeader,
+  Sheet,
+  Stack,
+  StepList,
+} from '../components';
 
 export interface DataDeps {
   getDb: () => Promise<MadarDB>;
@@ -170,89 +184,95 @@ export default function DataPanel({ deps }: { deps: DataDeps }) {
     new Intl.DateTimeFormat(i18n.language, { dateStyle: 'medium', timeStyle: 'short' }).format(ts);
 
   return (
-    <Stack space="section" className="data view">
-      <Stack space="tight">
-        <a className="backlink" href="#settings">
-          ← {t('nav.settings')}
-        </a>
-        <h1>{t('data.title')}</h1>
+    <div className="data">
+      <LargeTitle>{t('data.title')}</LargeTitle>
+      <Stack space="section">
         <p className="t-note">{t('data.intro')}</p>
-      </Stack>
 
-      {deps.platform.needsInstallHint && (
-        <ContentCard title={t('data.installTitle')} accent="amber">
-          <InstallMotif label={t('data.installAlt')} />
-          <p>{t('data.installWhy')}</p>
-          <ol className="steps">
-            <li>{t('data.install1')}</li>
-            <li>{t('data.install2')}</li>
-            <li>{t('data.install3')}</li>
-          </ol>
-          <p className="t-note">{t('data.installSeparate')}</p>
-          <p className="strong">{t('data.installReminder')}</p>
-        </ContentCard>
-      )}
-
-      <ContentCard title={t('data.storageTitle')} accent="sage">
-        {persistKey && <p>{t(persistKey)}</p>}
-        <p className="t-note">
-          {estimate.quota
-            ? t('data.usage', { used: bytes(estimate.usage ?? 0), total: bytes(estimate.quota) })
-            : t('data.usageUnknown')}
-        </p>
-        {check.level === 'tight' && <p role="status">{t('data.tight')}</p>}
-      </ContentCard>
-
-      <ContentCard title={t('data.backupTitle')} accent="ocean">
-        <Cluster>
-          <Button onClick={doExport} loading={busy === 'export'}>
-            {busy === 'export' ? t('data.exporting') : t('data.export')}
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => fileRef.current?.click()}
-            loading={busy === 'import'}
-            disabled={busy !== null}
-          >
-            {busy === 'import' ? t('data.importing') : t('data.import')}
-          </Button>
-          <input
-            id={fileId}
-            ref={fileRef}
-            type="file"
-            accept=".zip,application/zip"
-            hidden
-            aria-label={t('data.import')}
-            onChange={(e) => void onFile(e.target.files?.[0])}
-          />
-        </Cluster>
-        <div aria-live="polite">
-          {msg && (
-            <p
-              role={msg.kind === 'error' ? 'alert' : 'status'}
-              className={msg.kind === 'error' ? 'msg msg--error' : 'msg msg--ok'}
-            >
-              {msg.kind === 'error' ? '⚠ ' : '✓ '}
-              {msg.text}
+        <Card aria-label={t('data.storageTitle')}>
+          <Stack space="tight">
+            <h2 className="data__h">
+              <Lock size={20} aria-hidden="true" /> {t('data.storageTitle')}
+            </h2>
+            {persistKey && <p>{t(persistKey)}</p>}
+            <p className="t-note">
+              {estimate.quota
+                ? t('data.usage', {
+                    used: bytes(estimate.usage ?? 0),
+                    total: bytes(estimate.quota),
+                  })
+                : t('data.usageUnknown')}
             </p>
-          )}
-        </div>
+            {check.level === 'tight' && <Banner tone="warning">{t('data.tight')}</Banner>}
+          </Stack>
+        </Card>
+
+        {deps.platform.needsInstallHint && (
+          <Stack space="tight">
+            <SectionHeader>{t('data.installTitle')}</SectionHeader>
+            <Card>
+              <Stack space="stack">
+                <InstallMotif label={t('data.installAlt')} />
+                <p>{t('data.installWhy')}</p>
+                <StepList
+                  doneLabel={t('jobs.stepDone')}
+                  steps={[
+                    { title: t('data.install1') },
+                    { title: t('data.install2') },
+                    { title: t('data.install3') },
+                  ]}
+                />
+                <p className="t-note">{t('data.installSeparate')}</p>
+                <p className="t-note">{t('data.installReminder')}</p>
+              </Stack>
+            </Card>
+          </Stack>
+        )}
+
         <Stack space="tight">
-          <h3>{t('data.backupsTitle')}</h3>
+          <SectionHeader>{t('data.backupTitle')}</SectionHeader>
+          <Stack space="stack">
+            <Button size="l" fullWidth onClick={doExport} loading={busy === 'export'}>
+              {busy === 'export' ? t('data.exporting') : t('data.export')}
+            </Button>
+            <Button
+              size="l"
+              fullWidth
+              variant="secondary"
+              onClick={() => fileRef.current?.click()}
+              loading={busy === 'import'}
+              disabled={busy !== null}
+            >
+              {busy === 'import' ? t('data.importing') : t('data.import')}
+            </Button>
+            <input
+              id={fileId}
+              ref={fileRef}
+              type="file"
+              accept=".zip,application/zip"
+              hidden
+              aria-label={t('data.import')}
+              onChange={(e) => void onFile(e.target.files?.[0])}
+            />
+            <div aria-live="polite">
+              {msg && (
+                <Banner tone={msg.kind === 'error' ? 'danger' : 'success'}>{msg.text}</Banner>
+              )}
+            </div>
+          </Stack>
+          <SectionHeader>{t('data.backupsTitle')}</SectionHeader>
           {backups.length === 0 ? (
             <p className="t-note">{t('data.backupsNone')}</p>
           ) : (
-            <ul className="plain">
+            <ListGroup label={t('data.backupsTitle')}>
               {backups.slice(0, KEEP_BACKUPS).map((b) => (
-                <li key={b.id} className="t-note">
-                  {t('data.backupItem', {
-                    date: when(b.createdAt),
-                    reason: t(reasonKey[b.reason]),
-                    size: bytes(b.bytes),
-                  })}
-                </li>
+                <ListRow
+                  key={b.id}
+                  title={when(b.createdAt)}
+                  subtitle={`${t(reasonKey[b.reason])} · ${bytes(b.bytes)}`}
+                />
               ))}
-            </ul>
+            </ListGroup>
           )}
           {backups.length > 1 && (
             <Cluster>
@@ -262,48 +282,46 @@ export default function DataPanel({ deps }: { deps: DataDeps }) {
             </Cluster>
           )}
         </Stack>
-      </ContentCard>
 
-      <ContentCard title={t('data.testTitle')} accent="slate">
-        <p>{t('data.testText')}</p>
-        <Cluster>
+        <Stack space="tight">
+          <SectionHeader>{t('data.testTitle')}</SectionHeader>
+          <p>{t('data.testText')}</p>
           <Button
             variant="secondary"
+            size="l"
+            fullWidth
             onClick={doTest}
             loading={busy === 'test'}
             disabled={busy !== null}
           >
             {busy === 'test' ? t('data.testRunning') : t('data.testRun')}
           </Button>
-        </Cluster>
-        <div aria-live="polite">
-          {testMsg && (
-            <p
-              role={testMsg.kind === 'error' ? 'alert' : 'status'}
-              className={testMsg.kind === 'error' ? 'msg msg--error' : 'msg msg--ok'}
-            >
-              {testMsg.kind === 'error' ? '⚠ ' : '✓ '}
-              {testMsg.text}
-            </p>
-          )}
-        </div>
-      </ContentCard>
+          <div aria-live="polite">
+            {testMsg && (
+              <Banner tone={testMsg.kind === 'error' ? 'danger' : 'success'}>{testMsg.text}</Banner>
+            )}
+          </div>
+        </Stack>
+      </Stack>
 
-      <Dialog
+      <Sheet
         open={pending !== null}
         onClose={() => setPending(null)}
         title={t('data.importConfirmTitle')}
+        size="sm"
+        footer={
+          <Stack space="tight">
+            <Button variant="danger" size="l" fullWidth onClick={doImport}>
+              {t('data.importConfirm')}
+            </Button>
+            <Button variant="quiet" size="l" fullWidth onClick={() => setPending(null)}>
+              {t('data.cancel')}
+            </Button>
+          </Stack>
+        }
       >
         <p>{t('data.importConfirmText')}</p>
-        <Cluster>
-          <Button variant="danger" onClick={doImport}>
-            {t('data.importConfirm')}
-          </Button>
-          <Button variant="secondary" onClick={() => setPending(null)}>
-            {t('data.cancel')}
-          </Button>
-        </Cluster>
-      </Dialog>
-    </Stack>
+      </Sheet>
+    </div>
   );
 }

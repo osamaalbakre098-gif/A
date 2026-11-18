@@ -65,6 +65,7 @@
     inline-size: 100%;
   }
   .btn--plain {
+    padding-inline: var(--space-3);
     background: transparent;
     color: var(--accent);
   }

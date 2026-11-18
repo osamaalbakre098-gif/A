@@ -1,15 +1,52 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { dayDiff } from '../../core/director/days';
+import { learningDayKey } from '../../core/time';
+import { systemNow } from '../../data/clock';
 import { addExam } from '../../data/director-data';
 import { newId } from '../../data/ids';
-import { Button, ContentCard, Stack, TextField } from '../components';
+import { Button, ListGroup, ListRow, Sheet, Stack, TextField, useToast } from '../components';
 import { useDb } from '../DbProvider';
 
-/** Prüfung eintragen oder verschieben. Madar plant rückwärts davon (ohne Vorwurf bei Änderungen). */
-export default function ExamCard({ subjectId }: { subjectId: string }) {
+/** Zeile für die Fachseite: „Prüfung eintragen" oder „Prüfung am 12.12. (in 24 Tagen)". Öffnet das Sheet. */
+export function ExamRow({ subjectId, onOpen }: { subjectId: string; onOpen: () => void }) {
   const { t, i18n } = useTranslation();
   const db = useDb();
+  const next = useLiveQuery(async () => {
+    const today = learningDayKey(new Date(systemNow()));
+    return (await db.exams.where('subjectId').equals(subjectId).toArray())
+      .filter((e) => dayDiff(today, e.date) >= 0)
+      .sort((a, b) => (a.date < b.date ? -1 : 1))[0];
+  }, [db, subjectId]);
+  const today = learningDayKey(new Date(systemNow()));
+  const date = next
+    ? new Intl.DateTimeFormat(i18n.language === 'ar' ? 'ar-u-nu-latn' : i18n.language, {
+        day: 'numeric',
+        month: 'numeric',
+      }).format(new Date(`${next.date}T12:00:00`))
+    : '';
+  return (
+    <ListRow
+      title={next ? t('exam.rowSet', { date, days: dayDiff(today, next.date) }) : t('exam.add')}
+      onClick={onOpen}
+    />
+  );
+}
+
+/** Prüfung eintragen oder verschieben (Sheet). Madar plant rückwärts davon, ohne Vorwurf bei Änderungen. */
+export function ExamSheet({
+  subjectId,
+  open,
+  onClose,
+}: {
+  subjectId: string;
+  open: boolean;
+  onClose: () => void;
+}) {
+  const { t, i18n } = useTranslation();
+  const db = useDb();
+  const toast = useToast();
   const exams = useLiveQuery(
     async () =>
       (await db.exams.where('subjectId').equals(subjectId).toArray()).sort((a, b) =>
@@ -19,49 +56,61 @@ export default function ExamCard({ subjectId }: { subjectId: string }) {
   );
   const [date, setDate] = useState('');
   const fmt = (d: string) =>
-    new Intl.DateTimeFormat(i18n.language, { dateStyle: 'full' }).format(new Date(`${d}T12:00:00`));
+    new Intl.DateTimeFormat(i18n.language === 'ar' ? 'ar-u-nu-latn' : i18n.language, {
+      dateStyle: 'full',
+    }).format(new Date(`${d}T12:00:00`));
+  const save = async () => {
+    if (!date) return;
+    await addExam(db, { id: newId(), subjectId, date });
+    setDate('');
+    onClose();
+    toast.show({ text: t('exam.saved') });
+  };
   return (
-    <ContentCard title={t('exam.title')} accent="amber">
+    <Sheet
+      open={open}
+      onClose={onClose}
+      title={t('exam.title')}
+      size="md"
+      footer={
+        <Button size="l" fullWidth disabled={!date} onClick={() => void save()}>
+          {t('common.save')}
+        </Button>
+      }
+    >
       <Stack space="stack">
         {exams?.length ? (
-          <ul className="plain">
+          <ListGroup label={t('exam.title')}>
             {exams.map((e) => (
-              <li key={e.id}>
-                <TextField
-                  label={t('exam.moveLabel', { date: fmt(e.date) })}
-                  type="date"
-                  value={e.date}
-                  onChange={(ev) =>
-                    ev.target.value && void db.exams.update(e.id, { date: ev.target.value })
-                  }
-                />
-              </li>
+              <ListRow
+                key={e.id}
+                title={fmt(e.date)}
+                trailing={
+                  <TextField
+                    label={t('exam.moveLabel', { date: fmt(e.date) })}
+                    type="date"
+                    value={e.date}
+                    onChange={(ev) =>
+                      ev.target.value && void db.exams.update(e.id, { date: ev.target.value })
+                    }
+                  />
+                }
+              />
             ))}
-          </ul>
+          </ListGroup>
         ) : (
           <p className="t-note">{t('exam.none')}</p>
         )}
-        <form
-          onSubmit={(ev) => {
-            ev.preventDefault();
-            if (!date) return;
-            void addExam(db, { id: newId(), subjectId, date }).then(() => setDate(''));
-          }}
-        >
-          <Stack space="stack">
-            <TextField
-              label={t('exam.dateLabel')}
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-            <Button type="submit" variant="secondary" disabled={!date}>
-              {t('exam.add')}
-            </Button>
-          </Stack>
-        </form>
+        <TextField
+          label={t('exam.dateLabel')}
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
         <p className="t-note">{t('exam.note')}</p>
       </Stack>
-    </ContentCard>
+    </Sheet>
   );
 }
+
+export default ExamSheet;

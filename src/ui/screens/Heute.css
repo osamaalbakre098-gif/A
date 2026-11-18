@@ -1,0 +1,31 @@
+@layer screens {
+  .heute__hero-title {
+    color: var(--text);
+    font-size: var(--type-headline);
+    line-height: var(--lh-headline);
+    font-weight: var(--weight-semibold);
+  }
+  .heute__dot {
+    flex: none;
+    inline-size: var(--space-3);
+    block-size: var(--space-3);
+    border-radius: var(--radius-pill);
+  }
+  .heute__line {
+    font-size: var(--type-body);
+    line-height: var(--lh-body);
+    text-wrap: pretty;
+  }
+  .heute__strong {
+    font-weight: var(--weight-semibold);
+  }
+  .heute__empty {
+    inline-size: 100%;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    max-inline-size: 28rem;
+    margin-inline: auto;
+    padding-block: var(--space-4);
+  }
+}

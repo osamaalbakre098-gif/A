@@ -1,0 +1,22 @@
+@layer components {
+  .sticky-action {
+    position: sticky;
+    inset-block-end: calc(var(--tabbar-h) + var(--sab));
+    z-index: var(--z-nav);
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-3);
+    /* weicher Verlauf: Inhalt darunter schimmert nicht durch den Knopf */
+    background: linear-gradient(to bottom, transparent, var(--bg) var(--space-3));
+    margin-block-start: calc(var(--space-section) * -1 + var(--space-2));
+  }
+  /* In der Lernsitzung fehlt die Navigation */
+  .shell[data-nav='hidden'] .sticky-action {
+    inset-block-end: var(--sab);
+  }
+  @media (min-width: 768px) {
+    .sticky-action {
+      inset-block-end: var(--space-4);
+    }
+  }
+}

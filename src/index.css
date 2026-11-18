@@ -44,50 +44,6 @@
   /* App-Rahmen: Handy Navigation unten, ab 1024 px links */
 
   /* Heute */
-  .heute__greet {
-    padding-block-start: 0;
-  }
-  .heute__hero {
-    align-items: center;
-  }
-  .heute__hero-text {
-    flex: 1 1 14rem;
-  }
-  .heute__cta {
-    inline-size: 100%;
-    min-block-size: 56px;
-    font-size: 1.1rem;
-  }
-  .heute__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-    gap: var(--space-section);
-  }
-  .heute__empty {
-    inline-size: 100%;
-    align-items: center;
-    text-align: center;
-    max-inline-size: 28rem;
-    margin-inline: auto;
-    padding-block: var(--s-4);
-  }
-  .heute__empty .heute__cta {
-    max-inline-size: 22rem;
-  }
-  .why summary {
-    cursor: pointer;
-    min-block-size: var(--tap);
-    display: flex;
-    align-items: center;
-    color: var(--primary);
-    font-weight: 600;
-  }
-  .why[open] summary {
-    margin-block-end: var(--s-2);
-  }
-  .strong {
-    font-weight: 600;
-  }
 
   .preview-bar {
     grid-template-columns: minmax(0, 1fr);
@@ -107,9 +63,6 @@
     background: var(--tint);
     border-radius: var(--r-md);
     padding: var(--s-4);
-  }
-  .heute__cta {
-    inline-size: 100%;
   }
 
   /* Deine Daten */
@@ -244,18 +197,18 @@
   .reader {
     display: flex;
     flex-direction: column;
-    block-size: calc(100dvh - var(--tabbar-h) - var(--sab));
+    block-size: calc(100dvh - var(--tabbar-h) - var(--sab) - var(--appbar-h) - var(--sat));
     min-block-size: 0;
   }
   @media (min-width: 768px) {
     .reader {
-      block-size: 100dvh;
+      block-size: calc(100dvh - var(--appbar-h) - var(--sat));
     }
   }
   .reader__head {
     display: grid;
     gap: var(--s-2);
-    padding: calc(var(--s-3) + var(--sat)) var(--s-4) var(--s-3);
+    padding: var(--s-2) var(--s-4) var(--s-3);
     background: var(--surface);
     border-block-end: 1px solid var(--line);
   }
@@ -266,6 +219,14 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .reader__head .seg__legend {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
   .reader__modes {
     display: grid;
@@ -436,11 +397,6 @@
   .practice__prompt {
     font-size: 1.125rem;
     margin-block-end: var(--s-3);
-  }
-
-  .heute__cluster-full {
-    inline-size: 100%;
-    justify-content: center;
   }
 
   /* Material hinzufügen: auf dem Handy drei gleich breite Knöpfe untereinander */
