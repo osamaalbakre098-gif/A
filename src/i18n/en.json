@@ -315,7 +315,8 @@
     "started": "Building up",
     "with_help": "Building up",
     "independent": "Building up",
-    "mastered": "Solid"
+    "mastered": "Solid",
+    "review_due": "Refresh"
   },
   "skills": {
     "title": "Skills",
@@ -329,5 +330,30 @@
     "few": "Not enough data yet",
     "noSkills": "No skills yet",
     "sits": "{sits} of {skills} skills solid"
+  },
+  "tree": {
+    "title": "Skill tree",
+    "for": "Your skill tree: {subject}",
+    "back": "Back to subject",
+    "empty": "No skill tree yet. Add material and it appears by itself.",
+    "simple": "simply generated",
+    "stateLine": "State: {state}",
+    "evidence": "{unaided, plural, =0 {Never solved without help} other {Solved without help #×}}{withHelp, plural, =0 {} other {, with help #×}}{when}",
+    "last": ", last on {date}",
+    "source": "Source: {name}, page {page}",
+    "practice": "Practise now",
+    "edit": "Edit",
+    "editDone": "Done",
+    "rename": "Rename",
+    "name": "New name",
+    "save": "Save",
+    "hide": "Hide",
+    "show": "Show again",
+    "hiddenTitle": "Hidden",
+    "undo": "Undo",
+    "close": "Close",
+    "simpleNote": "This tree comes only from the headings. A \"Build tree\" job can improve it later; your changes are kept.",
+    "openTree": "View skill tree",
+    "count": "{skills, plural, one {# skill} other {# skills}}"
   }
 }

@@ -18,6 +18,7 @@ const ReaderPage = lazy(() => import('./ui/screens/ReaderPage'));
 const SearchPage = lazy(() => import('./ui/screens/SearchPage'));
 const JobsPage = lazy(() => import('./ui/screens/JobsPage'));
 const PracticePage = lazy(() => import('./ui/screens/PracticePage'));
+const TreePage = lazy(() => import('./ui/screens/TreePage'));
 
 function Placeholder({ route }: { route: RouteName }) {
   const { t } = useTranslation();
@@ -60,7 +61,7 @@ export default function App() {
   }, [route]);
 
   const active: NavId | null =
-    route.name === 'subject' || route.name === 'doc'
+    route.name === 'subject' || route.name === 'doc' || route.name === 'tree'
       ? 'subjects'
       : route.name === 'settings' ||
           route.name === 'data' ||
@@ -109,6 +110,11 @@ export default function App() {
           {route.name === 'practice' && route.id && (
             <DbProvider>
               <PracticePage skillId={route.id} key={route.id} />
+            </DbProvider>
+          )}
+          {route.name === 'tree' && route.id && (
+            <DbProvider>
+              <TreePage subjectId={route.id} key={route.id} />
             </DbProvider>
           )}
           {route.name === 'search' && (

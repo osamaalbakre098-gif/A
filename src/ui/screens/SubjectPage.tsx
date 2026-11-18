@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { importMaterial, type ImportDeps, type ImportPhase } from '../../content/import';
 import { systemNow } from '../../data/clock';
 import { DataError } from '../../data/db/errors';
+import { buildFallbackTree } from '../../content/tree-builder/fallback';
 import { fileProgress, skillInfos } from '../../data/progress';
 import type { DocumentRow } from '../../data/db/schema';
 import {
@@ -125,6 +126,8 @@ export default function SubjectPage({ id }: { id: string }) {
         systemNow(),
         (p, d) => setOne(key, { text: phaseText(p, d) }),
       );
+      if (r.status === 'imported' && r.kind !== 'image')
+        await buildFallbackTree(db, r.documentId, systemNow()).catch(() => undefined);
       if (r.status === 'duplicate')
         setOne(key, { kind: 'ok', text: t('material.duplicate', { name }) });
       else if (r.kind === 'image')
@@ -269,6 +272,11 @@ export default function SubjectPage({ id }: { id: string }) {
 
       <Stack space="stack">
         <h2>{t('skills.title')}</h2>
+        <Cluster>
+          <a className="btn btn--secondary" href={hrefTo('tree', id)}>
+            {t('tree.openTree')}
+          </a>
+        </Cluster>
         {skillRows && skillRows.length === 0 ? (
           <p className="t-note">{t('skills.none')}</p>
         ) : (

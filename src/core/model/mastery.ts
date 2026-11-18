@@ -4,7 +4,25 @@ import { learningDaysBetween } from '../time';
  * Fähigkeitsstand nur aus Belegen (Versuchen), nach den Regeln aus Schritt 8.1.
  * VORLÄUFIG: Wiederholungsplan (FSRS, „Auffrischen") und Raten-Erkennung folgen in Schritt 8.
  */
-export type SkillState = 'not_started' | 'started' | 'with_help' | 'independent' | 'mastered';
+export type SkillState =
+  | 'not_started'
+  | 'started'
+  | 'with_help'
+  | 'independent'
+  | 'mastered'
+  /** war `mastered`, jetzt ist Wiederholung fällig (nie eine Strafe: der Baum welkt nicht) */
+  | 'review_due';
+
+/** Die vier Zustände, die der Schüler sieht (Schritt 6.4). */
+export type DisplayState = 'new' | 'building' | 'sits' | 'refresh';
+export const toDisplay = (s: SkillState): DisplayState =>
+  s === 'not_started'
+    ? 'new'
+    : s === 'mastered'
+      ? 'sits'
+      : s === 'review_due'
+        ? 'refresh'
+        : 'building';
 export type SkillKind = 'fakt' | 'verfahren' | 'verstaendnis';
 
 export interface Evidence {
@@ -56,6 +74,8 @@ export const STATE_WEIGHT: Record<SkillState, number> = {
   with_help: 0.4,
   independent: 0.75,
   mastered: 1,
+  // Wiederholung fällig ändert den Fortschritt nicht (nichts welkt)
+  review_due: 1,
 };
 /** Eine Prozentzahl erscheint erst ab so vielen Belegen (Regel 2: keine Scheingenauigkeit). */
 export const MIN_EVIDENCE_FOR_PERCENT = 5;
@@ -76,6 +96,7 @@ export function documentProgress(states: SkillState[], evidenceCount: number): P
     with_help: 0,
     independent: 0,
     mastered: 0,
+    review_due: 0,
   };
   for (const s of states) counts[s]++;
   const n = states.length;
@@ -83,7 +104,7 @@ export function documentProgress(states: SkillState[], evidenceCount: number): P
   return {
     percent: n && evidenceCount >= MIN_EVIDENCE_FOR_PERCENT ? Math.round(raw / 5) * 5 : null,
     skills: n,
-    sits: counts.mastered,
+    sits: counts.mastered + counts.review_due,
     evidence: evidenceCount,
     counts,
   };

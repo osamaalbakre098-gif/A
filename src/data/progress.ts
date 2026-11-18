@@ -71,3 +71,25 @@ export async function fileProgress(db: MadarDB, documentId: string): Promise<Pro
   const evidence = skills.reduce((n, s) => n + (infos.get(s.id)?.attempts ?? 0), 0);
   return documentProgress(states, evidence);
 }
+
+export interface SkillEvidence {
+  unaided: number;
+  withHelp: number;
+  wrong: number;
+  last?: number;
+}
+
+/** Belege einer Fähigkeit in Worten zählbar (für „3× ohne Hilfe gelöst, zuletzt am …"). */
+export async function skillEvidence(db: MadarDB, skillId: string): Promise<SkillEvidence> {
+  const items = await db.items.where('skillId').equals(skillId).toArray();
+  const ids = items.map((i) => i.id);
+  const attempts = ids.length ? await db.attempts.where('itemId').anyOf(ids).toArray() : [];
+  const out: SkillEvidence = { unaided: 0, withHelp: 0, wrong: 0 };
+  for (const a of attempts) {
+    if (a.correct && a.hintLevel <= 1) out.unaided++;
+    else if (a.correct) out.withHelp++;
+    else if (!a.partial) out.wrong++;
+    if (out.last === undefined || a.ts > out.last) out.last = a.ts;
+  }
+  return out;
+}

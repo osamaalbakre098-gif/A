@@ -1,3 +1,4 @@
+import { ersetzeFallback } from '../../content/tree-builder/fallback';
 import type { ZodError } from 'zod';
 import { z } from 'zod';
 import { normalizeDe } from '../../content/text';
@@ -179,8 +180,8 @@ async function planBaum(c: Ctx): Promise<Plan> {
     }
   });
   plan.importiert = skillCount;
-  plan.nachher = () =>
-    appendEvent(
+  plan.nachher = async () => {
+    await appendEvent(
       db,
       {
         type: 'TreeBuilt',
@@ -188,6 +189,9 @@ async function planBaum(c: Ctx): Promise<Plan> {
       },
       c.now,
     );
+    // Der KI-Baum löst den einfachen Baum aus Überschriften ab (ausblenden, nie löschen).
+    if (skillCount) await ersetzeFallback(db, doc.id);
+  };
   if (!h.data.themen.length)
     plan.hinweise.push(
       'Claude hat keine Themen geliefert (die Abschnitte enthielten wohl nur Einleitung oder Organisatorisches).',

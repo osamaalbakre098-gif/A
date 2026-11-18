@@ -315,7 +315,8 @@
     "started": "Im Aufbau",
     "with_help": "Im Aufbau",
     "independent": "Im Aufbau",
-    "mastered": "Sitzt"
+    "mastered": "Sitzt",
+    "review_due": "Auffrischen"
   },
   "skills": {
     "title": "Fähigkeiten",
@@ -329,5 +330,30 @@
     "few": "Noch zu wenig Daten",
     "noSkills": "Noch keine Fähigkeiten",
     "sits": "{sits} von {skills} Fähigkeiten sitzen"
+  },
+  "tree": {
+    "title": "Könnensbaum",
+    "for": "Dein Könnensbaum: {subject}",
+    "back": "Zurück zum Fach",
+    "empty": "Noch kein Könnensbaum. Lade Material hoch, dann entsteht er von selbst.",
+    "simple": "einfach erzeugt",
+    "stateLine": "Zustand: {state}",
+    "evidence": "{unaided, plural, =0 {Noch nie ohne Hilfe gelöst} other {#× ohne Hilfe gelöst}}{withHelp, plural, =0 {} other {, #× mit Hilfe}}{when}",
+    "last": ", zuletzt am {date}",
+    "source": "Quelle: {name}, Seite {page}",
+    "practice": "Jetzt üben",
+    "edit": "Bearbeiten",
+    "editDone": "Fertig",
+    "rename": "Umbenennen",
+    "name": "Neuer Name",
+    "save": "Speichern",
+    "hide": "Ausblenden",
+    "show": "Wieder einblenden",
+    "hiddenTitle": "Ausgeblendet",
+    "undo": "Rückgängig",
+    "close": "Schließen",
+    "simpleNote": "Dieser Baum stammt nur aus den Überschriften. Er kann später mit einem Auftrag „Baum bauen\" verbessert werden; deine Änderungen bleiben erhalten.",
+    "openTree": "Könnensbaum ansehen",
+    "count": "{skills, plural, one {# Fähigkeit} other {# Fähigkeiten}}"
   }
 }
