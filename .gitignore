@@ -28,3 +28,5 @@ playwright-report
 coverage
 dev-dist
 dist-static
+
+.wrangler/

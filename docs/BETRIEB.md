@@ -1,34 +1,27 @@
-# Betrieb: Madar im Internet (Cloudflare Pages)
+# Betrieb: Madar im Internet (Cloudflare Workers)
 
-Kostenlos, ohne Kreditkarte. Madar liegt dann unter einer Adresse wie `https://madar.pages.dev`. Nur mit einer echten HTTPS-Adresse lassen sich Installation auf den Home-Bildschirm, Offline-Betrieb und dauerhafter Speicher auf dem iPhone prüfen.
+Madar läuft als **ein Cloudflare Worker** (Projektname `a`): Er liefert die App aus (`dist`, mit Rückfall auf `index.html`) und beantwortet zugleich `/mcp/…` und `/api/…` (Auftragsaustausch). Kostenlos, ohne Kreditkarte.
 
-## Einmalige Einrichtung (ca. 10 Minuten)
+## Wie es gebaut wird
 
-Du brauchst: ein GitHub-Konto (hast du, das Projekt liegt dort als `osamaalbakre098-gif/A`) und eine E-Mail-Adresse.
+- Konfiguration: `wrangler.jsonc` im Repository (Name `a`, statische Dateien aus `dist`, Single-Page-Fallback, Worker-Code `server/worker.ts`, KV-Bindung `MADAR_KV` mit der ID des Namespace).
+- Cloudflare (Workers Builds) baut bei jedem Push auf den Zweig `claude/madar-lern-app-af1zmg`:
+  - Build command: `pnpm build`
+  - Deploy command: `npx wrangler deploy`
+  - Umgebungsvariable `NODE_VERSION` = `22` (Build-Einstellungen)
+- Lokal geprüft (ohne Internet): `npx wrangler deploy --dry-run` liest die Konfiguration und bündelt alles; `wrangler dev` lieferte `/` und Unterseiten (200), `/mcp/<Code>` (Werkzeugliste), falschen Code (404) und `/api/status` mit Code (200).
 
-1. **Konto anlegen:** Öffne https://dash.cloudflare.com/sign-up. E-Mail und Passwort eingeben, E-Mail bestätigen. Den kostenlosen Tarif behalten, keine Zahlungsdaten nötig.
-2. **Pages-Projekt anlegen:** Links im Menü auf „Workers & Pages" (oder „Compute") tippen, dann „Create application" (Anwendung erstellen). Ganz unten auf der Seite steht ein Hinweis wie „Looking to deploy Pages? Get started": dort tippen. Dann „Import an existing Git repository" (Mit Git verbinden).
-3. **GitHub verbinden:** „Connect GitHub" wählen. GitHub fragt, ob Cloudflare Zugriff bekommen soll. „Only select repositories" wählen und das Repository **A** auswählen, dann bestätigen.
-4. **Repository wählen:** In Cloudflare das Repository `A` auswählen, „Begin setup".
-5. **Einstellungen eintragen:**
-   - Project name: `madar` (ist der Name vergeben, nimm `madar-lernen`)
-   - Production branch: `claude/madar-lern-app-af1zmg` (es gibt noch keinen Zweig `main`; später ändern wir das)
-   - Framework preset: `None` (kein Preset)
-   - Build command: `pnpm build`
-   - Build output directory: `dist`
-   - Unter „Environment variables" (Umgebungsvariablen) hinzufügen: Name `NODE_VERSION`, Wert `22`
-6. **„Save and Deploy"** tippen. Der erste Bau dauert 2 bis 4 Minuten. Am Ende steht die Adresse da, z. B. `https://madar.pages.dev`.
-7. **Adresse an Claude Code schicken.** Ich prüfe, ob alles läuft.
+## Geheimnis setzen (nur du)
+
+Cloudflare → Workers & Pages → Projekt `a` → Settings → **Variables and Secrets** → Add → Typ **Secret**, Name `PAIRING_CODE`, Wert: langer Zufallscode (mindestens 24 Zeichen; die App erzeugt dir einen unter „Aufträge → Verbindung → Neuen Code erzeugen"). Danach das Projekt neu bereitstellen (Deployments → Retry). Der Code darf **nicht** im Repository stehen.
 
 ## Neue Version veröffentlichen
 
-Automatisch: Jedes Mal, wenn ich auf den Zweig `claude/madar-lern-app-af1zmg` pushe, baut Cloudflare die App neu und veröffentlicht sie nach 2 bis 4 Minuten. Du musst nichts tun. In Madar steht unter Einstellungen die „Version" (kurze Kennung des Stands), daran siehst du, welcher Stand läuft.
+Automatisch bei jedem Push (2 bis 4 Minuten). In Madar zeigt Einstellungen die „Version". Auf dem iPhone erscheint bei installierter App „Neue Version bereit. Jetzt neu laden"; Madar lädt nie von selbst neu.
 
-Auf dem iPhone erscheint bei installierter App oben der Hinweis „Neue Version bereit. Jetzt neu laden". Madar lädt nie von selbst neu.
+## Zurückrollen
 
-## Zurückrollen, wenn eine Version Probleme macht
-
-Cloudflare → Workers & Pages → Projekt `madar` → „Deployments" → eine frühere Version wählen → „Rollback to this deployment" (Auf diese Version zurücksetzen).
+Cloudflare → Workers & Pages → Projekt `a` → Deployments → frühere Version → Rollback.
 
 ## Auf dem iPhone prüfen (Checkliste)
 
@@ -41,8 +34,8 @@ Cloudflare → Workers & Pages → Projekt `madar` → „Deployments" → eine 
 
 ## Kosten und Grenzen
 
-Cloudflare Pages Free: 500 Builds pro Monat, unbegrenzte Aufrufe. Das reicht.
+Cloudflare Workers Free: Aufrufe der statischen Dateien sind unbegrenzt; Worker-Aufrufe (nur `/mcp`, `/api`) bis 100 000 pro Tag; KV Free: 1000 Schreibvorgänge pro Tag. Das reicht für eine Person.
 
 ## Noch nicht erledigt (Schritt 15)
 
-Eigene Domain, getrennte Test- und Produktionsumgebung, Impressum und Datenschutzerklärung (juristisch zu erstellen), Schlüssel-Prüfung in der CI, KI-Proxy als Worker.
+Eigene Domain, getrennte Test- und Produktionsumgebung, Impressum und Datenschutzerklärung (juristisch zu erstellen), Schlüssel-Prüfung in der CI, KI-Proxy (Version 2).

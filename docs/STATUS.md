@@ -155,3 +155,9 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
   - Pausenbildschirm ohne Kreis-Timer (nur Zeitangabe und Vorschläge); Pause wird nicht in der Datenbank gespeichert (kein `BreakTaken`).
   - Alles gilt bisher nur mit Daten, die ich im Test selbst erzeugt habe; mit echten Claude-Antworten (Aufgaben, Erklärungen) ist es noch nicht gelaufen. Die Gewichte sind Startwerte.
   - Nicht geprüft: echtes iPhone, VoiceOver, Zoom 400 % auf den neuen Seiten (Sitzung, Baum, Heute mit Daten), Safari-Verhalten von `type="date"`.
+
+## Hosting auf Cloudflare Workers (Projekt „a")
+
+- Gebaut: `wrangler.jsonc` (Name `a`, Assets aus `dist` mit SPA-Fallback, `server/worker.ts` als Worker für `/mcp/*` und `/api/*`, KV-Bindung `MADAR_KV` mit der vom Nutzer genannten ID), Pages-Functions entfernt, `wrangler` als Entwicklungsabhängigkeit, `docs/BETRIEB.md` neu.
+- Getestet (lokal): `wrangler deploy --dry-run` erfolgreich; `wrangler dev` mit simuliertem KV: `/` und Unterseiten 200, MCP-Werkzeugliste, falscher Code 404, `/api/status` 200. Unit-/Typ-/Lint-Prüfungen grün.
+- **Ungeprüft:** der echte Cloudflare-Build und das Deployment (hier nicht erreichbar), das Secret `PAIRING_CODE` (setzt der Nutzer), echter Claude-Konnektor, iPhone.

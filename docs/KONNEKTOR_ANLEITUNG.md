@@ -11,7 +11,7 @@ Ziel: Du schreibst in Claude nur „madar". Claude holt die offenen Aufträge au
 
 ## Voraussetzungen (ehrlich)
 
-1. Die Madar-App ist auf Cloudflare Pages ausgeliefert (siehe `docs/BETRIEB.md`).
+1. Die Madar-App ist auf Cloudflare (Worker `a`) ausgeliefert (siehe `docs/BETRIEB.md`).
 2. Claude muss **eigene (benutzerdefinierte) Konnektoren** erlauben. Das hängt von deinem Claude-Tarif und vom Gerät ab und ändert sich. Prüfe in Claude unter **Einstellungen → Konnektoren**, ob es dort „Benutzerdefinierten Konnektor hinzufügen" (englisch „Add custom connector") gibt. **Das habe ich nicht selbst getestet** (kein Zugang zu deinem Claude-Konto); der Server selbst ist mit Tests geprüft, aber nicht mit einem echten Claude-Konnektor.
 3. Gibt es die Funktion in deinem Tarif nicht: nutze den Rückfall (Kopieren/Einfügen). Nichts anderes ändert sich.
 
@@ -19,8 +19,8 @@ Ziel: Du schreibst in Claude nur „madar". Claude holt die offenen Aufträge au
 
 **A. Speicher für Aufträge anlegen (Cloudflare, einmalig)**
 
-1. Cloudflare-Oberfläche → **Storage & Databases → KV → Create** (Namespace anlegen), Name z. B. `madar-auftraege`.
-2. Dein Pages-Projekt → **Settings → Bindings (Funktionen) → KV namespace → Add**: Variablenname **`MADAR_KV`**, Namespace `madar-auftraege`.
+1. **KV-Namespace `MADAR_KV`: erledigt** (ID in `wrangler.jsonc` eingetragen, die Bindung wird beim Deploy automatisch gesetzt).
+2. Projekt `a` → Settings → **Variables and Secrets**: nur noch das Secret `PAIRING_CODE` setzen (siehe Schritt 3).
 3. Gleiche Stelle → **Variables and Secrets → Add** → Typ **Secret**, Name **`PAIRING_CODE`**, Wert: ein langer Zufallscode (mindestens 24 Zeichen). Die App erzeugt dir einen unter **Aufträge → Verbindung → Neuen Code erzeugen**; kopiere ihn dort und füge ihn hier ein.
 4. Das Projekt neu bereitstellen (Deployments → letzte → Retry deployment), damit Bindung und Geheimnis gelten.
 
@@ -46,7 +46,7 @@ Danach: neues **Claude-Projekt** anlegen, den Text aus `docs/CLAUDE_ARBEITER_ANW
 | Beobachtung                                          | Ursache / Lösung                                                                                                              |
 | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | „Verbindung testen" meldet „Nicht autorisiert" (401) | Code in App und Cloudflare-Secret unterschiedlich. Beide neu setzen.                                                          |
-| Meldung „Der Auftragsserver ist nicht eingerichtet"  | KV-Bindung `MADAR_KV` fehlt oder nicht neu bereitgestellt.                                                                    |
+| Meldung „Der Auftragsserver ist nicht eingerichtet"  | KV-Bindung fehlt (steht in `wrangler.jsonc`, prüfe, ob der letzte Deploy erfolgreich war) oder das Secret ist nicht gesetzt.  |
 | Claude findet das Werkzeug nicht                     | Konnektor im Projekt nicht aktiviert, oder Tarif erlaubt keine eigenen Konnektoren: Rückfall nutzen.                          |
 | Ergebnis abgelehnt                                   | Die App nennt die Stelle („Aufgabe 3: Hinweis 2 verrät die Lösung"). „Erneut anfordern" erzeugt einen Nachbesserungs-Auftrag. |
 | Code verloren/verraten                               | In der App neuen Code erzeugen, in Cloudflare Secret ersetzen, Konnektor-Adresse in Claude aktualisieren.                     |

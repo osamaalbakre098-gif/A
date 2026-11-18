@@ -1,1 +1,1 @@
-{"root":["./server/mcp/handler.ts","./server/mcp/store.ts","./functions/api/[[path]].ts","./functions/mcp/[[code]].ts"],"version":"6.0.3"}
+{"root":["./server/worker.ts","./server/mcp/handler.ts","./server/mcp/store.ts"],"version":"6.0.3"}
