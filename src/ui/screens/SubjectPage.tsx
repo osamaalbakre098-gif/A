@@ -20,6 +20,7 @@ import {
   TextField,
 } from '../components';
 import { useDb } from '../DbProvider';
+import ExamCard from './ExamCard';
 import { hrefTo } from '../useHashRoute';
 
 /** pdf.js erst laden, wenn wirklich ein PDF kommt. */
@@ -269,6 +270,8 @@ export default function SubjectPage({ id }: { id: string }) {
           </ul>
         )}
       </Stack>
+
+      <ExamCard subjectId={id} />
 
       <Stack space="stack">
         <h2>{t('skills.title')}</h2>

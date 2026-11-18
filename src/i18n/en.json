@@ -68,7 +68,23 @@
     "emptyCta": "Add material",
     "emptyAlt": "A card with a cut corner. A circle leads into it.",
     "go": "Start",
-    "progress": "{done} of {total} done"
+    "progress": "{done} of {total} done",
+    "change": "Change",
+    "alternativesTitle": "Something else instead",
+    "onlyX": "Today only: {name}",
+    "reset": "Back to Madar's plan",
+    "close": "Close",
+    "noNewReviewLoad": "Nothing new today: {reason}",
+    "prepNote": "{count, plural, one {# skill has} other {# skills have}} no tasks yet. Prepare them under “Jobs”.",
+    "examOverload": "{status}",
+    "noPlanTitle": "Nothing planned right now",
+    "noPlanText": "{reason}",
+    "examNone": "",
+    "settingsTitle": "Study time",
+    "dailyMinutes": "Study time per day (minutes)",
+    "latestHour": "Latest hour (0–23)",
+    "blockMinutes": "Block length until a break (minutes)",
+    "settingsHint": "Madar plans with these. You can change them any time."
   },
   "data": {
     "title": "Your data",
@@ -403,5 +419,47 @@
     "reachable": "Everything is reachable before the exam.",
     "tight": "It's tight but doable.",
     "overload": "There isn't time to cover everything safely. Madar prioritises."
+  },
+  "session": {
+    "nothingTitle": "Nothing to practise today",
+    "nothingText": "Madar has nothing planned for a session right now. It may be the time of day or missing tasks.",
+    "back": "Back to Today",
+    "doneTitle": "Session finished",
+    "doneText": "Good to see you. Madar plans the rest.",
+    "pauseTitle": "Break",
+    "pauseLeft": "About {minutes} min left.",
+    "pause1": "Stand up for a moment.",
+    "pause2": "Drink some water.",
+    "pause3": "Rest your eyes: look into the distance for a few seconds.",
+    "continue": "Continue",
+    "endSuggest": "Suggestion: stop for today",
+    "breakSuggest": "Suggestion: a short break",
+    "takeBreak": "Break ({minutes} min)",
+    "finish": "Done for today",
+    "keepGoing": "Keep going",
+    "lesson": "Short explanation",
+    "understood": "On to the tasks",
+    "read": "Read the material",
+    "readText": "There are no tasks for “{title}” yet. Read the section in your material.",
+    "openMaterial": "Open material",
+    "readDone": "Read",
+    "closingTitle": "Wrap-up",
+    "closingPrompt": "Write down 3 things you know now",
+    "coreTitle": "Key points to compare",
+    "notGraded": "This is not graded. Compare it yourself.",
+    "block": {
+      "warmup": "Warm-up",
+      "core": "Core",
+      "practice": "Practice",
+      "closing": "Wrap-up"
+    }
+  },
+  "exam": {
+    "title": "Exam",
+    "none": "No exam entered yet.",
+    "moveLabel": "Exam on {date} (change date)",
+    "dateLabel": "Exam date",
+    "add": "Add exam",
+    "note": "Madar plans backwards from exam day. If you move the date, it re-plans – no blame. A grading scale exists only if you enter it yourself."
   }
 }

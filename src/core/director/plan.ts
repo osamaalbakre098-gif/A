@@ -107,8 +107,12 @@ export function planDay(snap: Snapshot, today: string, hour: number): DayPlan {
 
   const late = hour >= snap.settings.latestHour || hour < 4;
   const prio = new Map(snap.skills.map((s) => [s.id, priority(s, all, snap.exams, today)]));
+  // Gleiche Priorität: zuerst, was sich üben lässt, dann die Reihenfolge im Material, zuletzt die ID (deterministisch).
   const byPrio = (a: SkillView, b: SkillView) =>
-    prio.get(b.id)!.total - prio.get(a.id)!.total || (a.id < b.id ? -1 : 1);
+    prio.get(b.id)!.total - prio.get(a.id)!.total ||
+    Number(b.itemsActive > 0) - Number(a.itemsActive > 0) ||
+    (a.order ?? 0) - (b.order ?? 0) ||
+    (a.id < b.id ? -1 : 1);
   const ov = snap.override;
   const allowed = (s: SkillView) =>
     !ov || (ov.skillId ? s.id === ov.skillId : ov.subjectId ? s.subjectId === ov.subjectId : true);

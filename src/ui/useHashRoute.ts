@@ -12,6 +12,7 @@ export const ROUTES = [
   'jobs',
   'practice',
   'tree',
+  'session',
 ] as const;
 export type RouteName = (typeof ROUTES)[number];
 

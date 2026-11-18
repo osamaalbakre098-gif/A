@@ -1,8 +1,6 @@
 import { lazy, Suspense, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppShell, type NavId } from './ui/screens/AppShell';
-import { DEMO_TODAY } from './ui/screens/demoData';
-import Heute from './ui/screens/Heute';
 import PwaBanner from './ui/screens/PwaBanner';
 import SettingsPanel from './ui/screens/SettingsPanel';
 import { EmptyState, Stack } from './ui/components';
@@ -18,6 +16,9 @@ const ReaderPage = lazy(() => import('./ui/screens/ReaderPage'));
 const SearchPage = lazy(() => import('./ui/screens/SearchPage'));
 const JobsPage = lazy(() => import('./ui/screens/JobsPage'));
 const PracticePage = lazy(() => import('./ui/screens/PracticePage'));
+const PlanSettings = lazy(() => import('./ui/screens/PlanSettings'));
+const TodayPage = lazy(() => import('./ui/screens/TodayPage'));
+const SessionPage = lazy(() => import('./ui/screens/SessionPage'));
 const TreePage = lazy(() => import('./ui/screens/TreePage'));
 
 function Placeholder({ route }: { route: RouteName }) {
@@ -36,6 +37,11 @@ function SettingsPage() {
     <Stack space="section" className="view">
       <h1>{t('settings.title')}</h1>
       <SettingsPanel hideTitle />
+      <Suspense fallback={null}>
+        <DbProvider>
+          <PlanSettings />
+        </DbProvider>
+      </Suspense>
       <Stack space="tight">
         <a className="btn btn--secondary" href="#data">
           {t('settings.dataLink')}
@@ -47,7 +53,6 @@ function SettingsPage() {
 }
 
 export default function App() {
-  const { t } = useTranslation();
   const route = useHashRoute();
 
   // Beim Seitenwechsel Fokus auf den Inhalt (Screenreader, Tastatur) und nach oben scrollen.
@@ -66,18 +71,13 @@ export default function App() {
       : route.name === 'settings' ||
           route.name === 'data' ||
           route.name === 'jobs' ||
-          route.name === 'practice'
+          route.name === 'practice' ||
+          route.name === 'session'
         ? null
         : route.name;
   const bleed = route.name === 'doc';
   return (
     <AppShell active={active} banner={<PwaBanner />} bleed={bleed}>
-      {route.name === 'today' && (
-        <Stack space="section">
-          <p className="t-note demo-note">{t('app.demoNote')}</p>
-          <Heute data={{ ...DEMO_TODAY, state: 'plan' }} />
-        </Stack>
-      )}
       {route.name === 'settings' && <SettingsPage />}
       <ErrorBoundary resetKey={route.name + (route.id ?? '')}>
         <Suspense fallback={null}>
@@ -100,6 +100,16 @@ export default function App() {
                 page={Number(route.params.get('page')) || 1}
                 query={route.params.get('q') ?? ''}
               />
+            </DbProvider>
+          )}
+          {route.name === 'today' && (
+            <DbProvider>
+              <TodayPage />
+            </DbProvider>
+          )}
+          {route.name === 'session' && (
+            <DbProvider>
+              <SessionPage />
             </DbProvider>
           )}
           {route.name === 'jobs' && (

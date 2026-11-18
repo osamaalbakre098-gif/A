@@ -68,7 +68,23 @@
     "emptyCta": "Material hinzufügen",
     "emptyAlt": "Eine Karte mit abgeschnittener Ecke. Ein Kreis führt hinein.",
     "go": "Starten",
-    "progress": "{done} von {total} erledigt"
+    "progress": "{done} von {total} erledigt",
+    "change": "Ändern",
+    "alternativesTitle": "Lieber etwas anderes",
+    "onlyX": "Heute nur: {name}",
+    "reset": "Wieder Madars Plan",
+    "close": "Schließen",
+    "noNewReviewLoad": "Heute gibt es nichts Neues: {reason}",
+    "prepNote": "Für {count, plural, one {# Fähigkeit gibt es} other {# Fähigkeiten gibt es}} noch keine Aufgaben. Unter „Aufträge“ lassen sie sich vorbereiten.",
+    "examOverload": "{status}",
+    "noPlanTitle": "Gerade ist nichts geplant",
+    "noPlanText": "{reason}",
+    "examNone": "",
+    "settingsTitle": "Lernzeit",
+    "dailyMinutes": "Lernzeit pro Tag (Minuten)",
+    "latestHour": "Späteste Uhrzeit (Stunde, 0–23)",
+    "blockMinutes": "Blockzeit bis zur Pause (Minuten)",
+    "settingsHint": "Madar plant damit. Du kannst es jederzeit ändern."
   },
   "data": {
     "title": "Deine Daten",
@@ -403,5 +419,47 @@
     "reachable": "Bis zur Prüfung ist alles erreichbar.",
     "tight": "Es wird knapp, ist aber machbar.",
     "overload": "Mit der Zeit bis zur Prüfung schaffst du nicht alles sicher. Madar priorisiert."
+  },
+  "session": {
+    "nothingTitle": "Heute ist nichts zu üben",
+    "nothingText": "Madar hat gerade nichts für eine Sitzung geplant. Das kann an der Uhrzeit oder an fehlenden Aufgaben liegen.",
+    "back": "Zurück zu Heute",
+    "doneTitle": "Sitzung beendet",
+    "doneText": "Schön, dass du dran warst. Madar plant den Rest.",
+    "pauseTitle": "Pause",
+    "pauseLeft": "Noch etwa {minutes} Min.",
+    "pause1": "Steh kurz auf.",
+    "pause2": "Trink etwas Wasser.",
+    "pause3": "Entspanne die Augen: schau ein paar Sekunden in die Ferne.",
+    "continue": "Weiter",
+    "endSuggest": "Vorschlag: für heute aufhören",
+    "breakSuggest": "Vorschlag: kurze Pause",
+    "takeBreak": "Pause ({minutes} Min.)",
+    "finish": "Fertig für heute",
+    "keepGoing": "Weitermachen",
+    "lesson": "Kurz erklärt",
+    "understood": "Weiter zu den Aufgaben",
+    "read": "Im Material lesen",
+    "readText": "Zu „{title}“ gibt es noch keine Aufgaben. Lies den Abschnitt im Material.",
+    "openMaterial": "Material öffnen",
+    "readDone": "Gelesen",
+    "closingTitle": "Abschluss",
+    "closingPrompt": "Schreib 3 Dinge auf, die du jetzt weißt",
+    "coreTitle": "Kernpunkte zum Vergleichen",
+    "notGraded": "Das wird nicht bewertet. Vergleiche selbst.",
+    "block": {
+      "warmup": "Aufwärmen",
+      "core": "Kern",
+      "practice": "Üben",
+      "closing": "Abschluss"
+    }
+  },
+  "exam": {
+    "title": "Prüfung",
+    "none": "Noch keine Prüfung eingetragen.",
+    "moveLabel": "Prüfung am {date} (Datum ändern)",
+    "dateLabel": "Datum der Prüfung",
+    "add": "Prüfung eintragen",
+    "note": "Madar plant rückwärts vom Prüfungstag. Verschiebst du den Termin, wird neu geplant – ohne Vorwurf. Einen Notenschlüssel gibt es nur, wenn du ihn selbst einträgst."
   }
 }

@@ -26,6 +26,8 @@ export interface TodayData {
   minutes: number;
   resume: { topic: string; done: number; total: number };
   review: { count: number; minutes: number };
+  /** Überschreibt „kurze Übung" in der Hauptzeile (z. B. die gewählte Methode) */
+  kindLabel?: string;
   tomorrow: {
     count: number;
     minutes: number;
@@ -40,8 +42,25 @@ function greetingKey(hour: number) {
   return 'heute.greetingEvening';
 }
 
+/** Zusätze für die echte Seite (Verweise, echte Begründungen, Ändern). In der Vorschau fehlen sie. */
+export interface TodayExtras {
+  goHref?: string;
+  reviewHref?: string;
+  resumeHref?: string;
+  treeHref?: string;
+  emptyHref?: string;
+  /** Übersetzte Begründungen für „Warum?" */
+  reasons?: string[];
+  onChange?: () => void;
+  examNote?: string;
+  /** Erklärung, warum heute nichts Neues kommt (übersetzt) */
+  noNewNote?: string;
+  /** Hinweis auf fehlende Aufgaben (übersetzt) */
+  prepNote?: string;
+}
+
 /** Startseite „Heute": eine große Hauptaktion, darunter ruhig drei kleine Bereiche. */
-export default function Heute({ data }: { data: TodayData }) {
+export default function Heute({ data, extras = {} }: { data: TodayData; extras?: TodayExtras }) {
   const { t } = useTranslation();
   const [whyOpen, setWhyOpen] = useState(false);
   const whyId = useId();
@@ -56,7 +75,13 @@ export default function Heute({ data }: { data: TodayData }) {
           <h2>{t('heute.emptyTitle')}</h2>
           <p>{t('heute.emptyText')}</p>
           <Cluster>
-            <Button>{t('heute.emptyCta')}</Button>
+            {extras.emptyHref ? (
+              <a className="btn" href={extras.emptyHref}>
+                {t('heute.emptyCta')}
+              </a>
+            ) : (
+              <Button>{t('heute.emptyCta')}</Button>
+            )}
           </Cluster>
         </Stack>
       </Stack>
@@ -75,7 +100,7 @@ export default function Heute({ data }: { data: TodayData }) {
               {t('heute.planLine', {
                 reviews: data.reviews,
                 topic: data.topic,
-                kind: t('heute.kindPractice'),
+                kind: data.kindLabel ?? t('heute.kindPractice'),
                 minutes: data.minutes,
               })}
             </p>
@@ -88,7 +113,13 @@ export default function Heute({ data }: { data: TodayData }) {
             />
             <p className="t-note">{t('heute.progress', data.progress)}</p>
           </Stack>
-          <Button className="heute__cta">{t('heute.go')}</Button>
+          {extras.goHref ? (
+            <a className="btn heute__cta" href={extras.goHref}>
+              {t('heute.go')}
+            </a>
+          ) : (
+            <Button className="heute__cta">{t('heute.go')}</Button>
+          )}
           <Cluster>
             <Button
               variant="secondary"
@@ -99,12 +130,26 @@ export default function Heute({ data }: { data: TodayData }) {
               <Icon as={CircleHelp} size={20} />
               {t('heute.why')}
             </Button>
+            {extras.onChange && (
+              <Button variant="secondary" onClick={extras.onChange}>
+                {t('heute.change')}
+              </Button>
+            )}
           </Cluster>
-          {whyOpen && (
-            <p id={whyId} className="why-text">
-              {t('heute.whyText')}
-            </p>
-          )}
+          {whyOpen &&
+            (extras.reasons ? (
+              <ul id={whyId} className="why-text">
+                {extras.reasons.map((r) => (
+                  <li key={r}>{r}</li>
+                ))}
+              </ul>
+            ) : (
+              <p id={whyId} className="why-text">
+                {t('heute.whyText')}
+              </p>
+            ))}
+          {extras.noNewNote && <p className="t-note">{extras.noNewNote}</p>}
+          {extras.prepNote && <p className="t-note">{extras.prepNote}</p>}
         </ContentCard>
       ) : (
         <Stack space="stack" className="heute__empty">
@@ -118,25 +163,41 @@ export default function Heute({ data }: { data: TodayData }) {
 
       {data.state === 'plan' && (
         <div className="heute__grid">
-          <ContentCard title={t('heute.resumeTitle')} accent="sage">
-            <Cluster>
-              <ProgressArc
-                done={data.resume.done}
-                total={data.resume.total}
-                label={data.resume.topic}
-              />
-              <p>{t('heute.resumeText', data.resume)}</p>
-            </Cluster>
-            <Cluster>
-              <Button variant="secondary">{t('heute.resumeCta')}</Button>
-            </Cluster>
-          </ContentCard>
-          <ContentCard title={t('heute.reviewTitle')} accent="amber">
-            <p>{t('heute.reviewText', data.review)}</p>
-            <Cluster>
-              <Button variant="secondary">{t('heute.reviewCta')}</Button>
-            </Cluster>
-          </ContentCard>
+          {data.resume.topic && (
+            <ContentCard title={t('heute.resumeTitle')} accent="sage">
+              <Cluster>
+                <ProgressArc
+                  done={data.resume.done}
+                  total={data.resume.total}
+                  label={data.resume.topic}
+                />
+                <p>{t('heute.resumeText', data.resume)}</p>
+              </Cluster>
+              <Cluster>
+                {extras.resumeHref ? (
+                  <a className="btn btn--secondary" href={extras.resumeHref}>
+                    {t('heute.resumeCta')}
+                  </a>
+                ) : (
+                  <Button variant="secondary">{t('heute.resumeCta')}</Button>
+                )}
+              </Cluster>
+            </ContentCard>
+          )}
+          {data.review.count > 0 && (
+            <ContentCard title={t('heute.reviewTitle')} accent="amber">
+              <p>{t('heute.reviewText', data.review)}</p>
+              <Cluster>
+                {extras.reviewHref ? (
+                  <a className="btn btn--secondary" href={extras.reviewHref}>
+                    {t('heute.reviewCta')}
+                  </a>
+                ) : (
+                  <Button variant="secondary">{t('heute.reviewCta')}</Button>
+                )}
+              </Cluster>
+            </ContentCard>
+          )}
         </div>
       )}
 
@@ -146,6 +207,7 @@ export default function Heute({ data }: { data: TodayData }) {
           <Stack space="tight">
             <p className="strong">{t('heute.examLine', data.tomorrow.exam)}</p>
             <p>{t('heute.examStatus', data.tomorrow.exam)}</p>
+            {extras.examNote && <p className="t-note">{extras.examNote}</p>}
           </Stack>
         )}
       </ContentCard>
@@ -162,7 +224,13 @@ export default function Heute({ data }: { data: TodayData }) {
             })}
             nodes={data.tree.nodes}
           />
-          <Button variant="quiet">{t('heute.treeCta')}</Button>
+          {extras.treeHref ? (
+            <a className="btn btn--quiet" href={extras.treeHref}>
+              {t('heute.treeCta')}
+            </a>
+          ) : (
+            <Button variant="quiet">{t('heute.treeCta')}</Button>
+          )}
         </Cluster>
       </ContentCard>
     </Stack>

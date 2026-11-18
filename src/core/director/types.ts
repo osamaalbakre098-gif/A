@@ -51,6 +51,8 @@ export interface SkillView {
   id: string;
   subjectId: string;
   title: string;
+  /** Lernreihenfolge im Material (Thema vor Fähigkeit); kleiner = früher */
+  order?: number;
   kind: SkillKind;
   state: SkillState;
   examRelevant: boolean;
