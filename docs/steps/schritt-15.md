@@ -1,3 +1,5 @@
+> **Änderung durch Schritt-5-Umbau: Abnahme ohne Proxy/Turnstile/Budget. Zusätzlich: KV-Bindung `MADAR_KV` und Secret `PAIRING_CODE` in Cloudflare einrichten (docs/KONNEKTOR_ANLEITUNG.md), echten Claude-Konnektor einmal testen.**
+
 ### SCHRITT 15 – Veröffentlichung und Betrieb
 
 **Ziel:** Madar ist unter einer eigenen Adresse erreichbar und kann sicher aktualisiert werden.

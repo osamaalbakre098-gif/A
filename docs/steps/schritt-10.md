@@ -1,3 +1,5 @@
+> **Änderung durch Schritt-5-Umbau: Hinweise kommen aus der vorbereiteten Hinweisleiter (1–4), nicht live. Offene Antworten: sofortige Selbstbewertung gegen Checkliste/Musterlösung, Bewertung durch Claude später im Stapel („bewerten").**
+
 ### SCHRITT 10 – Bewertung und Rückmeldung
 
 **Ziel:** Faire, genaue und hilfreiche Rückmeldung, die nie schmeichelt.

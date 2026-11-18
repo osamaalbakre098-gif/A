@@ -1,0 +1,32 @@
+{
+  "themen": [
+    {
+      "thema": "Vektoren",
+      "faehigkeiten": [
+        {
+          "titel": "Betrag und Richtung eines Vektors benennen",
+          "beschreibung": "Die zwei Eigenschaften eines Vektors nennen.",
+          "art": "fakt",
+          "stufe": "erinnern",
+          "pruefungsrelevant": true,
+          "quellen": ["A001"]
+        },
+        {
+          "titel": "Vektoren komponentenweise addieren",
+          "beschreibung": "Zwei Vektoren durch Addition der Komponenten zusammenfassen.",
+          "art": "verfahren",
+          "stufe": "anwenden",
+          "afb": 2,
+          "pruefungsrelevant": true,
+          "quellen": ["A002"]
+        }
+      ],
+      "voraussetzungen": [
+        {
+          "faehigkeit": 1,
+          "benoetigt": 0
+        }
+      ]
+    }
+  ]
+}

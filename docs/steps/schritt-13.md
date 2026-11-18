@@ -1,3 +1,5 @@
+> **Änderung durch Schritt-5-Umbau: Wo der Text „Proxy/Tageslimit/Budget" steht, entfällt es; stattdessen zeigt die Oberfläche offene Aufträge und die Verbindung (Seite „Aufträge").**
+
 ### SCHRITT 13 – Datenschutz und Vertrauen
 
 **Wie du es baust:**

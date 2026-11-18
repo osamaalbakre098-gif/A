@@ -41,6 +41,9 @@ export function AppShell({
       </a>
       <main id="main" tabIndex={-1} className={`shell__main${bleed ? ' shell__main--bleed' : ''}`}>
         <div className="shell__top">
+          <a className="btn btn--quiet" href="#jobs">
+            {t('nav.jobs')}
+          </a>
           <a
             className="iconbtn"
             href="#settings"

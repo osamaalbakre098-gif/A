@@ -1,3 +1,5 @@
+> **Änderung durch Schritt-5-Umbau: Formeln und Quelltext aus Seiten ohne Text kommen über den Auftrag „quelle_ergaenzen" (Claude liest die hochgeladene Datei). Echtzeit-KI fällt weg.**
+
 ### SCHRITT 7 – Karten und Aufgaben automatisch erzeugen
 
 **Ziel:** Zu jeder Fähigkeit entstehen automatisch gute Lernkarten und Aufgaben.

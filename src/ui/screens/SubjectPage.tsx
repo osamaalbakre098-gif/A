@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { importMaterial, type ImportDeps, type ImportPhase } from '../../content/import';
 import { systemNow } from '../../data/clock';
 import { DataError } from '../../data/db/errors';
+import { fileProgress, skillInfos } from '../../data/progress';
 import type { DocumentRow } from '../../data/db/schema';
 import {
   Button,
@@ -49,6 +50,8 @@ function DocRow({ d }: { d: DocumentRow }) {
         ? 'kindImage'
         : 'kindText';
   const date = new Intl.DateTimeFormat(i18n.language, { dateStyle: 'medium' }).format(d.importedAt);
+  const db = useDb();
+  const progress = useLiveQuery(() => fileProgress(db, d.id), [db, d.id]);
   return (
     <li>
       <a className="docrow" href={hrefTo('doc', d.id)}>
@@ -58,6 +61,19 @@ function DocRow({ d }: { d: DocumentRow }) {
             ' · ',
           )}
         </span>
+        {progress && (
+          <span className="t-note" data-testid="file-progress">
+            {progress.percent === null
+              ? progress.skills === 0
+                ? t('progress.noSkills')
+                : t('progress.few')
+              : t('progress.percent', {
+                  percent: progress.percent,
+                  sits: progress.sits,
+                  skills: progress.skills,
+                })}
+          </span>
+        )}
         {d.ocrStatus === 'pending' && <span className="chip">{t('material.statusOcr')}</span>}
         {!!d.textlessPages?.length && d.ocrStatus !== 'pending' && (
           <span className="chip">{t('material.textless', { count: d.textlessPages.length })}</span>
@@ -75,6 +91,12 @@ export default function SubjectPage({ id }: { id: string }) {
     () => db.documents.where('subjectId').equals(id).reverse().sortBy('importedAt'),
     [db, id],
   );
+  const skillRows = useLiveQuery(async () => {
+    const topics = await db.topics.where('subjectId').equals(id).toArray();
+    const ids = new Set(topics.map((x) => x.id));
+    const infos = await skillInfos(db);
+    return [...infos.values()].filter((i) => ids.has(i.skill.topicId) && !i.skill.hidden);
+  }, [db, id]);
   const [status, setStatus] = useState<Status[]>([]);
   const [paste, setPaste] = useState(false);
   const [title, setTitle] = useState('');
@@ -240,6 +262,31 @@ export default function SubjectPage({ id }: { id: string }) {
           <ul className="plain doclist">
             {docs?.map((d) => (
               <DocRow key={d.id} d={d} />
+            ))}
+          </ul>
+        )}
+      </Stack>
+
+      <Stack space="stack">
+        <h2>{t('skills.title')}</h2>
+        {skillRows && skillRows.length === 0 ? (
+          <p className="t-note">{t('skills.none')}</p>
+        ) : (
+          <ul className="plain doclist">
+            {skillRows?.map((r) => (
+              <li key={r.skill.id}>
+                <a className="docrow" href={hrefTo('practice', r.skill.id)}>
+                  <span className="docrow__name">{r.skill.title}</span>
+                  <span className="t-note">
+                    {[
+                      t(`skillstate.${r.state}`),
+                      r.items > 0
+                        ? t('skills.items', { count: r.items })
+                        : t('skills.itemsMissing'),
+                    ].join(' · ')}
+                  </span>
+                </a>
+              </li>
             ))}
           </ul>
         )}

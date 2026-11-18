@@ -234,6 +234,8 @@ input[type='range'] {
 
 .shell__top {
   display: flex;
+  align-items: center;
+  gap: var(--s-2);
   justify-content: flex-end;
   margin-block-end: var(--s-2);
 }
@@ -513,4 +515,32 @@ a.cardlink {
 .reflow mark {
   background: rgb(255 214 0 / 0.6);
   color: inherit;
+}
+
+.jobcard {
+  list-style: none;
+  padding: var(--s-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+.jobcard__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  justify-content: space-between;
+  align-items: baseline;
+}
+.jobcard__text {
+  inline-size: 100%;
+  min-block-size: 8rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+}
+.jobcard__result {
+  margin-block-start: var(--s-2);
+}
+.practice__prompt {
+  font-size: 1.125rem;
+  margin-block-end: var(--s-3);
 }

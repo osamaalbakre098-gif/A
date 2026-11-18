@@ -1,3 +1,5 @@
+> **Änderung durch Schritt-5-Umbau: KI-Aufgaben entstehen nicht mehr per Echtzeit-Aufruf, sondern über den Auftrag „vorbereiten" (Aufgaben, Hinweisleiter, Fehlvorstellungen vorab). Der Fallback (Regel 7) bleibt: ohne Aufträge laufen Karten und Regeln im Code.**
+
 ### SCHRITT 6 – Der automatische Könnensbaum ⭐
 
 **Ziel:** Aus den hochgeladenen Dateien entsteht **automatisch** ein **einfacher**, verständlicher Könnensbaum. Der Schüler muss nichts tun.

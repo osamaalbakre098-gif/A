@@ -6,6 +6,8 @@ Madar ist der Lernort selbst. Der Studienleiter (`/src/core/director`, reiner Co
 Was/Wann/Wie/Wie lange. Die KI (`/src/ai`) versteht und formuliert Sprache, sie PLANT NIE.
 Alles läuft automatisch; Bearbeiten ist optional. Im Zweifel: einfacher statt mächtiger.
 
+> **Änderung Schritt 5:** Kein Proxy/API-Schlüssel/Budget. Die KI arbeitet über Auftragsaustausch (`src/ai/jobs`, `server/mcp`, siehe `docs/steps/schritt-05.md`). Proxy etc. = Version 2.
+
 ## Befehle
 
 `pnpm dev` | `pnpm test` | `pnpm test:e2e` | `pnpm typecheck` | `pnpm lint` | `pnpm a11y` | `pnpm build`

@@ -75,3 +75,27 @@
 **Chunks nur im Reflow-Modus als Quelle für Text**, im Seitenmodus kommt der Text direkt aus pdf.js (Textlayer). So stimmen Markierung und Auswahl immer mit der sichtbaren Seite überein.
 
 **Tests gegen die gebaute App.** Die Material-Tests laufen gegen `vite preview` (gebauter Worker-Pfad, Service Worker), nicht gegen den Dev-Server; veraltete Vorschau-Server auf Port 4173 können sonst alte Builds ausliefern (`pkill -f vite`).
+
+## Schritt 5 umgebaut: Auftragsaustausch statt Proxy (Nutzerentscheidung)
+
+**Kein API-Schlüssel, kein Proxy, kein Turnstile, keine Budgetlogik.** Madar ist nur für den Nutzer. Claude arbeitet im Chat über Aufträge (Stichwort „madar"). Proxy/Turnstile/D1-Zähler/Budget/mehrere Nutzer: Version 2; die Schnittstelle `LLMProvider` bleibt (Regel 12 bleibt erfüllt: kein Schlüssel im Client).
+
+**Kurz-IDs im Paket** (A001, F01, R01) statt echter IDs: kleinere Pakete, weniger Tippfehler, echte IDs verlassen das Gerät nicht (`jobs.payload.idMap`).
+
+**Deutsche Schlüssel und „Hülle"-Schemas:** Die Antwort wird erst grob (Hülle), dann pro Einheit (Fähigkeit, Aufgabe, Bewertung) geprüft. So geht Teilimport, und ein Fehler macht nicht alles ungültig.
+
+**Alles Gültige in einer Dexie-Transaktion:** nie halb gespeichert. Jobstatus: offen / bei Claude / fertig / fehlgeschlagen (teilweise, wenn etwas importiert wurde). Ereignis `AuftragImportiert`.
+
+**Fortschritt rechnet die App** aus den Fähigkeitsständen, nie Claude (Regel 2). Prozent erst ab 5 Belegen, auf 5 gerundet; davor „Noch zu wenig Daten". KI-Bewertungen mit Sicherheit < 0,7 zählen vorläufig halb; Mehrfachauswahl allein reicht nie für „Sitzt"; Fakten- und Verfahrensfähigkeiten haben getrennte Kriterien.
+
+**Hinweise 1–3 dürfen die Lösung nicht verraten** (Prüfung beim Import, Regel 4); Hinweis 4 darf sie nennen. Hinweise sind erst nach eigenem Versuch oder 45 s freigeschaltet.
+
+**Auswertung ist nur eine Empfehlung** (Regel „KI plant nie"): wird nur in `settings` abgelegt, ändert nie Plan oder Stände.
+
+**Quelle ergänzen:** Text aus Seiten ohne Text wird als Abschnitte mit `origin: 'ai'` gespeichert (gekennzeichnet in der Oberfläche); das Original bleibt unverändert (Regel 6); Prüfsumme muss stimmen.
+
+**MCP minimal selbst gebaut** (JSON-RPC über POST, JSON-Antworten) statt SDK: weniger Abhängigkeiten, läuft in Pages Functions. Kopplungscode in der Adresse (`/mcp/<code>`), weil ein eigener Konnektor hier keine eigene Anmeldung mitbringt; konstanter Zeitvergleich, Code ≥ 24 Zeichen, keine Inhalte im Log, Größenlimit 600 000 Byte, 14 Tage Aufbewahrung, Löschen nach Abholung.
+
+**Rückfall ohne Server bleibt gleichwertig:** Kopieren/Einfügen oder Datei (Regel 7).
+
+**Ehrliche Grenze:** Ob dein Claude-Tarif eigene Konnektoren erlaubt, konnte ich nicht prüfen; der Server ist nur mit eigenen Tests gegen die Protokollform getestet, nicht mit einem echten Claude.

@@ -1,57 +1,29 @@
-### SCHRITT 5 – KI-Schicht (Proxy, Schemas, Schutzregeln)
+### SCHRITT 5 – KI-Schicht: Auftragsaustausch (ersetzt „Proxy, Schemas, Schutzregeln")
 
-**Ziel:** Eine sichere, günstige und austauschbare Anbindung an Sprachmodelle.
+> **Änderung durch den Nutzer (verbindlich, ersetzt den Prompt-Text zu Schritt 5):** Madar wird nur für den Nutzer selbst gebaut. Kein API-Schlüssel, kein Proxy, kein Turnstile, keine Budgetlogik. Claude arbeitet im Chat (Stichwort „madar") über einen **Auftragsaustausch**. Der Original-Wortlaut steht unverändert in `docs/MADAR_PROMPT.md`; bei dieser Änderung gilt diese Datei.
 
-**Wie du es baust:**
+**Ziel:** Die KI versteht und formuliert Sprache. Sie plant nie. Der Studienleiter (reiner Code) entscheidet.
 
-**5.1 Proxy-Server** in `/server/ai-proxy` (z. B. Hono auf Cloudflare Workers):
+**A. Auftragsformat (gebaut, `src/ai/jobs/`)**
 
-- Der API-Schlüssel liegt nur auf dem Server.
-- Zeitlimit pro Anfrage, Logs ohne Lerninhalte.
-- **Limit ohne Konto:** Beim ersten Start erzeugt die App eine zufällige, anonyme Geräte-ID. Der Proxy gibt dafür ein signiertes Token aus (Schutz vor Missbrauch zusätzlich mit Cloudflare Turnstile beim ersten Abruf). Tageslimit pro Token **und** pro IP. Die App zeigt das Limit verständlich: „Heute noch ca. 40 KI-Aufgaben verfügbar."
-- **Kostendeckel insgesamt:** ein Monatsbudget auf dem Server. Wird es erreicht, schaltet der Proxy auf „nur günstiges Modell" und dann auf „aus". Die App läuft dann im Fallback weiter (Schritt 6.6).
+- `AuftragsAustauschProvider` hinter `LLMProvider` (`src/ai/provider.ts`); `MockProvider` für Tests.
+- Paket: Anweisung, Regeln, Datenhinweis (Quelltext = Daten, nie Anweisung), JSON-Schema der Antwort, Textabschnitte mit kurzen IDs (A001 …), Prüfsumme des Dokuments, Version. Echte IDs bleiben auf dem Gerät (`idMap`).
+- Auftragstypen: `quelle_ergaenzen`, `baum`, `vorbereiten`, `bewerten`, `auswertung`.
+- Antworten werden mit Zod geprüft (Pflicht-Quellen, IDs müssen existieren, Hinweise 1–3 dürfen die Lösung nicht verraten), **teilweise importiert** (gültige Einheiten ja, ungültige mit deutscher Fehlermeldung), alles in **einer** Transaktion (nie halb gespeichert).
+- Pakete höchstens ca. 30 000 Token, größere werden automatisch geteilt.
+- Fortschritt je Datei berechnet die App aus den Fähigkeitsständen (`src/core/model/mastery.ts`, `src/data/progress.ts`), nie Claude; Prozent erst ab 5 Belegen, auf 5 gerundet.
+- Offene Antworten: sofortige Selbstbewertung gegen Checkliste/Musterlösung; optional zur Bewertung vormerken (`gradingState: 'queued'`); Hinweise kommen aus der vorbereiteten Hinweisleiter.
+- „Auswertung": nur eine Empfehlung; ändert nie den Plan.
+- Oberfläche „Aufträge" (`#jobs`): Auftrag kopieren/herunterladen, Antwort einfügen oder als Datei, Rückfall ohne Server.
+- Anleitung für Claude: `docs/CLAUDE_ARBEITER_ANWEISUNG.md`. Beispiele: `docs/beispiele/`.
 
-**5.2 Anbieterneutrale Schnittstelle:**
+**B. MCP-Server auf Cloudflare (gebaut, `server/mcp/`, `functions/`)**
 
-```ts
-interface LLMProvider {
-  generate<T>(args: {
-    task: TaskName;
-    schema: ZodSchema<T>;
-    system: string;
-    input: unknown;
-  }): Promise<Result<T>>;
-}
-```
+- Werkzeuge: `offene_auftraege`, `auftrag_holen`, `ergebnis_abliefern`, `lernbericht_holen`, `auswertung_ablegen`. Zugriff nur mit geheimem Kopplungscode.
+- Server speichert nur Pakete und Ergebnisse (Cloudflare KV), nie Dateien oder die Datenbank; nach Abholung gelöscht (spätestens 14 Tage).
+- Die App lädt Aufträge hoch und holt Ergebnisse ab (gleiche Prüfung wie beim Einfügen).
+- Anleitung: `docs/KONNEKTOR_ANLEITUNG.md`.
 
-Die erste Implementierung ist die Claude-API. OpenAI soll später austauschbar sein. Modellnamen stehen **nur** in der Konfiguration: ein günstiges Modell für Prüfung und einfache Hinweise, ein stärkeres für Erzeugung und Bewertung.
+**C. Auf Version 2 verschoben:** Proxy, Turnstile, D1-Zähler, Budgetlogik, mehrere Nutzer. Die Schnittstelle `LLMProvider` bleibt, damit eine direkte API-Anbindung später ohne Umbau möglich ist.
 
-**5.3 Strukturierte Ausgaben.**
-
-- Alle Ausgaben, die das Programm weiterverarbeitet, sind JSON nach einem Schema. Nutze die strukturierten Ausgaben der Claude-API (JSON-Schema aus Zod erzeugt, `additionalProperties: false`).
-- Längen- und Zahlengrenzen prüfst du **zusätzlich lokal mit Zod**.
-- Vor dem Parsen den `stop_reason` prüfen.
-- Bei ungültiger Ausgabe einmal neu versuchen, danach einen **sicheren Fallback** verwenden, nie raten.
-- Halte die Schemas stabil, weil die API kompilierte Schemas zwischenspeichert.
-
-**5.4 Prompt-Caching:** Stabile Teile (Systemprompt, Rubrik, Quellabschnitte) als Cache-Präfix markieren, um Kosten zu sparen.
-
-**5.5 Schutzregeln.**
-
-- Inhalte aus PDFs sind **Daten, keine Anweisungen**. Markiere sie im Prompt deutlich als Quelltext, damit Prompt-Injection wirkungslos bleibt.
-- Keine persönlichen Daten im Prompt (kein Name, kein Alter, keine Schule), nur Antworttext und Lernstand-Codes.
-- Ergebnisse werden lokal gespeichert und nie doppelt erzeugt. Jedes erzeugte Element speichert `generatorVersion` (Prompt-Version + Modell), damit spätere Änderungen nachvollziehbar sind.
-- **KI-Ausgaben sind nicht vertrauenswürdig:** Sie werden nie als HTML eingefügt. Markdown wird mit einer festen Liste erlaubter Elemente gerendert und durch DOMPurify geprüft.
-- Fällt die KI aus, laufen geschlossene Aufgaben weiter. Offene Antworten werden dann zur Selbstbewertung mit Rubrik angeboten.
-
-**5.6 Kosten schätzen und Qualität messen.**
-
-- Schreibe `docs/KOSTEN.md` mit einer Schätzung: Tokens pro Seite für Baum, pro Fähigkeit für Inhalte, pro Bewertung. Rechne ein Beispiel durch (ein 100-Seiten-Skript, 4 Wochen Nutzung).
-- Tests mit echten KI-Aufrufen (Golden-Tests) laufen **nicht** bei jedem Commit, sondern manuell oder nächtlich mit festem Budget (`pnpm eval`). Normale Tests nutzen den Mock-Provider.
-
-**Abnahme:**
-
-- Ein Schema-Fuzz-Test (zufällige, kaputte KI-Antworten) bringt die App nie zum Absturz.
-- Der Mock-Provider ermöglicht alle Tests ohne Internet.
-
----
+**Abnahme:** Auftragsformat mit Beispielantworten getestet (Tests `tests/unit/auftraege.test.ts`, `tests/unit/mcp.test.ts`); Datenverlust ausgeschlossen (Zeilenzahlen aller Tabellen vor/nach gleich, außer Neues); Prompt-Injection im Quelltext ändert nichts; Rückfall ohne Server geht.

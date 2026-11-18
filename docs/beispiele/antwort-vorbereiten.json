@@ -1,0 +1,123 @@
+{
+  "faehigkeit": "F01",
+  "erklaerung": {
+    "text": "Ein Vektor ist ein Pfeil mit Betrag und Richtung. Vektoren addiert man, indem man ihre Komponenten einzeln addiert.",
+    "quellen": ["A001"]
+  },
+  "alternativErklaerung": {
+    "text": "Stell dir zwei Schritte nacheinander vor: Der zweite Pfeil beginnt dort, wo der erste endet. Das Ergebnis führt vom Start zum Ziel.",
+    "quellen": ["A001"]
+  },
+  "beispiel": {
+    "aufgabe": "Addiere (1,2) und (3,4).",
+    "schritte": ["Erste Komponenten: 1+3=4", "Zweite Komponenten: 2+4=6"],
+    "ergebnis": "(4,6)",
+    "quellen": ["A001"]
+  },
+  "aufgaben": [
+    {
+      "typ": "karte",
+      "frage": "Was hat ein Vektor?",
+      "antwort": "Betrag und Richtung",
+      "stufe": "erinnern",
+      "schwierigkeit": 0.1,
+      "quellen": ["A001"]
+    },
+    {
+      "typ": "mc",
+      "frage": "Wie addiert man zwei Vektoren?",
+      "optionen": [
+        {
+          "text": "Komponentenweise",
+          "richtig": true,
+          "begruendung": "Gleiche Komponenten werden addiert."
+        },
+        {
+          "text": "Nur die Beträge addieren",
+          "richtig": false,
+          "begruendung": "Die Richtung geht dabei verloren."
+        },
+        {
+          "text": "Die Komponenten multiplizieren",
+          "richtig": false,
+          "begruendung": "Das ist keine Addition."
+        }
+      ],
+      "hinweise": [
+        "Was ist gegeben, was gesucht?",
+        "Welche Rechenregel passt zu Vektoren?",
+        "Rechne zuerst nur die erste Komponente aus.",
+        "Ähnliches Beispiel: (2,1)+(1,1) rechnet man komponentenweise."
+      ],
+      "stufe": "verstehen",
+      "schwierigkeit": 0.3,
+      "quellen": ["A001"]
+    },
+    {
+      "typ": "kurz",
+      "frage": "Wie heißt die Länge eines Vektors?",
+      "antwort": "Betrag",
+      "hinweise": [
+        "Es ist ein Fachwort.",
+        "Es beginnt mit B.",
+        "Es sagt, wie lang der Pfeil ist.",
+        "Ähnlich: Bei einer Strecke nennt man das die Länge."
+      ],
+      "stufe": "erinnern",
+      "schwierigkeit": 0.2,
+      "quellen": ["A001"]
+    },
+    {
+      "typ": "rechnung",
+      "frage": "Addiere (12,5) und (30,7). Wie lautet die erste Komponente?",
+      "antwort": {
+        "wert": 42,
+        "toleranzProzent": 0
+      },
+      "rechenweg": ["12+30=42"],
+      "hinweise": [
+        "Was ist gegeben, was gesucht?",
+        "Welche Rechenregel passt zu Vektoren?",
+        "Rechne zuerst nur die erste Komponente aus.",
+        "Ähnliches Beispiel: (2,1)+(1,1) rechnet man komponentenweise."
+      ],
+      "stufe": "anwenden",
+      "schwierigkeit": 0.4,
+      "quellen": ["A001"]
+    },
+    {
+      "typ": "offen",
+      "frage": "Erkläre, wie man zwei Vektoren addiert, und warum die Richtung wichtig ist.",
+      "musterloesung": "Man addiert die Komponenten einzeln. Die Richtung ist wichtig, weil Pfeile in verschiedene Richtungen sich teilweise aufheben.",
+      "kernpunkte": ["Komponentenweise addieren", "Richtung beachten"],
+      "raster": [
+        {
+          "id": "r1",
+          "kriterium": "Komponentenweise genannt",
+          "punkte": 2
+        },
+        {
+          "id": "r2",
+          "kriterium": "Richtung begründet",
+          "punkte": 2
+        }
+      ],
+      "hinweise": [
+        "Was ist gegeben, was gesucht?",
+        "Welche Rechenregel passt zu Vektoren?",
+        "Rechne zuerst nur die erste Komponente aus.",
+        "Ähnliches Beispiel: (2,1)+(1,1) rechnet man komponentenweise."
+      ],
+      "stufe": "verstehen",
+      "schwierigkeit": 0.6,
+      "quellen": ["A001"]
+    }
+  ],
+  "fehlvorstellungen": [
+    {
+      "muster": "x-Komponente mit y-Komponente addiert",
+      "diagnosefrage": "Welche Komponenten addierst du?",
+      "erklaerung": "Nur gleiche Komponenten werden addiert."
+    }
+  ]
+}
