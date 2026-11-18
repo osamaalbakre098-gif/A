@@ -56,7 +56,7 @@ function DocRow({ d }: { d: DocumentRow }) {
   const progress = useLiveQuery(() => fileProgress(db, d.id), [db, d.id]);
   return (
     <li>
-      <a className="docrow" href={hrefTo('doc', d.id)}>
+      <a className="docrow docrow--file" href={hrefTo('doc', d.id)}>
         <span className="docrow__name">{d.name}</span>
         <span className="t-note">
           {[t(`material.${kind}`), t('material.pages', { count: d.pageCount ?? 1 }), date].join(

@@ -43,7 +43,7 @@ async function idbAll<T = Record<string, unknown>>(page: Page, store: string): P
 }
 
 async function openFirstDoc(page: Page) {
-  await page.locator('.docrow').first().click();
+  await page.locator('.docrow--file').first().click();
   await expect(page.locator('.pdfpage').first()).toBeVisible();
 }
 
@@ -63,7 +63,7 @@ test('PDF importieren, Struktur erkennen, Original unverändert, doppelt verhind
   await createSubject(page, 'Physik');
   await fileInput(page).setInputFiles(path);
   await expect(page.getByText(/„skript.pdf" ist bereit/)).toBeVisible({ timeout: 30_000 });
-  await expect(page.locator('.docrow')).toHaveCount(1);
+  await expect(page.locator('.docrow--file')).toHaveCount(1);
 
   const [doc] = await idbAll<{
     sha256: string;
@@ -119,7 +119,7 @@ test('PDF importieren, Struktur erkennen, Original unverändert, doppelt verhind
   // dieselbe Datei im selben Fach: nur einmal
   await fileInput(page).setInputFiles(path);
   await expect(page.getByText(/„skript.pdf" ist in diesem Fach schon vorhanden/)).toBeVisible();
-  await expect(page.locator('.docrow')).toHaveCount(1);
+  await expect(page.locator('.docrow--file')).toHaveCount(1);
 });
 
 test('PDF lesen: Seiten, Zoom bis 400 %, Suche mit Markierung, Umfließen, Markieren', async ({
@@ -235,7 +235,7 @@ test('Text einfügen und Foto: gespeichert, lesbar, ehrlicher Hinweis zur Texter
     );
   await page.getByRole('button', { name: 'Speichern' }).click();
   await expect(page.getByText(/„Zelle" ist bereit: 2 Abschnitte/)).toBeVisible();
-  await page.locator('.docrow', { hasText: 'Zelle' }).click();
+  await page.locator('.docrow--file', { hasText: 'Zelle' }).click();
   await expect(page.locator('.reflow')).toContainText('Der Zellkern enthält die Erbinformation.');
 
   await page.goBack();
@@ -247,7 +247,7 @@ test('Text einfügen und Foto: gespeichert, lesbar, ehrlicher Hinweis zur Texter
   await fileInput(page).setInputFiles(tempFile('heft.png', png));
   await expect(page.getByText(/Foto „heft.png" ist gespeichert\. Die Texterkennung/)).toBeVisible();
   await expect(page.locator('.chip', { hasText: 'Texterkennung folgt' })).toBeVisible();
-  await page.locator('.docrow', { hasText: 'heft.png' }).click();
+  await page.locator('.docrow--file', { hasText: 'heft.png' }).click();
   await expect(page.locator('img.reader__image')).toBeVisible();
   await expect(page.getByText('Foto: Die Texterkennung folgt später.')).toBeVisible();
 });
@@ -280,7 +280,7 @@ test('300 Seiten: öffnet zügig, rendert nur sichtbare Seiten, springt direkt z
   expect(doc!.outline).toHaveLength(30); // je 10 Seiten eine Überschrift
 
   const t1 = Date.now();
-  await page.locator('.docrow').first().click();
+  await page.locator('.docrow--file').first().click();
   await expect.poll(() => renderedCanvases(page), { timeout: 15_000 }).toBeGreaterThan(0);
   const firstMs = Date.now() - t1;
   console.log(`Erste Seite sichtbar nach ${firstMs} ms`);
@@ -367,9 +367,9 @@ for (const [theme, lang] of [
     await page.locator('dialog button[type=submit]').click();
     await page.locator('a.cardlink').first().click();
     await fileInput(page).setInputFiles(tempFile('skript.pdf', physicsPdf()));
-    await expect(page.locator('.docrow')).toHaveCount(1, { timeout: 30_000 });
+    await expect(page.locator('.docrow--file')).toHaveCount(1, { timeout: 30_000 });
     await scan('Fach');
-    await page.locator('.docrow').first().click();
+    await page.locator('.docrow--file').first().click();
     await expect.poll(() => renderedCanvases(page)).toBeGreaterThan(0);
     await page.getByRole('button', { name: /Im Dokument suchen|بحث في المستند/ }).click();
     await scan('Leser');
@@ -396,9 +396,9 @@ test('Fächer, Material und Leser bei 320 px und 200 % Text ohne waagerechtes Sc
   await createSubject(page, 'Physik');
   expect(await noOverflow()).toBe(true);
   await fileInput(page).setInputFiles(tempFile('skript.pdf', physicsPdf()));
-  await expect(page.locator('.docrow')).toHaveCount(1, { timeout: 30_000 });
+  await expect(page.locator('.docrow--file')).toHaveCount(1, { timeout: 30_000 });
   expect(await noOverflow()).toBe(true);
-  await page.locator('.docrow').first().click();
+  await page.locator('.docrow--file').first().click();
   await expect.poll(() => renderedCanvases(page)).toBeGreaterThan(0);
   expect(await noOverflow()).toBe(true);
   await page.goto('/#search');
