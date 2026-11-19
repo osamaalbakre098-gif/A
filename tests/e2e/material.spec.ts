@@ -335,20 +335,15 @@ test('300 Seiten: öffnet zügig, rendert nur sichtbare Seiten, springt direkt z
   await expect(page.getByText(/^1 von 1$/)).toBeVisible({ timeout: 60_000 });
 });
 
-for (const [theme, lang] of [
-  ['light', 'de'],
-  ['dark', 'de'],
-  ['contrast', 'de'],
-  ['light', 'ar'],
-] as const) {
-  test(`axe: Fächer, Material, Leser, Suche (${theme}/${lang})`, async ({ page }) => {
+for (const theme of ['light', 'dark', 'contrast'] as const) {
+  test(`axe: Fächer, Material, Leser, Suche (${theme})`, async ({ page }) => {
     await page.addInitScript(
-      ([t, l]) =>
+      ([t]) =>
         localStorage.setItem(
           'madar.settings.v1',
-          JSON.stringify({ language: l, theme: t, textScale: 100, reducedMotion: true }),
+          JSON.stringify({ theme: t, textScale: 100, reducedMotion: true }),
         ),
-      [theme, lang],
+      [theme],
     );
     const scan = async (label: string) => {
       const res = await new AxeBuilder({ page })
@@ -361,7 +356,7 @@ for (const [theme, lang] of [
     await page.goto('/#subjects');
     await page
       .getByRole('button')
-      .filter({ hasText: /Fach anlegen|إضافة مادة/ })
+      .filter({ hasText: /Fach anlegen/ })
       .first()
       .click();
     await page.locator('dialog input').fill('Physik');
@@ -372,9 +367,9 @@ for (const [theme, lang] of [
     await scan('Fach');
     await page.locator('a.listrow[href^="#doc/"]').first().click();
     await expect.poll(() => renderedCanvases(page)).toBeGreaterThan(0);
-    await page.getByRole('button', { name: /Im Dokument suchen|بحث في المستند/ }).click();
+    await page.getByRole('button', { name: 'Im Dokument suchen' }).click();
     await scan('Leser');
-    await page.getByRole('radio', { name: /^(Umfließen|إعادة التدفق)$/ }).check({ force: true });
+    await page.getByRole('radio', { name: 'Umfließen' }).check({ force: true });
     await scan('Umfließen');
     await page.goto('/#search');
     await page.getByRole('searchbox').fill('Vektor');
@@ -389,7 +384,7 @@ test('Fächer, Material und Leser bei 320 px und 200 % Text ohne waagerechtes Sc
   await page.addInitScript(() =>
     localStorage.setItem(
       'madar.settings.v1',
-      JSON.stringify({ language: 'de', theme: 'light', textScale: 200, reducedMotion: false }),
+      JSON.stringify({ theme: 'light', textScale: 200, reducedMotion: false }),
     ),
   );
   await page.setViewportSize({ width: 320, height: 640 });

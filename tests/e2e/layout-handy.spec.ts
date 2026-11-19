@@ -18,7 +18,7 @@ for (const size of SIZES) {
       await page.addInitScript(() => {
         localStorage.setItem(
           'madar.settings.v1',
-          JSON.stringify({ language: 'de', theme: 'light', textScale: 150, reducedMotion: true }),
+          JSON.stringify({ theme: 'light', textScale: 150, reducedMotion: true }),
         );
       });
     });

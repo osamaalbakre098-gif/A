@@ -153,3 +153,16 @@
 **Ziffern (vom Nutzer entschieden):** Immer lateinisch (1234567890), auch auf Arabisch. Keine arabisch-indischen Ziffern, auch nicht als Einstellung. Alle `Intl`-Formate nutzen `intlLocale`; `src/i18n/digits.test.ts` verhindert Rückfall.
 
 **Prüfungsdatum:** drei Zahlenfelder (Tag, Monat, Jahr) statt nativer Datumsauswahl (UI_VORGABE 6.14), mit Prüfung auf echte Daten (Schaltjahre) und verständlicher Meldung.
+
+## 2026-11-19 – Madar nur noch auf Deutsch
+
+**Entscheidung (vom Nutzer):** Madar wird nur noch auf Deutsch gebaut. Englisch und Arabisch entfallen, ebenso die Sprachumschaltung.
+
+**Umgesetzt (kleine Bereinigung, keine neuen Funktionen, kein Eingriff in Datenmodell oder Studienleiter):**
+
+- `src/i18n/en.json` und `ar.json` gelöscht; `src/i18n/index.ts` kennt nur noch `de` (`LANGUAGE`, `LOCALE`).
+- Einstellungen: Sprachwahl entfernt; das Feld `language` gibt es nicht mehr. Alte gespeicherte Werte werden beim Lesen ignoriert (Test), nichts wird gelöscht.
+- Arabisch/RTL-Teile entfernt: Spiegelung von Icons (`mirror`, `.flip-rtl`), RTL-Regel der Fortschrittsleiste, arabische Schriftregel und Schriftstapel, Schriftpaket `@fontsource/ibm-plex-sans-arabic`, `dir`-Umschaltung in Einstellungen und Galerie.
+- Tests: alle en/ar-Fälle gelöscht (nicht übersprungen). Unit: Schlüssel-Gleichheitstests für en/ar entfallen, Test „nur Deutsch" neu. E2E: Sprachwechsel-Test, Arabisch-RTL-Test und alle ar-/en-Läufe in axe, Überlauf, Texthygiene entfernt.
+- Bleibt: nur logische CSS-Eigenschaften (Stilregel), `bdi`/`dir="auto"` für Dateinamen (gilt für beliebige Namen), Ziffern immer lateinisch (`LOCALE = 'de'`).
+- Dokumente: `CLAUDE.md` Regel 9 angepasst; `UI_VORGABE.md` und `UI_DETAILS.md` tragen oben einen Hinweis, dass ihre Angaben zu en/ar/RTL entfallen. Frühere Einträge (z. B. Ziffern auf Arabisch, `intlLocale`) sind damit überholt, ihr Kern (lateinische Ziffern) bleibt.

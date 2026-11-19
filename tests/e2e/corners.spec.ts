@@ -4,11 +4,11 @@ import { PNG } from 'pngjs';
 
 test.use({ baseURL: 'http://localhost:5173' });
 
-async function open(page: Page, theme: string, lang: string) {
+async function open(page: Page, theme: string) {
   await page.goto('/dev/heute');
   await page.getByText('Ansicht einstellen').click();
   await page.locator('#settings-title').waitFor();
-  await setView(page, lang, theme);
+  await setView(page, theme);
   await page
     .getByText(/Ansicht einstellen|عرض/)
     .first()
@@ -32,15 +32,10 @@ function darkestNear(png: PNG, x: number, y: number, r = 2): number {
   return min;
 }
 
-for (const [theme, lang] of [
-  ['contrast', 'de'],
-  ['contrast', 'ar'],
-] as const) {
-  test(`Hoher Kontrast (${lang}): Rahmen an allen vier Ecken jeder Karte geschlossen`, async ({
-    page,
-  }) => {
+for (const theme of ['contrast'] as const) {
+  test(`Hoher Kontrast: Rahmen an allen vier Ecken jeder Karte geschlossen`, async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await open(page, theme, lang);
+    await open(page, theme);
     const count = await page.locator('.card').count();
     expect(count).toBeGreaterThan(1);
     for (let n = 0; n < count; n++) {
@@ -96,7 +91,7 @@ for (const [theme, lang] of [
 
 for (const theme of ['light', 'dark']) {
   test(`${theme}: keine Schnittecke, vier gleiche Rundungen`, async ({ page }) => {
-    await open(page, theme, 'de');
+    await open(page, theme);
     const bad = await page.evaluate(
       () =>
         [...document.querySelectorAll('.card')].filter((el) => {

@@ -9,11 +9,11 @@ import { addExam } from '../../data/director-data';
 import { newId } from '../../data/ids';
 import { Button, DateFields, ListGroup, ListRow, Sheet, Stack, useToast } from '../components';
 import { useDb } from '../DbProvider';
-import { intlLocale } from '../../i18n';
+import { LOCALE } from '../../i18n';
 
 /** Zeile für die Fachseite: „Prüfung eintragen" oder „Prüfung am 12.12. (in 24 Tagen)". Öffnet das Sheet. */
 export function ExamRow({ subjectId, onOpen }: { subjectId: string; onOpen: () => void }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const db = useDb();
   const next = useLiveQuery(async () => {
     const today = learningDayKey(new Date(systemNow()));
@@ -23,7 +23,7 @@ export function ExamRow({ subjectId, onOpen }: { subjectId: string; onOpen: () =
   }, [db, subjectId]);
   const today = learningDayKey(new Date(systemNow()));
   const date = next
-    ? new Intl.DateTimeFormat(intlLocale(i18n.language), {
+    ? new Intl.DateTimeFormat(LOCALE, {
         day: 'numeric',
         month: 'numeric',
       }).format(new Date(`${next.date}T12:00:00`))
@@ -47,7 +47,7 @@ export function ExamSheet({
   open: boolean;
   onClose: () => void;
 }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const db = useDb();
   const toast = useToast();
   const exams = useLiveQuery(
@@ -61,7 +61,7 @@ export function ExamSheet({
   const [editing, setEditing] = useState<string | null>(null);
   const [round, setRound] = useState(0);
   const fmt = (d: string) =>
-    new Intl.DateTimeFormat(intlLocale(i18n.language), {
+    new Intl.DateTimeFormat(LOCALE, {
       dateStyle: 'full',
     }).format(new Date(`${d}T12:00:00`));
   const pick = (id: string | null, value: string) => {

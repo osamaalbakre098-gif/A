@@ -8,13 +8,13 @@ import { join } from 'node:path';
 
 test.use({ baseURL: 'http://localhost:5173' });
 
-async function open(page: Page, opts: { ios?: boolean; theme?: string; lang?: string } = {}) {
+async function open(page: Page, opts: { ios?: boolean; theme?: string } = {}) {
   await page.goto('/dev/daten');
   await page.getByRole('heading', { name: /Deine Daten|Your data|بياناتك/, level: 1 }).waitFor();
   if (opts.ios) await page.getByLabel(/iPhone im Safari-Tab/).check();
-  if (opts.theme || opts.lang) {
+  if (opts.theme) {
     await page.getByText('Ansicht einstellen').click();
-    await setView(page, opts.lang ?? 'de', opts.theme ?? 'light');
+    await setView(page, opts.theme);
   }
 }
 
@@ -45,14 +45,9 @@ const subjectNames = (page: Page) =>
     return (await (await getDb()).subjects.toArray()).map((s) => s.name);
   });
 
-for (const [theme, lang] of [
-  ['light', 'de'],
-  ['dark', 'de'],
-  ['contrast', 'de'],
-  ['light', 'ar'],
-] as const) {
-  test(`axe Deine Daten (mit iPhone-Hinweis): ${theme}/${lang}`, async ({ page }) => {
-    await open(page, { ios: true, theme, lang });
+for (const theme of ['light', 'dark', 'contrast'] as const) {
+  test(`axe Deine Daten (mit iPhone-Hinweis): ${theme}`, async ({ page }) => {
+    await open(page, { ios: true, theme });
     const res = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
       .analyze();

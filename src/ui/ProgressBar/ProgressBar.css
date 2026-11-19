@@ -16,9 +16,6 @@
     transform: scaleX(var(--p));
     animation: pbar-in var(--t-slow) var(--ease) both;
   }
-  [dir='rtl'] .pbar__fill {
-    transform-origin: right center;
-  }
   [data-theme='contrast'] .pbar {
     border: 2px solid var(--border);
     background: var(--surface);

@@ -23,7 +23,7 @@ export interface DateFieldsLabels {
 
 /**
  * Datum mit drei Zahlenfeldern (Tag, Monat, Jahr) statt nativer Auswahl (UI_VORGABE 6.14).
- * Immer lateinische Ziffern, auch auf Arabisch. Meldet `''`, solange das Datum nicht stimmt.
+ * Immer lateinische Ziffern. Meldet `''`, solange das Datum nicht stimmt.
  */
 export function DateFields({
   labels,
@@ -53,7 +53,7 @@ export function DateFields({
   return (
     <fieldset className="datefields" aria-describedby={invalid ? `${id}-err` : undefined}>
       <legend className="datefields__legend">{labels.legend}</legend>
-      <div className="datefields__row" dir="ltr">
+      <div className="datefields__row">
         {(
           [
             ['day', labels.day, day, 2, (v: string) => set(digits(v, 2), month, year)],

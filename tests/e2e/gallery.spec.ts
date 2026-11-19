@@ -5,11 +5,10 @@ import { expect, test } from '@playwright/test';
 test.use({ baseURL: 'http://localhost:5173' });
 
 for (const theme of ['light', 'dark', 'contrast']) {
-  for (const dir of ['ltr', 'rtl']) {
-    test(`axe: Galerie ${theme}/${dir}`, async ({ page }) => {
+  {
+    test(`axe: Galerie ${theme}`, async ({ page }) => {
       await page.goto('/dev/components');
       await page.getByRole('button', { name: theme, exact: true }).click();
-      if (dir === 'rtl') await page.getByRole('button', { name: 'ltr', exact: true }).click();
       const res = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
         .analyze();

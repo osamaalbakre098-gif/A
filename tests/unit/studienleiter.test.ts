@@ -75,23 +75,21 @@ describe('Begründungstexte', () => {
       reason: Record<string, string>;
       method: Record<string, string>;
     };
-  it('jeder Begründungscode hat einen Text in Deutsch, Englisch und Arabisch', () => {
-    for (const l of ['de', 'en', 'ar'])
-      for (const c of REASON_CODES) expect(read(l).reason[c], `${l}/${c}`).toBeTruthy();
+  it('jeder Begründungscode hat einen deutschen Text', () => {
+    for (const c of REASON_CODES) expect(read('de').reason[c], c).toBeTruthy();
   });
   it('jede Methode hat einen Text', () => {
-    for (const l of ['de', 'en', 'ar'])
-      for (const m of [
-        'worked_example',
-        'fading',
-        'tasks_only',
-        'retrieval',
-        'why_question',
-        'pretest',
-        'interleaved',
-        'read',
-      ])
-        expect(read(l).method[m]).toBeTruthy();
+    for (const m of [
+      'worked_example',
+      'fading',
+      'tasks_only',
+      'retrieval',
+      'why_question',
+      'pretest',
+      'interleaved',
+      'read',
+    ])
+      expect(read('de').method[m]).toBeTruthy();
   });
 });
 

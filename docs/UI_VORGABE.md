@@ -1,5 +1,7 @@
 # MADAR – Gesamtvorgabe für Oberfläche und UI-Code (für Claude Code)
 
+> **Gilt nicht mehr (Entscheidung 2026-11-19, siehe `ENTSCHEIDUNGEN.md`):** Madar gibt es nur noch auf Deutsch. Alle Angaben dieser Vorgabe zu Englisch, Arabisch, RTL, Spiegelung von Icons, arabischen Schriftregeln, Sprachumschaltung und Prüfungen in en/ar entfallen. Alles Übrige gilt unverändert.
+
 Version 1.0 · Sprache: Deutsch · Zweck: Diese Datei ersetzt alle bisherigen losen Layout-Hinweise. Sie beschreibt, wie JEDER Bildschirm von Madar aussieht, sich verhält und im Code aufgebaut ist.
 
 Ablage im Repo: `docs/UI_VORGABE.md`. Lies sie vollständig, bevor du etwas änderst. Bei Konflikt gilt: Sicherheit und Barrierefreiheit (Abschnitt 8) vor Optik; Optik (Abschnitte 2 bis 6) vor Bequemlichkeit im Code.

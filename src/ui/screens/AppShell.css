@@ -24,7 +24,7 @@
     display: none;
   }
   @media (min-width: 768px) {
-    /* Seitenleiste links (in RTL rechts): row-reverse, weil die Navigation im Quelltext zuletzt kommt */
+    /* Seitenleiste links: row-reverse, weil die Navigation im Quelltext zuletzt kommt */
     .shell {
       flex-direction: row-reverse;
     }

@@ -38,13 +38,11 @@ export function Button({
 export function IconButton({
   label,
   icon,
-  mirror,
   variant = 'tonal',
   ...rest
 }: Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'aria-label'> & {
   label: string;
   icon: LucideIcon;
-  mirror?: boolean;
   variant?: 'tonal' | 'primary' | 'quiet';
 }) {
   return (
@@ -55,7 +53,7 @@ export function IconButton({
       title={label}
       className={`iconbtn${variant === 'tonal' ? '' : ` iconbtn--${variant}`}`}
     >
-      <Icon as={icon} mirror={mirror} />
+      <Icon as={icon} />
     </button>
   );
 }

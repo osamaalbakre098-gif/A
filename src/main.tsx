@@ -3,8 +3,6 @@ import './styles';
 import { StrictMode, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/inter';
-import '@fontsource/ibm-plex-sans-arabic/400.css';
-import '@fontsource/ibm-plex-sans-arabic/600.css';
 import './i18n';
 import { setupPwa } from './pwa/pwa';
 import { initSettings } from './ui/settings/settings';

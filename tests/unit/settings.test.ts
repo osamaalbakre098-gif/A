@@ -19,11 +19,18 @@ describe('Einstellungen', () => {
     );
     expect(parseSettings(null)).toEqual(DEFAULT_SETTINGS);
   });
-  it('Arabisch setzt dir=rtl und lang=ar', () => {
+  it('setzt lang=de und ändert die Schreibrichtung nicht', () => {
     const root = document.createElement('html');
-    applySettings({ ...DEFAULT_SETTINGS, language: 'ar' }, root);
-    expect(root.dir).toBe('rtl');
-    expect(root.lang).toBe('ar');
+    applySettings(DEFAULT_SETTINGS, root);
+    expect(root.lang).toBe('de');
+    expect(root.dir).toBe('');
+  });
+  it('ein altes gespeichertes „language" wird ignoriert', () => {
+    expect(parseSettings('{"language":"ar","theme":"dark","textScale":120}')).toEqual({
+      ...DEFAULT_SETTINGS,
+      theme: 'dark',
+      textScale: 120,
+    });
   });
   it('Textgröße 200 % ergibt 34 px Grundgröße, Hoher Kontrast setzt Theme', () => {
     const root = document.createElement('html');

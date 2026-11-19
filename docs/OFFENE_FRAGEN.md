@@ -16,3 +16,5 @@
 13. **Fortschritt/„Warum?" mit Quellen:** Texte kommen aus den bestehenden Gründen (`reason.*`); fehlende Daten werden nicht ergänzt.
 14. ~~Datumsersatz mit drei Feldern~~ **gebaut** (`DateFields`).
 15. ~~Ziffernform~~ **entschieden:** nur lateinisch (siehe 11).
+
+16. Mit „nur Deutsch" erledigt: Fragen zu Arabisch/RTL/Ziffernform (11, 15) sind gegenstandslos.

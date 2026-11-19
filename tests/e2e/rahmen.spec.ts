@@ -14,7 +14,7 @@ test.describe('Rahmen 320 pt', () => {
       await page.addInitScript((t) => {
         localStorage.setItem(
           'madar.settings.v1',
-          JSON.stringify({ language: 'de', theme: t, textScale: 100, reducedMotion: true }),
+          JSON.stringify({ theme: t, textScale: 100, reducedMotion: true }),
         );
       }, theme);
       for (const r of ROUTES) {
@@ -103,29 +103,6 @@ test.describe('Rahmen 768 pt: Seitenleiste', () => {
     expect(nav.y).toBeLessThan(10);
     const main = (await page.locator('#main').boundingBox())!;
     expect(main.x).toBeGreaterThanOrEqual(nav.x + nav.width - 1);
-  });
-});
-
-test.describe('Rahmen RTL', () => {
-  test.use({ viewport: { width: 320, height: 568 } });
-  test('Arabisch: Zurück-Pfeil gespiegelt, Navigation bleibt einzeilig', async ({ page }) => {
-    await page.addInitScript(() => {
-      localStorage.setItem(
-        'madar.settings.v1',
-        JSON.stringify({ language: 'ar', theme: 'light', textScale: 100, reducedMotion: true }),
-      );
-    });
-    await page.goto('/#settings');
-    await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
-    const ys = await page
-      .locator('.tabbar .tabbar__link')
-      .evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().top)));
-    expect(new Set(ys).size).toBe(1);
-    const svgTransform = await page
-      .locator('.appbar__btn svg')
-      .first()
-      .evaluate((e) => getComputedStyle(e).transform);
-    expect(svgTransform).not.toBe('none');
   });
 });
 

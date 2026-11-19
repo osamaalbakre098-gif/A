@@ -37,7 +37,7 @@ import {
   Stack,
   StepList,
 } from '../components';
-import { intlLocale } from '../../i18n';
+import { LOCALE } from '../../i18n';
 
 export interface DataDeps {
   getDb: () => Promise<MadarDB>;
@@ -71,7 +71,7 @@ export function browserDeps(): DataDeps {
 type Msg = { kind: 'ok' | 'error'; text: string } | null;
 
 export default function DataPanel({ deps }: { deps: DataDeps }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [persist, setPersist] = useState<Persistence | null>(null);
   const [estimate, setEstimate] = useState<StorageEstimateLike>({});
   const [backups, setBackups] = useState<BackupRow[]>([]);
@@ -83,7 +83,7 @@ export default function DataPanel({ deps }: { deps: DataDeps }) {
   const fileId = useId();
 
   const bytes = (n: number) =>
-    new Intl.NumberFormat(intlLocale(i18n.language), {
+    new Intl.NumberFormat(LOCALE, {
       maximumFractionDigits: n < 1e7 ? 1 : 0,
     }).format(n / 1e6) + ' MB';
   const errText = (e: unknown) =>
@@ -182,7 +182,7 @@ export default function DataPanel({ deps }: { deps: DataDeps }) {
     manual: 'data.reasonManual',
   } as const;
   const when = (ts: number) =>
-    new Intl.DateTimeFormat(intlLocale(i18n.language), {
+    new Intl.DateTimeFormat(LOCALE, {
       dateStyle: 'medium',
       timeStyle: 'short',
     }).format(ts);

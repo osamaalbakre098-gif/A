@@ -1,6 +1,5 @@
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LANGUAGE_NAMES, LANGUAGES, type Language } from '../../i18n';
 import { SegmentedControl, Stack, Switch } from '../components';
 import {
   TEXT_SCALE_MAX,
@@ -18,7 +17,7 @@ const THEME_KEY: Record<ThemeChoice, string> = {
   contrast: 'settings.themeContrast',
 };
 
-/** Darstellung: Erscheinungsbild, Textgröße mit Vorschau-Satz, Bewegung, Sprache. Wirkt sofort. */
+/** Darstellung: Erscheinungsbild, Textgröße mit Vorschau-Satz, Bewegung. Wirkt sofort. */
 export default function SettingsPanel({ hideTitle = false }: { hideTitle?: boolean }) {
   const { t } = useTranslation();
   const s = useSettings();
@@ -60,12 +59,6 @@ export default function SettingsPanel({ hideTitle = false }: { hideTitle?: boole
         label={t('settings.reducedMotion')}
         checked={s.reducedMotion}
         onChange={(v) => s.set({ reducedMotion: v })}
-      />
-      <SegmentedControl
-        legend={t('settings.language')}
-        segments={LANGUAGES.map((l) => ({ id: l, label: LANGUAGE_NAMES[l] }))}
-        value={s.language}
-        onChange={(language) => s.set({ language: language as Language })}
       />
     </Stack>
   );

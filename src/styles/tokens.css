@@ -13,7 +13,6 @@
 
     /* ---- Schrift (3.1) ---- */
     --font: system-ui, -apple-system, 'Inter Variable', 'Inter', 'Segoe UI', sans-serif;
-    --font-ar: system-ui, 'IBM Plex Sans Arabic', 'Noto Sans Arabic', sans-serif;
     /* Basis in px; die App-Textgröße (90–200 %) setzt --fs-base am html-Element (siehe settings.ts) */
     --fs-base: 16px;
     /* Großer Titel: 28–36 px; bei großer Textskala auf schmalen Anzeigen begrenzt, damit ein Wort mit 8 Zeichen

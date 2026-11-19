@@ -8,13 +8,13 @@ import { skillEvidence, skillInfos, type SkillInfo } from '../../data/progress';
 import { Button, Cluster, ContentCard, Dialog, EmptyState, Stack, TextField } from '../components';
 import { useDb } from '../DbProvider';
 import { hrefTo } from '../useHashRoute';
-import { intlLocale } from '../../i18n';
+import { LOCALE } from '../../i18n';
 
 const SYMBOL = { new: '○', building: '◐', sits: '●', refresh: '◌' } as const;
 
 /** Könnensbaum als ausklappbare Liste (barrierefreie Ansicht, Schritt 6.5). Zustände stehen immer auch als Text da. */
 export default function TreePage({ subjectId }: { subjectId: string }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const db = useDb();
   const subject = useLiveQuery(() => db.subjects.get(subjectId), [db, subjectId]);
   const data = useLiveQuery(async () => {
@@ -72,9 +72,7 @@ export default function TreePage({ subjectId }: { subjectId: string }) {
     setUndo(null);
   };
   const date = (ts: number) =>
-    new Intl.DateTimeFormat(intlLocale(i18n.language), { day: 'numeric', month: 'numeric' }).format(
-      ts,
-    );
+    new Intl.DateTimeFormat(LOCALE, { day: 'numeric', month: 'numeric' }).format(ts);
 
   return (
     <Stack space="section" className="view">

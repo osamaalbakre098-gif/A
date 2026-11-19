@@ -71,7 +71,6 @@ function GalleryBody() {
   const [sheet, setSheet] = useState<null | 'sm' | 'md' | 'lg'>(null);
   const [bannerOpen, setBannerOpen] = useState(true);
   const [theme, setTheme] = useState('light');
-  const [dir, setDir] = useState('ltr');
   const [sw, setSw] = useState(true);
   const [choice, setChoice] = useState<string | null>(null);
   const [dlg, setDlg] = useState(false);
@@ -82,9 +81,8 @@ function GalleryBody() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    document.documentElement.dir = dir;
-    document.documentElement.lang = dir === 'rtl' ? 'ar' : 'de';
-  }, [theme, dir]);
+    document.documentElement.lang = 'de';
+  }, [theme]);
 
   useEffect(() => {
     document.documentElement.style.setProperty('--fs-base', `${(16 * scale) / 100}px`);
@@ -110,9 +108,6 @@ function GalleryBody() {
               {t}
             </Button>
           ))}
-          <Button variant="secondary" onClick={() => setDir(dir === 'ltr' ? 'rtl' : 'ltr')}>
-            {dir}
-          </Button>
         </Cluster>
         <div className="field">
           <label className="field__label" htmlFor="g-scale">
@@ -142,7 +137,7 @@ function GalleryBody() {
           <Button disabled>Deaktiviert</Button>
           <Button loading>Laden</Button>
           <IconButton label="Erinnerung" icon={Bell} />
-          <IconButton label="Weiter" icon={ChevronRight} mirror variant="primary" />
+          <IconButton label="Weiter" icon={ChevronRight} variant="primary" />
           <IconButton label="Schließen" icon={X} variant="quiet" />
         </Cluster>
         <Button size="l" fullWidth>

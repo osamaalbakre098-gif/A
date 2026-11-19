@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Icon } from '../components/Icon';
 import './AppBar.css';
 
-/** Zurück-Knopf der Kopfzeile: rund, 44 px, in RTL gespiegelt. */
+/** Zurück-Knopf der Kopfzeile: rund, 44 px. */
 export function BackButton({ onClick, label }: { onClick: () => void; label: string }) {
   return (
     <button
@@ -14,7 +14,7 @@ export function BackButton({ onClick, label }: { onClick: () => void; label: str
       title={label}
       onClick={onClick}
     >
-      <Icon as={ChevronLeft} mirror />
+      <Icon as={ChevronLeft} />
     </button>
   );
 }

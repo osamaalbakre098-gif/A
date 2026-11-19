@@ -406,9 +406,6 @@
     font-weight: 600;
     fill: currentColor;
   }
-  [dir='rtl'] .flip-rtl {
-    transform: scaleX(-1);
-  }
 
   /* ---------- Layout: Abstand nur über gap ---------- */
   .stack {

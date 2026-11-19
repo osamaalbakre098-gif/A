@@ -209,3 +209,8 @@ Schritt 1: dokumentierte Abweichungen: Rahmen- und Akzentfarbe dunkler (Kontrast
 Unit: 238 grün. E2E (Chromium): siehe Meldung. WebKit-iPhone-Projekt: hier nicht ausführbar.
 
 Gebaut nach Rückmeldung: Datum mit drei Feldern (`DateFields`, Unit-Test + E2E), neue Bausteine in der Galerie, Ziffern immer lateinisch (Test). Offen: „Entspannt/Normal/Gründlich" (Einstellungen 6.13) nicht gebaut, weil es dafür keine Logik gibt.
+
+## Nur Deutsch (Stand 2026-11-19)
+
+Gebaut: Bereinigung auf eine Sprache (siehe `ENTSCHEIDUNGEN.md`). Automatisch getestet: Unit- und Chromium-E2E-Läufe (Zahlen in der Meldung). Auf echtem iPhone geprüft: nein.
+Hinweis: Die Tabellen oben nennen teils noch Prüfungen „de/ar"; sie beschreiben den Stand vor dieser Bereinigung.

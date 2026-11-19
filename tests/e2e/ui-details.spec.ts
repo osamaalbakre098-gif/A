@@ -6,12 +6,11 @@ import { expect, test, type Page } from '@playwright/test';
  */
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
 
-const set = (page: Page, o: { lang?: string; theme?: string; scale?: number }) =>
+const set = (page: Page, o: { theme?: string; scale?: number }) =>
   page.addInitScript((v) => {
     localStorage.setItem(
       'madar.settings.v1',
       JSON.stringify({
-        language: v.lang ?? 'de',
         theme: v.theme ?? 'light',
         textScale: v.scale ?? 100,
         reducedMotion: true,
@@ -71,17 +70,15 @@ test.describe('1/2: Zielgrößen und Eingabegröße', () => {
 
 test.describe('3: kein horizontaler Überlauf', () => {
   const widths = [320, 375, 390, 768, 1280];
-  test('alle Breiten × Textskala 100/150/200 × de/en/ar (hell); 320 pt zusätzlich dunkel und Hoher Kontrast', async ({
+  test('alle Breiten × Textskala 100/150/200 (hell); 320 pt zusätzlich dunkel und Hoher Kontrast', async ({
     browser,
   }) => {
     test.setTimeout(240_000);
-    const combos: { w: number; scale: number; lang: string; theme: string }[] = [];
+    const combos: { w: number; scale: number; theme: string }[] = [];
     for (const w of widths)
-      for (const scale of [100, 150, 200])
-        for (const lang of ['de', 'en', 'ar']) combos.push({ w, scale, lang, theme: 'light' });
+      for (const scale of [100, 150, 200]) combos.push({ w, scale, theme: 'light' });
     for (const theme of ['dark', 'contrast'])
-      for (const scale of [100, 150, 200])
-        for (const lang of ['de', 'en', 'ar']) combos.push({ w: 320, scale, lang, theme });
+      for (const scale of [100, 150, 200]) combos.push({ w: 320, scale, theme });
     const bad: string[] = [];
     for (const c of combos) {
       const ctx = await browser.newContext({
@@ -221,9 +218,9 @@ test.describe('5: Tab-Leiste', () => {
 });
 
 test.describe('8: Texthygiene', () => {
-  for (const lang of ['de', 'en', 'ar']) {
-    test(`keine technischen Reste im sichtbaren Text (${lang})`, async ({ page }) => {
-      await set(page, { lang });
+  {
+    test('keine technischen Reste im sichtbaren Text', async ({ page }) => {
+      await set(page, {});
       for (const r of [
         '/#today',
         '/#subjects',
@@ -240,8 +237,7 @@ test.describe('8: Texthygiene', () => {
         expect(text, r).not.toMatch(/NaN|undefined|\bnull\b|\[object/);
         expect(text, r).not.toMatch(/\b[AFR]\d{2,3}\b/); // rohe Kurz-IDs aus dem Auftragsformat
         expect(text, r).not.toMatch(/\b(Oops|Error)\b/);
-        if (lang !== 'en')
-          expect(text, r).not.toMatch(/\b(Loading|Cancel|Settings|Back|Close|Today)\b/);
+        expect(text, r).not.toMatch(/\b(Loading|Cancel|Settings|Back|Close|Today)\b/);
       }
     });
   }

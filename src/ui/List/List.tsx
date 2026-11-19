@@ -88,7 +88,7 @@ export function ListRow({
       {trailing}
       {(chevron ?? interactive) && interactive && (
         <span className="listrow__chev" aria-hidden="true">
-          <Icon as={ChevronRight} size={20} mirror />
+          <Icon as={ChevronRight} size={20} />
         </span>
       )}
     </>

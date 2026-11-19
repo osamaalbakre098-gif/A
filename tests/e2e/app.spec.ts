@@ -1,19 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('Sprachwechsel DE → AR spiegelt die Seite, EN wirkt sofort', async ({ page }, info) => {
-  await page.goto('/#settings');
-  await expect(page.getByRole('heading', { name: 'Einstellungen', level: 1 })).toBeVisible();
-  await page.getByRole('radio', { name: 'English' }).check({ force: true });
-  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.getByText('Skip to content')).toBeAttached();
-  await page.getByRole('radio', { name: 'العربية' }).check({ force: true });
-  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
-  await page.screenshot({ path: `test-results/rtl-${info.project.name}.png` });
-  const res = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag22aa']).analyze();
-  expect(res.violations.map((v) => v.id)).toEqual([]);
-});
-
 test('Textgröße 200 % bricht bei 320 px nicht (kein horizontales Scrollen)', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   await page.goto('/#settings');

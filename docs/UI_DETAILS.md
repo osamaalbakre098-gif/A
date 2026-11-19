@@ -1,5 +1,7 @@
 # MADAR – UI-Feinschliff („Handwerksqualität“)
 
+> **Gilt nicht mehr (Entscheidung 2026-11-19, siehe `ENTSCHEIDUNGEN.md`):** Madar gibt es nur noch auf Deutsch. Alle Angaben dieser Vorgabe zu Englisch, Arabisch, RTL, Spiegelung von Icons, arabischen Schriftregeln, Sprachumschaltung und Prüfungen in en/ar entfallen. Alles Übrige gilt unverändert.
+
 > Ablage im Repo: `docs/UI_DETAILS.md`
 > Gilt **zusätzlich** zu `docs/UI_VORGABE.md`. Die Vorgabe bestimmt _was_ gebaut wird (Struktur, Screens, Komponenten). Dieses Dokument bestimmt, _wie fertig_ es sein muss. Bei Konflikt: Sicherheit > Barrierefreiheit > Klarheit > Ruhe/Optik > Code-Eleganz.
 > Gilt ab sofort für alles, auch rückwirkend für Phase A.

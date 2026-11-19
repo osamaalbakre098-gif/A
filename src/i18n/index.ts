@@ -1,30 +1,20 @@
 import i18n from 'i18next';
 import ICU from 'i18next-icu';
 import { initReactI18next } from 'react-i18next';
-import ar from './ar.json';
 import de from './de.json';
-import en from './en.json';
 
-export const LANGUAGES = ['de', 'en', 'ar'] as const;
-export type Language = (typeof LANGUAGES)[number];
-export const LANGUAGE_NAMES: Record<Language, string> = {
-  de: 'Deutsch',
-  en: 'English',
-  ar: 'العربية',
-};
-export const isRtl = (l: Language) => l === 'ar';
+/** Madar gibt es nur auf Deutsch (Entscheidung vom 2026-11-19, siehe docs/ENTSCHEIDUNGEN.md). */
+export const LANGUAGE = 'de';
 
-/** Locale für Intl (Zahlen, Datum, Zeit): Arabisch mit lateinischen Ziffern als Standard (UI_DETAILS 3). */
-export const intlLocale = (lng: string): string => (lng.startsWith('ar') ? 'ar-u-nu-latn' : lng);
+/** Locale für Intl (Zahlen, Datum, Zeit): Deutsch, immer lateinische Ziffern (1234567890). */
+export const LOCALE = 'de';
 
 export const resources = {
   de: { translation: de },
-  en: { translation: en },
-  ar: { translation: ar },
 };
 
 void i18n
-  .use(new ICU({ parseLngForICU: intlLocale }))
+  .use(new ICU())
   // „|" in Übersetzungen markiert erlaubte Trennstellen langer Wörter (weiches Trennzeichen), siehe UI_DETAILS 3
   .use({
     type: 'postProcessor',
@@ -34,8 +24,8 @@ void i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'de',
-    fallbackLng: 'de',
+    lng: LANGUAGE,
+    fallbackLng: LANGUAGE,
     interpolation: { escapeValue: false },
     postProcess: ['softBreak'],
   });

@@ -22,15 +22,6 @@
     color: var(--text-on-accent);
   }
 
-  :lang(ar) body,
-  [lang='ar'] body {
-    font-family: var(--font-ar);
-    /* Arabisch: +0,1 Zeilenhöhe, keine Kursive */
-    line-height: calc(var(--lh-body) + 0.1);
-    font-size: 1.1rem;
-    font-style: normal;
-  }
-
   h1 {
     font-size: var(--type-large-title);
     line-height: var(--lh-large-title);

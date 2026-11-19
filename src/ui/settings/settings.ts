@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { loadSettingsFromDb, saveSettingsToDb } from '../../data/settingsDb';
-import i18n, { isRtl, LANGUAGES, type Language } from '../../i18n';
 
 export type ThemeChoice = 'system' | 'light' | 'dark' | 'contrast';
 export const TEXT_SCALE_MIN = 90;
@@ -9,7 +8,6 @@ const BASE_FONT_PX = 16;
 const KEY = 'madar.settings.v1';
 
 export interface Settings {
-  language: Language;
   theme: ThemeChoice;
   /** Textgröße in Prozent (90–200), unabhängig vom System. */
   textScale: number;
@@ -17,7 +15,6 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  language: 'de',
   theme: 'system',
   textScale: 100,
   reducedMotion: false,
@@ -33,7 +30,6 @@ export function parseSettings(raw: string | null): Settings {
   try {
     const o = JSON.parse(raw) as Partial<Settings>;
     return {
-      language: LANGUAGES.includes(o.language as Language) ? (o.language as Language) : 'de',
       theme: ['system', 'light', 'dark', 'contrast'].includes(o.theme as string)
         ? (o.theme as ThemeChoice)
         : 'system',
@@ -53,14 +49,13 @@ function load(): Settings {
   }
 }
 
-/** Wendet Einstellungen auf <html> an: Sprache, Richtung, Theme, Textgröße. */
+/** Wendet Einstellungen auf <html> an: Theme, Textgröße, Bewegung. */
 export function applySettings(
   s: Settings,
   root: HTMLElement = document.documentElement,
   prefersDark = false,
 ) {
-  root.lang = s.language;
-  root.dir = isRtl(s.language) ? 'rtl' : 'ltr';
+  root.lang = 'de';
   const theme = s.theme === 'system' ? (prefersDark ? 'dark' : 'light') : s.theme;
   if (theme === 'light') root.removeAttribute('data-theme');
   else root.dataset.theme = theme;
@@ -90,7 +85,6 @@ export const useSettings = create<Store>((set, get) => ({
       /* Speicher nicht verfügbar: Einstellung gilt nur für diese Sitzung */
     }
     void saveSettingsToDb({ ...next });
-    void i18n.changeLanguage(next.language);
     applySettings(
       next,
       document.documentElement,
@@ -113,6 +107,5 @@ export function initSettings() {
       if (v) useSettings.getState().set(parseSettings(JSON.stringify(v)));
     });
   }
-  void i18n.changeLanguage(s.language);
   applySettings(s, document.documentElement, matchMedia('(prefers-color-scheme: dark)').matches);
 }

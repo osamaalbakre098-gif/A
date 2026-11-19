@@ -22,7 +22,7 @@ Alles läuft automatisch; Bearbeiten ist optional. Im Zweifel: einfacher statt m
 6. **Originaldateien werden nie verändert.** Markierungen und Notizen werden getrennt gespeichert.
 7. **Lokal zuerst.** Alles außer KI-Funktionen läuft ohne Konto und ohne Internet. Auch ganz ohne KI bleibt Madar nutzbar (Fallback).
 8. **Barrierefreiheit:** WCAG 2.2 AA, Zoom bis 400 %, Pinch-Zoom nie sperren, `prefers-reduced-motion` respektieren, volle Tastaturbedienung.
-9. **Sprachen:** Deutsch Standard, Englisch und Arabisch optional (Arabisch mit vollständigem RTL). Alle Texte aus Übersetzungsdateien.
+9. **Sprache:** Nur Deutsch (Entscheidung vom 2026-11-19; kein Englisch, kein Arabisch, kein RTL, keine Sprachumschaltung). Alle Texte aus der Übersetzungsdatei `src/i18n/de.json`. Zahlen immer mit lateinischen Ziffern.
 10. **Nichts erfinden:** keine Notenschlüssel, Lehrplaninhalte, Studienergebnisse, API-Parameter.
 11. **Ehrlicher Status:** `docs/STATUS.md` mit drei Spalten: gebaut / automatisch getestet / auf echtem iPhone geprüft.
 12. **API-Schlüssel nie im Client.**
@@ -31,7 +31,7 @@ Alles läuft automatisch; Bearbeiten ist optional. Im Zweifel: einfacher statt m
 
 - `src/core` ist reine Logik: kein UI, kein Netzwerk, keine Datenbank, kein `Date.now()` (`now` als Parameter; Lerntag beginnt 04:00, siehe `src/core/time.ts`).
 - Strict TypeScript inkl. `noUncheckedIndexedAccess`. Zod-Schemas an allen Grenzen.
-- Nur logische CSS-Eigenschaften (RTL). Kein HTML aus Dateien oder KI-Ausgaben ohne DOMPurify.
+- Nur logische CSS-Eigenschaften (Stilregel bleibt, auch ohne RTL). Kein HTML aus Dateien oder KI-Ausgaben ohne DOMPurify.
 - Schwellen und Gewichte stehen in Konfigurationsdateien, nie verstreut im Code.
 
 ## Beginn jeder neuen Sitzung (Pflicht)

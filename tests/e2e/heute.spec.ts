@@ -4,25 +4,20 @@ import { setView } from './view-helpers';
 
 test.use({ baseURL: 'http://localhost:5173' });
 
-async function open(page: Page, state: string, theme = 'light', lang = 'de') {
+async function open(page: Page, state: string, theme = 'light') {
   await page.goto('/dev/heute');
   await page.getByLabel('Zustand').selectOption({ label: state });
   await page.getByText('Ansicht einstellen').click();
   await page.locator('#settings-title').waitFor();
-  await setView(page, lang, theme);
+  await setView(page, theme);
 }
 
 const STATES = ['Es gibt einen Plan', 'Alles erledigt', 'Noch kein Material'];
 
 for (const state of STATES) {
-  for (const [theme, lang] of [
-    ['light', 'de'],
-    ['dark', 'de'],
-    ['contrast', 'de'],
-    ['light', 'ar'],
-  ] as const) {
-    test(`axe Heute: ${state} / ${theme} / ${lang}`, async ({ page }) => {
-      await open(page, state, theme, lang);
+  for (const theme of ['light', 'dark', 'contrast'] as const) {
+    test(`axe Heute: ${state} / ${theme}`, async ({ page }) => {
+      await open(page, state, theme);
       const res = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
         .analyze();
@@ -70,8 +65,8 @@ test('Screenshots', async ({ page }, info) => {
   await page.screenshot({ path: 'test-results/heute-plan.png', fullPage: true });
   await open(page, 'Alles erledigt', 'dark');
   await page.screenshot({ path: 'test-results/heute-done-dark.png', fullPage: true });
-  await open(page, 'Noch kein Material', 'light', 'ar');
-  await page.screenshot({ path: 'test-results/heute-empty-ar.png', fullPage: true });
+  await open(page, 'Noch kein Material', 'light');
+  await page.screenshot({ path: 'test-results/heute-empty.png', fullPage: true });
   await page.setViewportSize({ width: 1280, height: 800 });
   await open(page, 'Es gibt einen Plan');
   await page.screenshot({ path: 'test-results/heute-desktop.png', fullPage: true });

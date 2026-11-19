@@ -10,12 +10,11 @@ test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
 
 const TEXT = `# Vektoren\n\nEin Vektor hat Betrag und Richtung. ${'Die Geschwindigkeit ist ein Vektor. '.repeat(8)}\n\n## Addition\n\nVektoren addiert man komponentenweise. ${'Kräfte addiert man ebenso. '.repeat(8)}\n`;
 
-async function prepare(page: Page, o: { lang?: string; theme?: string; scale?: number }) {
+async function prepare(page: Page, o: { theme?: string; scale?: number }) {
   await page.addInitScript((v) => {
     localStorage.setItem(
       'madar.settings.v1',
       JSON.stringify({
-        language: v.lang ?? 'de',
         theme: v.theme ?? 'light',
         textScale: v.scale ?? 100,
         reducedMotion: true,
@@ -26,7 +25,7 @@ async function prepare(page: Page, o: { lang?: string; theme?: string; scale?: n
   await page.goto('/#subjects');
   await page
     .locator('button, a')
-    .filter({ hasText: /Fach anlegen|إضافة مادة/ })
+    .filter({ hasText: /Fach anlegen/ })
     .first()
     .click();
   await page.locator('dialog[open] input').fill('Physik');
@@ -34,18 +33,18 @@ async function prepare(page: Page, o: { lang?: string; theme?: string; scale?: n
   await page.locator('a.listrow[href^="#subject/"]').first().click();
   await page
     .locator('.listrow')
-    .filter({ hasText: /Material hinzufügen|إضافة مواد/ })
+    .filter({ hasText: /Material hinzufügen/ })
     .first()
     .click();
   await page
     .locator('dialog[open] button')
-    .filter({ hasText: /Text einfügen|لصق/ })
+    .filter({ hasText: /Text einfügen/ })
     .first()
     .click();
   await page.locator('dialog[open] textarea').fill(TEXT);
   await page
     .locator('dialog[open] button')
-    .filter({ hasText: /Speichern|حفظ/ })
+    .filter({ hasText: /Speichern/ })
     .last()
     .click();
   await expect(page.locator('a.listrow[href^="#doc/"]')).toHaveCount(1);
@@ -104,14 +103,9 @@ async function visit(page: Page, hash: string) {
 test.describe('Phase B bei 320 pt', () => {
   test.use({ viewport: { width: 320, height: 568 } });
 
-  for (const [lang, scale] of [
-    ['de', 100],
-    ['de', 200],
-    ['ar', 100],
-    ['ar', 200],
-  ] as const) {
-    test(`kein waagerechter Überlauf: ${lang} / ${scale} %`, async ({ page }) => {
-      const { subjectHash, docHash } = await prepare(page, { lang, scale });
+  for (const scale of [100, 200] as const) {
+    test(`kein waagerechter Überlauf: ${scale} %`, async ({ page }) => {
+      const { subjectHash, docHash } = await prepare(page, { scale });
       for (const h of [
         '#today',
         '#subjects',
@@ -123,7 +117,7 @@ test.describe('Phase B bei 320 pt', () => {
         '#session',
       ]) {
         await visit(page, h);
-        expect(await noOverflow(page), `${h} (${lang}, ${scale} %)`).toBe(true);
+        expect(await noOverflow(page), `${h} (${scale} %)`).toBe(true);
       }
     });
   }
